@@ -116,6 +116,7 @@ async def help(ctx):
     embed.set_footer(text = "made with ♡ by bomt")
     await ctx.message.delete()
     await ctx.send(embed = embed)   
+    await ctx.embed.delete()
 #Admin Command & Categories for "Help"
 @bot.command()
 async def admin(ctx):
