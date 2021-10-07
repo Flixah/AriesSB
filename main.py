@@ -111,7 +111,7 @@ async def on_message(message):
 @bot.command()
 #Help Command
 async def help(ctx):
-    embed = discord.Embed(title="Aries Help Menu", description = "Help » Display this menu \nAdmin » Display the admin page \nFun » Display the fun page\nMisc » Display the Misc page\nNSFW  » Display the NSFW page\nSettings » Display the Aries Settings page\nNotes » Display the Aries Notes page", color=0x493BB9)
+    embed = discord.Embed(title="Aries Help Menu", description = "<> is Usage \nHelp » Display this menu » <.help> » {None}\nAdmin » Display the admin page » <.admin> » {None}\nFun » Display the fun page » <.fun> » {None}\nMisc » Display the Misc page » <.misc> » {None}\nNSFW  » Display the NSFW page » <.NSFW> » {None}\nSettings » Display the Aries Settings page » <.settings> » {None} \nNotes » Display the Aries Notes page » <.notes> » {None}", color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
     embed.set_footer(text = "made with ♡ by bomt")
     await ctx.message.delete()
