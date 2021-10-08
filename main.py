@@ -18,6 +18,8 @@ import base64
 import requests
 import re
 import random
+from os import listdir
+from os.path import isfile, join
     #Checks if config file exists if it dosen't make the user input token to create one
 if os.path.exists("./data/config.json"):
     pass
@@ -69,14 +71,22 @@ bot.remove_command("admin")
 async def on_ready():  
     os.system('cls' if os.name == 'nt' else 'clear')
     build = "1.0"
+    print("Loading")
+    bar = Fore.RESET + "\n\n███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████"
+    for char in bar:
+        await asyncio.sleep(.03)
+        sys.stdout.write(char)
+        done = "true"
+        sys.stdout.flush()
+    if done == "true":
+                os.system('cls' if os.name == 'nt' else 'clear')
     print(Fore.CYAN + "                                                  ___         _          ")
     print(Fore.CYAN + "                                                 /   |  _____(_)__  _____")
     print(Fore.CYAN + "                                                / /| | / ___/ / _ \/ ___/")
     print(Fore.CYAN + "                                               / ___ |/ /  / /  __(__  ) ")
     print(Fore.CYAN + "                                              /_/  |_/_/  /_/\___/____/  ")
     print(Fore.RESET + "\n\n                                             Ram the opposition with Aries")
-    print(Fore.RESET + "\n\n------------------------------------------------------------------------------------------------------------------------")
-    print("\n" + Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + "28 " + Fore.RESET + "Commands!")
+    print("\n" + Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + "30 " + Fore.RESET + "Commands!")
     print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "User Is In » " + Fore.LIGHTCYAN_EX + str(len(bot.guilds))  + Fore.RESET + " Guilds!")
     print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Build » " + Fore.LIGHTCYAN_EX + build + Fore.RESET)
     print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Prefix » " + Fore.LIGHTCYAN_EX + str(prefix) + Fore.RESET)
@@ -95,9 +105,9 @@ async def on_message(message):
         #Converts embed to a string
         convertedEmbed = str(getEmbed)
         #Searches for Aries in contents TODO: Add more checks to improve
-        if "Aries" in convertedEmbed:
+        if "Luna" in convertedEmbed:
             #If found print 
-         print(Fore.CYAN + "Info" + Fore.RESET + " |" + Fore.RED + " [!]" + Fore.CYAN + " Selfbot Found! On » " + Fore.LIGHTCYAN_EX + str(message.author) + Fore.CYAN + " » Server » " + Fore.LIGHTCYAN_EX + str(message.guild) + Fore.CYAN + " » Selfbot » " + Fore.LIGHTCYAN_EX + "Aries")
+         print(Fore.CYAN + "Info" + Fore.RESET + " |" + Fore.RED + " [!]" + Fore.CYAN + " Selfbot Found! On » " + Fore.LIGHTCYAN_EX + str(message.author) + Fore.CYAN + " » Server » " + Fore.LIGHTCYAN_EX + str(message.guild) + Fore.CYAN + " » Selfbot » " + Fore.LIGHTCYAN_EX + "Luna")
 
     #Detects if it starts with gifting to see if its not just any msg and checks if sniper is active
     if nitro_sniper == 'true' and 'discord.gift/' in message.content:
@@ -409,7 +419,7 @@ async def cn(ctx, name, contents):
 @bot.command()
 async def en(ctx, notename, newcontent):
     await ctx.message.delete()
-    ISDIR = os.path.exists("./data/notes" + notename + ".json")
+    ISDIR = os.path.exists("./data/notes/" + notename + ".json")
     ISDIR2 = os.path.isdir("./data/notes")
     if not ISDIR2:
         os.mkdir("./data/notes")
