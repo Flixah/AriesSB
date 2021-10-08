@@ -18,7 +18,6 @@ import base64
 import requests
 import re
 import random
-global detector
     #Checks if config file exists if it dosen't make the user input token to create one
 if os.path.exists("./data/config.json"):
     pass
@@ -29,15 +28,22 @@ else:
     print(" / ___ \| |  | |  __/\__ \"")
     print("/_/   \_\_|  |_|\___||___/")
     key = input("Enter Your Token: ")
+    pi = input("Prefix?")
     qsr = input("Sniper? (y/n): ")
+    sbd = input("Selfbot Detector? (y/n)")
+
     snipe = "false"
+    detect = "false"
+
     if (qsr == "y"):
         snipe = "true"
-
+    if (sbd == "y"):
+        detect = "true"
     data = {
         "token": f"{key}",
-        "prefix": ".",
-        "sniper": f"{snipe}"
+        "prefix": f"{pi}",
+        "sniper": f"{snipe}",
+        "detector": f"{detect}"
     }
     ISDIR = os.path.isdir("./data")
     if (not ISDIR):
@@ -54,6 +60,7 @@ with open("./data/config.json") as f:
 prefix = config.get('prefix')
 token = config.get('token')
 nitro_sniper = config.get('sniper')
+selfbot_detector = config.get('detector')
 bot = commands.Bot(prefix, self_bot=True, case_insensitive=True, guild_subscription_options=GuildSubscriptionOptions.off())
 bot.remove_command("help")
 bot.remove_command("admin")
@@ -69,16 +76,19 @@ async def on_ready():
     print(Fore.CYAN + "                                              /_/  |_/_/  /_/\___/____/  ")
     print(Fore.RESET + "\n\n                                             Ram the opposition with Aries")
     print(Fore.RESET + "\n\n------------------------------------------------------------------------------------------------------------------------")
-    print("\n" + Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + "22 " + Fore.RESET + "Commands!")
-    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "User Is In " + Fore.LIGHTCYAN_EX + str(len(bot.guilds))  + Fore.RESET + " Guilds!")
-    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Build " + Fore.LIGHTCYAN_EX + build + Fore.RESET)
-    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Prefix " + Fore.LIGHTCYAN_EX + str(prefix) + Fore.RESET)
-    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[+]" + Fore.GREEN + " Connected! Enjoy Aries " + Fore.RESET + f"{bot.user}" + Fore.RESET)       
+    print("\n" + Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + "28 " + Fore.RESET + "Commands!")
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "User Is In » " + Fore.LIGHTCYAN_EX + str(len(bot.guilds))  + Fore.RESET + " Guilds!")
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Build » " + Fore.LIGHTCYAN_EX + build + Fore.RESET)
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Prefix » " + Fore.LIGHTCYAN_EX + str(prefix) + Fore.RESET)
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Sniper » " + Fore.LIGHTCYAN_EX + str(nitro_sniper) + Fore.RESET)
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Selfbot Detector » " + Fore.LIGHTCYAN_EX + str(selfbot_detector) + Fore.RESET)
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[+]" + Fore.GREEN + " Connected! Enjoy Aries " + Fore.RESET + f"{bot.user}" + Fore.RESET)     
 @bot.event
 async def on_message(message):
     #Loads All Embeds it finds
     embeds = message.embeds
-    for embed in embeds:
+    if selfbot_detector == 'true':
+     for embed in embeds:
         #Gets Embed contents
         getEmbed = embed.to_dict()
         #Converts embed to a string
@@ -111,16 +121,23 @@ async def on_message(message):
 @bot.command()
 #Help Command
 async def help(ctx):
-    embed = discord.Embed(title="Aries Help Menu", description = "<> is Usage \nHelp » Display this menu » <.help> » {None}\nAdmin » Display the admin page » <.admin> » {None}\nFun » Display the fun page » <.fun> » {None}\nMisc » Display the Misc page » <.misc> » {None}\nNSFW  » Display the NSFW page » <.NSFW> » {None}\nSettings » Display the Aries Settings page » <.settings> » {None} \nNotes » Display the Aries Notes page » <.notes> » {None}", color=0x493BB9)
+    embed = discord.Embed(title="Luna Help Menu", description = "<> is Usage \nHelp » Display this menu » <.help> » {None}\nAdmin » Display the admin page » <.admin> » {None}\nFun » Display the fun page » <.fun> » {None}\nMisc » Display the Misc page » <.misc> » {None}\nNSFW  » Display the NSFW page » <.NSFW> » {None}\nSettings » Display the Aries Settings page » <.settings> » {None} \nNotes » Display the Aries Notes page » <.notes> » {None}", color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
     embed.set_footer(text = "made with ♡ by bomt")
     await ctx.message.delete()
     await ctx.send(embed = embed)   
-    await ctx.embed.delete()
 #Admin Command & Categories for "Help"
 @bot.command()
 async def admin(ctx):
     embed = discord.Embed(title="Aries Administrator Menu", description = "Ban » Ban A Member » <.ban> » {Member}\nKick » Kick A Member » <.purge> » {Amount}\nPurge » Purge <> of msgs » <.purge> » {Amount}\nCreate » Create a channel » <.Create> » {None}\nDelete » Delete a channel » <.delete> » {None}", color=0x493BB9)
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_footer(text = "made with ♡ by bomt")
+    await ctx.message.delete()
+    await ctx.send(embed = embed) 
+#Notes Page
+@bot.command()
+async def notes(ctx):
+    embed = discord.Embed(title="Aries Notes Menu", description = "Make Note » Create a note » <.cn> » {name, contents}\nEdit Note » Edit a note » <.en> » {name, newcontents}", color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
     embed.set_footer(text = "made with ♡ by bomt")
     await ctx.message.delete()
@@ -152,7 +169,7 @@ async def nsfw(ctx):
 #Settings Commands
 @bot.command()
 async def settings(ctx):
-    embed = discord.Embed(title="Aries Settings Menu", description = "Status » Change your Status » <.status> » {Status}\nSniper » Check sniper status » <.sniper> » {value}", color=0x493BB9)
+    embed = discord.Embed(title="Aries Settings Menu", description = "Status » Change your Status » <.status> » {Status}\nSniper » Check sniper status » <.sniperstatus> » {None}\nCheckPrefix » Check Aries Prefix » <.prefix> » {None}\nSBDetector » Check Aries Detection » <.selfbotdetector> » {None} ", color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
     embed.set_footer(text = "made with ♡ by bomt")
     await ctx.message.delete()
@@ -314,9 +331,9 @@ async def todo(ctx):
     await ctx.send(embed = embed)
 #Sniper Command
 @bot.command()
-async def sniper(ctx):
+async def sniperstatus(ctx):
     await ctx.message.delete()
-    embed = discord.Embed(title= "Aries Nitro Sniper", description = "", color=0x493BB9)
+    embed = discord.Embed(title= "Aries Nitro Sniper", description = str(f"{nitro_sniper}"), color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
     embed.set_footer(text = "made with ♡ by bomt")
     await ctx.send(embed = embed)
@@ -368,22 +385,37 @@ async def invite(ctx):
     embed.set_footer(text = "made with ♡ by bomt")
     await ctx.send(embed = embed) 
 @bot.command()
-async def notes(ctx):
+async def cn(ctx, name, contents):
     await ctx.message.delete()
-    with open("./data/note.json") as f:
-     config = json.load(f)
-    embed = discord.Embed(title= "Aries Notes", description = str(config.get()), color=0x493BB9)
+    ISDIR = os.path.isdir("./data/notes/")
+    if not ISDIR:
+        os.mkdir("./data/notes")
+    with open("./data/notes/" + name + ".json", "w") as f:
+        f.write(json.dumps(str(contents), indent=4))
+
+    embed = discord.Embed(title= "Aries Notification", description = "Made Note with Contents: " + contents, color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
     embed.set_footer(text = "made with ♡ by bomt")
     await ctx.send(embed = embed)
 @bot.command()
-async def copy(ctx, person):
+async def en(ctx, notename, newcontent):
     await ctx.message.delete()
-    with open("./data/note.json") as f:
-     embed = discord.Embed(title= "Aries Notification", description = "Now Copying: " + person, color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    ISDIR = os.path.exists("./data/notes" + notename + ".json")
+    ISDIR2 = os.path.isdir("./data/notes")
+    if not ISDIR2:
+        os.mkdir("./data/notes")
+    if ISDIR:
+     with open("./data/notes/" + notename + ".json", "w") as f:
+        f.write(json.dumps(str(newcontent), indent=4))
+     embed = discord.Embed(title= "Aries Notification", description = "Edited " + notename + " with Contents: " + newcontent, color=0x493BB9)
+     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+     embed.set_footer(text = "made with ♡ by bomt")
+     await ctx.send(embed = embed)
+    else:
+     embed = discord.Embed(title= "Aries Notification", description = "No note found with the name: " + notename, color=0x493BB9)
+     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+     embed.set_footer(text = "made with ♡ by bomt")
+     await ctx.send(embed = embed)
 @bot.command()
 async def leave(ctx):
     await ctx.message.delete()
@@ -397,6 +429,20 @@ async def hentai(ctx):
     hentai = ["https://i.redd.it/f7bvxozp9kb61.png", "https://i.redd.it/okplmg1aq7961.png", "https://preview.redd.it/olv12c8bze271.png?auto=webp&s=045669166e29212f8724a54bc22d72cca7822ef8", "https://i.redd.it/y5uy7ipxmej41.jpg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTImivRmr0qEeXzHNFRdQRuHTAYLSBUJqvydQ&usqp=CAU"]
     embed = discord.Embed(title= "", description = "", color=0x493BB9)
     embed.set_image(url = random.choice(hentai))
+    embed.set_footer(text = "made with ♡ by bomt")
+    await ctx.send(embed = embed)
+@bot.command()
+async def checkprefix(ctx):
+    await ctx.message.delete()
+    embed = discord.Embed(title= "Aries Prefix", description = f"{prefix}", color=0x493BB9)
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_footer(text = "made with ♡ by bomt")
+    await ctx.send(embed = embed)
+@bot.command()
+async def selfbotdetector(ctx):
+    await ctx.message.delete()
+    embed = discord.Embed(title= "Aries Selfbot Detection", description = f"{selfbot_detector}", color=0x493BB9)
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
     embed.set_footer(text = "made with ♡ by bomt")
     await ctx.send(embed = embed)
 try:
