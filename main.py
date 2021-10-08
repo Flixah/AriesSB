@@ -96,6 +96,9 @@ async def on_ready():
     print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[+]" + Fore.BLUE + " (Please Note that your token is safe and is only stored in a json file) " + Fore.RESET)     
 @bot.event
 async def on_message(message):
+    #Copier i need you to make this toggleable and input certain users Destiny since i gtg
+    if message.author.name == "Fritzz":
+         await message.channel.send(message.content)
     #Loads All Embeds it finds
     embeds = message.embeds
     if selfbot_detector == 'true':
@@ -164,7 +167,7 @@ async def fun(ctx):
 #Misc Commands
 @bot.command()
 async def misc(ctx):
-    embed = discord.Embed(title="Aries Misc Menu", description = "Restart » Restarts Aries » <.restart> » {None} \nUserinfo » Shows your userinfo » <.userinfo> » {None} \nTodo » Shows the bots TODO list » <.todo> » {None} \nAvatar » Display Avatar of a user » <.Avatar> » {user} \nInvite » Get an invite to Aries » <.invite> » {None} \nEmbed » Sends an Embed message » <.embed (TITLE) (DESCRIPTION)> » {None}", color=0x493BB9)
+    embed = discord.Embed(title="Aries Misc Menu", description = "Restart » Restarts Aries » <.restart> » {None} \nUserinfo » Shows your userinfo » <.userinfo> » {None} \nTodo » Shows the bots TODO list » <.todo> » {None} \nAvatar » Display Avatar of a user » <.Avatar> » {user} \nInvite » Get an invite to Aries » <.invite> » {None} \nEmbed » Sends an Embed message » <.embed (TITLE) (DESCRIPTION)> » {None}\nNick » Change your nickname » <.nick> » {newnick}", color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
@@ -475,6 +478,14 @@ async def ln(ctx):
 async def selfbotdetector(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title= "Aries Selfbot Detection", description = f"{selfbot_detector}", color=0x493BB9)
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png%22")
+    embed.set_footer(text = "made with ♡ by bomt and destiny")
+    await ctx.send(embed = embed)
+@bot.command()
+async def nick(ctx, member: discord.Member, nick):
+    await ctx.message.delete()
+    await member.nick(nick = nick)
+    embed = discord.Embed(title= "Aries Notifcation", description = "Set Nick To: " + nick, color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png%22")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed)
