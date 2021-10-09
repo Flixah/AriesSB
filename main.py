@@ -135,8 +135,8 @@ async def on_message(message):
 @bot.command()
 #Help Command
 async def help(ctx):
-    embed = discord.Embed(title="Aries Help Menu", description = "(Usage is shown after the help text) \nHelp » Display this menu » .help\nAdmin » Display the admin page » .admin\nFun » Display the fun page » .fun\nMisc » Display the Misc page » .misc\nNSFW  » Display the NSFW page » .nsfw\nSettings » Display the Aries Settings page » .settings \nNotes » Display the Aries Notes page » .notes", color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed = discord.Embed(title="Aries Help Menu", description = "**Usage is shown after Description**\nHelp » Display this menu » .help\nAdmin » Display the admin page » .admin\nFun » Display the fun page » .fun\nMisc » Display the Misc page » .misc\nNSFW  » Display the NSFW page » .nsfw\nSettings » Show the Settings page » .settings \nNotes » Display the Aries Notes page » .notes", color=0x493BB9)
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
     await ctx.send(embed = embed)   
@@ -144,7 +144,7 @@ async def help(ctx):
 @bot.command()
 async def admin(ctx):
     embed = discord.Embed(title="Aries Administrator Menu", description = "Ban » Ban A Member » <.ban> » {Member}\nKick » Kick A Member » <.kick> » {Amount}\nPurge » Purge <> of msgs » <.purge> » {Amount}\nCreate » Create a channel » <.Create> » {None}\nDelete » Delete a channel » <.delete> » {None}", color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
     await ctx.send(embed = embed) 
@@ -152,7 +152,7 @@ async def admin(ctx):
 @bot.command()
 async def notes(ctx):
     embed = discord.Embed(title="Aries Notes Menu", description = "Make Note » Create a note » <.cn> » {name, contents}\nEdit Note » Edit a note » <.en> » {name, newcontents}", color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
     await ctx.send(embed = embed) 
@@ -160,7 +160,7 @@ async def notes(ctx):
 @bot.command()
 async def fun(ctx):
     embed = discord.Embed(title="Aries Fun Menu", description = "RollDice » Roll a Number! » <.roll> » {None} \nRollDice » Roll a Number! » <.roll> » {None}\nAllah » Talk to ALLAH » <.allah> » {None}\nPickup Line » Tell a pickup » <.pickup> » {None} \nJoke » Tell a joke » <.joke> » {None}\nRickRoll » Rick ur friends ;) » <.rickroll> » {None}\nLeave » Leave the current server » <.leave> » {None} \nFakeNitro » Sends a Fake Nitro Message » <.fakenitro> » {None}", color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
     await ctx.send(embed = embed) 
@@ -168,7 +168,7 @@ async def fun(ctx):
 @bot.command()
 async def misc(ctx):
     embed = discord.Embed(title="Aries Misc Menu", description = "Restart » Restarts Aries » <.restart> » {None} \nUserinfo » Shows your userinfo » <.userinfo> » {None} \nTodo » Shows the bots TODO list » <.todo> » {None} \nAvatar » Display Avatar of a user » <.Avatar> » {user} \nInvite » Get an invite to Aries » <.invite> » {None} \nEmbed » Sends an Embed message » <.embed (TITLE) (DESCRIPTION)> » {None}\nNick » Change your nickname » <.nick> » {newnick}", color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
     await ctx.send(embed = embed) 
@@ -176,7 +176,7 @@ async def misc(ctx):
 @bot.command()
 async def nsfw(ctx):
     embed = discord.Embed(title="Aries NSFW Menu", description = "<> Is Usage\nboobs » Shows boobs » <.boobs> » {None}\nhentai » shows hentai » <.hentai> » {None}", color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
     await ctx.send(embed = embed) 
@@ -184,7 +184,7 @@ async def nsfw(ctx):
 @bot.command()
 async def settings(ctx):
     embed = discord.Embed(title="Aries Settings Menu", description = "Status » Change your Status » <.status> » {Status}\nSniper » Check sniper status » <.sniperstatus> » {None}\nCheckPrefix » Check Aries Prefix » <.prefix> » {None}\nSBDetector » Check Aries Detection » <.selfbotdetector> » {None} ", color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
     await ctx.send(embed = embed) 
@@ -192,7 +192,7 @@ async def settings(ctx):
 @bot.command()
 async def embed(ctx, titleEdit, descriptionEdit):
     embed = discord.Embed(title=titleEdit, description = descriptionEdit, color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
     await ctx.send(embed = embed) 
@@ -202,12 +202,12 @@ async def ban(ctx, member : discord.Member, *, reason = None):
     await ctx.message.delete()
     try:
         embed = discord.Embed(title="Aries", description = "Banned " + member.mention + " Successfully! ", color=0x493BB9)    
-        embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+        embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
         await member.ban(reason = reason)
         await ctx.send(embed = embed)
     except:
         embed = discord.Embed(title="Aries", description = "Error | Insufficient Perms!", color=0x493BB9)    
-        embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+        embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
         await ctx.send(embed = embed) 
 @bot.command()
 #Kick Commmand
@@ -215,12 +215,12 @@ async def kick(ctx, member : discord.Member, *, reason = None):
     await ctx.message.delete()
     try:
       embed = discord.Embed(title="Aries", description = "Kicked " + member.mention + " Successfully! ", color=0x493BB9)    
-      embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+      embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
       await member.kick(reason = reason)
       await ctx.send(embed = embed) 
     except commands.MissingPermissions:
      embed = discord.Embed(title="Aries", description = "Error | Insufficient Perms!", color=0x493BB9)    
-     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
      await ctx.send(embed = embed) 
 @bot.command()
 #Purge Commmand
@@ -229,12 +229,12 @@ async def purge(ctx, limit: int):
     try:
       await ctx.channel.purge(limit=limit)
       embed = discord.Embed(title="Aries", description = "Cleared " + "Successfully", color=0x493BB9)    
-      embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+      embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
       await asyncio.sleep(10)
       await ctx.send(embed = embed) 
     except commands.MissingPermissions:
      embed = discord.Embed(title="Aries", description = "Error | Insufficient Perms!", color=0x493BB9)    
-     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
      await ctx.send(embed = embed) 
 @bot.command()
 #Create Commmand
@@ -245,11 +245,11 @@ async def create(ctx, name):
 	  #channel = await guild.create_text_channel(channel_name)
       await guild.create_text_channel(name)
       embed = discord.Embed(title="Aries", description = "Created " + "Successfully", color=0x493BB9)    
-      embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+      embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
       await ctx.send(embed = embed) 
     except commands.MissingPermissions:
      embed = discord.Embed(title="Aries", description = "Error | Insufficient Perms!", color=0x493BB9)    
-     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
      await ctx.send(embed = embed) 
      #Delete command
 @bot.command()
@@ -260,11 +260,11 @@ async def delete(ctx, name):
 	  #channel = await guild.create_text_channel(channel_name)
       await guild.delete_text_channel(name)
       embed = discord.Embed(title="Aries", description = "Deleted " + "Successfully", color=0x493BB9)    
-      embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+      embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
       await ctx.send(embed = embed) 
     except commands.MissingPermissions:
      embed = discord.Embed(title="Aries", description = "Error | Insufficient Perms!", color=0x493BB9)    
-     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
      await ctx.send(embed = embed) 
 #RollDice command
 @bot.command()
@@ -272,7 +272,7 @@ async def roll(ctx):
     await ctx.message.delete()
     numbers = ["", ""]
     embed = discord.Embed(title="RaNdOm NuMbEr", description = str(random.randrange(1, 2000)), color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
     await ctx.send(embed = embed) 
@@ -282,7 +282,7 @@ async def restart(ctx):
     await ctx.message.delete()
     numbers = "1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950"
     embed = discord.Embed(title="Aries Notification", description = "Restarting in 5 seconds...", color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
     await ctx.send(embed = embed) 
@@ -303,15 +303,15 @@ async def status(ctx, *args):
     await ctx.message.delete()
     #AFK
     embed = discord.Embed(title="Aries Notification", description = "Changed Status to AFK", color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     #Online
     embed1 = discord.Embed(title="Aries Notification", description = "Changed Status to Online", color=0x493BB9)
-    embed1.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed1.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     #DND
     embed2 = discord.Embed(title="Aries Notification", description = "Changed Status to DND", color=0x493BB9)
-    embed2.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed2.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     stati = {
         "on":       Status.online,
@@ -339,7 +339,7 @@ async def status(ctx, *args):
 async def userinfo(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title="Aries Userinfo", description = "Name: " + str(bot.user) + "\nUsers In: " + str(len(bot.guilds)) + " Guilds" + "\nAvatar ↓ ", color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     embed.set_image(url = str(bot.user.avatar_url))
     await ctx.send(embed = embed)
@@ -348,7 +348,7 @@ async def userinfo(ctx):
 async def todo(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title="Aries Todo", description = "New UI\nSecurity\nFinish 30 Commands", color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed)
 #Sniper Command
@@ -356,7 +356,7 @@ async def todo(ctx):
 async def sniperstatus(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title= "Aries Nitro Sniper", description = str(f"{nitro_sniper}"), color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed)
 #Avatar Command
@@ -372,7 +372,7 @@ async def avatar(ctx):
 async def allah(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title= "I AM ALLAH" + "'s Avatar", description = "ALLAH HAS SPOKEN GET ARIES", color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed)
 @bot.command()
@@ -380,7 +380,7 @@ async def pickup(ctx):
     await ctx.message.delete()
     pickuplines = ["if you were a booger, i'd pick you first", "sup, are you from tennessee? cause your the only 10 i see ", "basic math: add the bed, subtract the clothes, divide the legs, and pray we don't multiply ", "you're so hot, my zipper is falling for you", "Are you an elevator? Because I’ll go up and down on you."]
     embed = discord.Embed(title= "Aries Pickup line", description = random.choice(pickuplines), color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed)
 @bot.command()
@@ -388,7 +388,7 @@ async def joke(ctx):
     await ctx.message.delete()
     jokes = ["Why did the orange lose the race? It ran out of juice.", "How you fix a broken pumpkin? With a pumpkin patch", "What's the best thing about Switzerland? I don't know, but the flag is a big plus.", "Why do peppers make such good archers? Because they habanero.", "What did the sink tell the toilet? You look flushed!", "Can February March? No, but April May!Can February March? No, but April May!", "I hated facial hair but then it grew on me.", ]
     embed = discord.Embed(title= "Aries The Comedian", description = random.choice(jokes), color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed)
 @bot.command()
@@ -403,7 +403,7 @@ async def rickroll(ctx):
 async def invite(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title= "Aries Invite", description = "https://www.youtube.com/watch?v=dQw4w9WgXcQ", color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed) 
 @bot.command()
@@ -416,7 +416,7 @@ async def cn(ctx, name, contents):
         f.write(json.dumps(str(contents), indent=4))
 
     embed = discord.Embed(title= "Aries Notification", description = "Made Note with Contents: " + contents, color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed)
 @bot.command()
@@ -430,12 +430,12 @@ async def en(ctx, notename, newcontent):
      with open("./data/notes/" + notename + ".json", "w") as f:
         f.write(json.dumps(str(newcontent), indent=4))
      embed = discord.Embed(title= "Aries Notification", description = "Edited " + notename + " with Contents: " + newcontent, color=0x493BB9)
-     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
      embed.set_footer(text = "made with ♡ by bomt and destiny")
      await ctx.send(embed = embed)
     else:
      embed = discord.Embed(title= "Aries Notification", description = "No note found with the name: " + notename, color=0x493BB9)
-     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
      embed.set_footer(text = "made with ♡ by bomt and destiny")
      await ctx.send(embed = embed)
 @bot.command()
@@ -461,7 +461,7 @@ async def fakenitro(ctx):
 async def checkprefix(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title= "Aries Prefix", description = f"{prefix}", color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed)
 @bot.command()
@@ -471,14 +471,14 @@ async def ln(ctx):
     file = str(onlyfiles)
     file2 = file.replace(".json", "")
     embed = discord.Embed(title= "Aries Notification", description = str(file2.replace("'", "")), color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png%22")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif%22")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed)
 @bot.command()
 async def selfbotdetector(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title= "Aries Selfbot Detection", description = f"{selfbot_detector}", color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png%22")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif%22")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed)
 @bot.command()
@@ -486,7 +486,7 @@ async def nick(ctx, member: discord.Member, nick):
     await ctx.message.delete()
     await member.nick(nick = nick)
     embed = discord.Embed(title= "Aries Notifcation", description = "Set Nick To: " + nick, color=0x493BB9)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/775820489758605394/893750057243918346/Astolfo1.png%22")
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif%22")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed)
 try:
