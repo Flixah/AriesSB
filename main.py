@@ -166,7 +166,7 @@ async def notes(ctx):
 #Fun Commands
 @bot.command()
 async def fun(ctx):
-    embed = discord.Embed(title="Aries Fun Menu", description = "RollDice » Roll a Number! » <.roll> » {None} \nRollDice » Roll a Number! » <.roll> » {None}\nAllah » Talk to ALLAH » <.allah> » {None}\nPickup Line » Tell a pickup » <.pickup> » {None} \nJoke » Tell a joke » <.joke> » {None}\nRickRoll » Rick ur friends ;) » <.rickroll> » {None}\nLeave » Leave the current server » <.leave> » {None} \nFakeNitro » Sends a Fake Nitro Message » <.fakenitro> » {None}\nSpam » Spam a message » <.spam> » {delay, amount, message}", color=0x493BB9)
+    embed = discord.Embed(title="Aries Fun Menu", description = "RollDice » Roll a Number! » <.roll> » {None} \nRollDice » Roll a Number! » <.roll> » {None}\nAllah » Talk to ALLAH » <.allah> » {None}\nPickup Line » Tell a pickup » <.pickup> » {None} \nJoke » Tell a joke » <.joke> » {None}\nRickRoll » Rick ur friends ;) » <.rickroll> » {None}\nLeave » Leave the current server » <.leave> » {None} \nFakeNitro » Sends a Fake Nitro Message » <.fakenitro> » {None}\nSpam » Spam a message » <.spam> » {delay, amount, message}\nMeme » Send a random meme » <.meme> » {None}", color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
@@ -534,6 +534,14 @@ async def invite(ctx):
     guild = ctx.guild
     link = await ctx.channel.create_invite(max_age = 300)
     embed = discord.Embed(title= "Aries Invite for " + str(guild), description = "Invite: " + str(link) , color=0x493BB9)
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
+    embed.set_footer(text = "made with ♡ by bomt and destiny")
+    await ctx.send(embed = embed)
+@bot.command()
+async def meme(ctx):
+    await ctx.message.delete()
+    memes = ["https://i.redd.it/5mstqjaymuf41.jpg", "https://img.buzzfeed.com/buzzfeed-static/static/2021-01/28/19/campaign_images/93697a775252/just-a-bunch-of-good-memes-about-how-reddit-succe-2-1453-1611863916-11_dblbig.jpg?resize=1200:*", "https://preview.redd.it/do5c7wed6r861.png?auto=webp&s=73605a17e8c4d4f3854e5fdd46a8fe4a09a118e9", "https://preview.redd.it/do5c7wed6r861.png?auto=webp&s=73605a17e8c4d4f3854e5fdd46a8fe4a09a118e9", "https://pbs.twimg.com/media/D77OV5DXYAAxbP-.png"]
+    embed = discord.Embed(title= "Aries Meme", description = random.choice(memes), color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed)
