@@ -19,7 +19,11 @@ import requests
 import re
 import random
 from os import listdir
+from datetime import datetime
+from datetime import date
 from os.path import isfile, join
+from win10toast import ToastNotifier
+
     #Checks if config file exists if it dosen't make the user input token to create one
 if os.path.exists("./data/config.json"):
     pass
@@ -69,6 +73,9 @@ bot.remove_command("admin")
 @bot.event
 #Detects onReady if ready prints connected to the user with their discriminator and name
 async def on_ready():  
+    notif = ToastNotifier()
+    notif.show_toast("Aries Selfbot",f"Successfully Logged in! Welcome to Aries {bot.user}", icon_path="assets/ariesnobg.ico", duration=10)
+
     os.system('cls' if os.name == 'nt' else 'clear')
     build = "1.0"
     print("Loading")
@@ -86,7 +93,7 @@ async def on_ready():
     print(Fore.CYAN + "                                               / ___ |/ /  / /  __(__  ) ")
     print(Fore.CYAN + "                                              /_/  |_/_/  /_/\___/____/  ")
     print(Fore.RESET + "\n\n                                             Ram the opposition with Aries")
-    print("\n" + Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + "30 " + Fore.RESET + "Commands!")
+    print("\n" + Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + "35 " + Fore.RESET + "Commands!")
     print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "User Is In » " + Fore.LIGHTCYAN_EX + str(len(bot.guilds))  + Fore.RESET + " Guilds!")
     print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Build » " + Fore.LIGHTCYAN_EX + build + Fore.RESET)
     print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Prefix » " + Fore.LIGHTCYAN_EX + str(prefix) + Fore.RESET)
@@ -159,7 +166,7 @@ async def notes(ctx):
 #Fun Commands
 @bot.command()
 async def fun(ctx):
-    embed = discord.Embed(title="Aries Fun Menu", description = "RollDice » Roll a Number! » <.roll> » {None} \nRollDice » Roll a Number! » <.roll> » {None}\nAllah » Talk to ALLAH » <.allah> » {None}\nPickup Line » Tell a pickup » <.pickup> » {None} \nJoke » Tell a joke » <.joke> » {None}\nRickRoll » Rick ur friends ;) » <.rickroll> » {None}\nLeave » Leave the current server » <.leave> » {None} \nFakeNitro » Sends a Fake Nitro Message » <.fakenitro> » {None}", color=0x493BB9)
+    embed = discord.Embed(title="Aries Fun Menu", description = "RollDice » Roll a Number! » <.roll> » {None} \nRollDice » Roll a Number! » <.roll> » {None}\nAllah » Talk to ALLAH » <.allah> » {None}\nPickup Line » Tell a pickup » <.pickup> » {None} \nJoke » Tell a joke » <.joke> » {None}\nRickRoll » Rick ur friends ;) » <.rickroll> » {None}\nLeave » Leave the current server » <.leave> » {None} \nFakeNitro » Sends a Fake Nitro Message » <.fakenitro> » {None}\nSpam » Spam a message » <.spam> » {delay, amount, message}", color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
@@ -167,7 +174,7 @@ async def fun(ctx):
 #Misc Commands
 @bot.command()
 async def misc(ctx):
-    embed = discord.Embed(title="Aries Misc Menu", description = "Restart » Restarts Aries » <.restart> » {None} \nUserinfo » Shows your userinfo » <.userinfo> » {None} \nTodo » Shows the bots TODO list » <.todo> » {None} \nAvatar » Display Avatar of a user » <.Avatar> » {user} \nInvite » Get an invite to Aries » <.invite> » {None} \nEmbed » Sends an Embed message » <.embed (TITLE) (DESCRIPTION)> » {None}\nNick » Change your nickname » <.nick> » {newnick}", color=0x493BB9)
+    embed = discord.Embed(title="Aries Misc Menu", description = "Restart » Restarts Aries » <.restart> » {None} \nUserinfo » Shows your userinfo » <.userinfo> » {None} \nTodo » Shows the bots TODO list » <.todo> » {None} \nAvatar » Display Avatar of a user » <.Avatar> » {user} \nInvite » Get an invite to Aries » <.ariesinvite> » {None} \nEmbed » Sends an Embed message » <.embed (TITLE) (DESCRIPTION)> » {None}\nNick » Change your nickname » <.nick> » {newnick}\nDate » Check the date » <.date> » {None}\Time » Check the time! » <.time> » {None}\nServer » Get Server Info! » <.server> » {None}\ninvite » Get the server invite! » <.invite> » {None}", color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
@@ -400,7 +407,7 @@ async def rickroll(ctx):
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed) 
 @bot.command()
-async def invite(ctx):
+async def ariesinvite(ctx):
     await ctx.message.delete()
     embed = discord.Embed(title= "Aries Invite", description = "https://www.youtube.com/watch?v=dQw4w9WgXcQ", color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
@@ -487,6 +494,47 @@ async def nick(ctx, member: discord.Member, nick):
     await member.nick(nick = nick)
     embed = discord.Embed(title= "Aries Notifcation", description = "Set Nick To: " + nick, color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif%22")
+    embed.set_footer(text = "made with ♡ by bomt and destiny")
+    await ctx.send(embed = embed)
+@bot.command()
+async def spam(ctx, delay: int, count, *, message):
+    await ctx.message.delete()
+    for i in range(int(count)):
+        await ctx.send(message)
+        await asyncio.sleep(delay)
+@bot.command()
+async def time(ctx):
+    await ctx.message.delete()
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    embed = discord.Embed(title= "Aries Notifcation", description = "Current time: " + current_time, color=0x493BB9)
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
+    embed.set_footer(text = "made with ♡ by bomt and destiny")
+    await ctx.send(embed = embed)
+@bot.command()
+async def date(ctx):
+    await ctx.message.delete()
+    today = datetime.today().strftime('%Y-%m-%d')
+    embed = discord.Embed(title= "Aries Notifcation", description = "Current Date: " + today, color=0x493BB9)
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
+    embed.set_footer(text = "made with ♡ by bomt and destiny")
+    await ctx.send(embed = embed)
+@bot.command()
+async def server(ctx):
+    guild = ctx.guild
+    await ctx.message.delete()
+    memcount = len([m for m in ctx.guild.members if not m.bot]) # doesn't include bots
+    embed = discord.Embed(title= "Aries Info on: " + str(guild), description = "Server has: " + str(memcount) + " Members" , color=0x493BB9)
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
+    embed.set_footer(text = "made with ♡ by bomt and destiny")
+    await ctx.send(embed = embed)
+@bot.command()
+async def invite(ctx):
+    await ctx.message.delete()
+    guild = ctx.guild
+    link = await ctx.channel.create_invite(max_age = 300)
+    embed = discord.Embed(title= "Aries Invite for " + str(guild), description = "Invite: " + str(link) , color=0x493BB9)
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed)
 try:
