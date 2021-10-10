@@ -74,7 +74,7 @@ bot.remove_command("admin")
 #Detects onReady if ready prints connected to the user with their discriminator and name
 async def on_ready():  
     notif = ToastNotifier()
-    notif.show_toast("Aries Selfbot",f"Successfully Logged in! Welcome to Aries {bot.user}", icon_path="assets/ariesnobg.ico", duration=10)
+   # notif.show_toast("Aries Selfbot",f"Successfully Logged in! Welcome to Aries {bot.user}", icon_path="assets/ariesnobg.ico", duration=10)
 
     os.system('cls' if os.name == 'nt' else 'clear')
     build = "1.0"
