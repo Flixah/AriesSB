@@ -17,12 +17,15 @@ from colorama import init, Fore, Back, Style
 import base64
 import requests
 import re
+import string
 import random
 from os import listdir
 from datetime import datetime
 from datetime import date
 from os.path import isfile, join
 from win10toast import ToastNotifier
+import mysql.connector as mysql
+import pyimgur
 
     #Checks if config file exists if it dosen't make the user input token to create one
 if os.path.exists("./data/config.json"):
@@ -74,8 +77,7 @@ bot.remove_command("admin")
 #Detects onReady if ready prints connected to the user with their discriminator and name
 async def on_ready():  
     notif = ToastNotifier()
-   # notif.show_toast("Aries Selfbot",f"Successfully Logged in! Welcome to Aries {bot.user}", icon_path="assets/ariesnobg.ico", duration=10)
-
+    #notif.show_toast("Aries Selfbot",f"Successfully Logged in! Welcome to Aries {bot.user}", icon_path="assets/ariesnobg.ico", duration=10)
     os.system('cls' if os.name == 'nt' else 'clear')
     build = "1.0"
     print("Loading")
@@ -93,7 +95,7 @@ async def on_ready():
     print(Fore.CYAN + "                                               / ___ |/ /  / /  __(__  ) ")
     print(Fore.CYAN + "                                              /_/  |_/_/  /_/\___/____/  ")
     print(Fore.RESET + "\n\n                                             Ram the opposition with Aries")
-    print("\n" + Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + "35 " + Fore.RESET + "Commands!")
+    print("\n" + Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + "41 " + Fore.RESET + "Commands!")
     print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "User Is In » " + Fore.LIGHTCYAN_EX + str(len(bot.guilds))  + Fore.RESET + " Guilds!")
     print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Build » " + Fore.LIGHTCYAN_EX + build + Fore.RESET)
     print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Prefix » " + Fore.LIGHTCYAN_EX + str(prefix) + Fore.RESET)
@@ -166,7 +168,7 @@ async def notes(ctx):
 #Fun Commands
 @bot.command()
 async def fun(ctx):
-    embed = discord.Embed(title="Aries Fun Menu", description = "RollDice » Roll a Number! » <.roll> » {None} \nRollDice » Roll a Number! » <.roll> » {None}\nAllah » Talk to ALLAH » <.allah> » {None}\nPickup Line » Tell a pickup » <.pickup> » {None} \nJoke » Tell a joke » <.joke> » {None}\nRickRoll » Rick ur friends ;) » <.rickroll> » {None}\nLeave » Leave the current server » <.leave> » {None} \nFakeNitro » Sends a Fake Nitro Message » <.fakenitro> » {None}\nSpam » Spam a message » <.spam> » {delay, amount, message}\nMeme » Send a random meme » <.meme> » {None}", color=0x493BB9)
+    embed = discord.Embed(title="Aries Fun Menu", description = "RollDice » Roll a Number! » <.roll> » {None} \nRollDice » Roll a Number! » <.roll> » {None}\nAllah » Talk to ALLAH » <.allah> » {None}\nPickup Line » Tell a pickup » <.pickup> » {None} \nJoke » Tell a joke » <.joke> » {None}\nRickRoll » Rick ur friends ;) » <.rickroll> » {None}\nLeave » Leave the current server » <.leave> » {None} \nFakeNitro » Sends a Fake Nitro Message » <.fakenitro> » {None}\nSpam » Spam a message » <.spam> » {delay, amount, message}\nMeme » Send a random meme » <.meme> » {None}\nUpload » Upload an img to imgur » <.uploadimg> » {the image}", color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
@@ -174,7 +176,7 @@ async def fun(ctx):
 #Misc Commands
 @bot.command()
 async def misc(ctx):
-    embed = discord.Embed(title="Aries Misc Menu", description = "Restart » Restarts Aries » <.restart> » {None} \nUserinfo » Shows your userinfo » <.userinfo> » {None} \nTodo » Shows the bots TODO list » <.todo> » {None} \nAvatar » Display Avatar of a user » <.Avatar> » {user} \nInvite » Get an invite to Aries » <.ariesinvite> » {None} \nEmbed » Sends an Embed message » <.embed (TITLE) (DESCRIPTION)> » {None}\nNick » Change your nickname » <.nick> » {newnick}\nDate » Check the date » <.date> » {None}\Time » Check the time! » <.time> » {None}\nServer » Get Server Info! » <.server> » {None}\ninvite » Get the server invite! » <.invite> » {None}", color=0x493BB9)
+    embed = discord.Embed(title="Aries Misc Menu", description = "Restart » Restarts Aries » <.restart> » {None} \nUserinfo » Shows your userinfo » <.userinfo> » {None} \nTodo » Shows the bots TODO list » <.todo> » {None} \nAvatar » Display Avatar of a user » <.Avatar> » {user} \nInvite » Get an invite to Aries » <.ariesinvite> » {None} \nEmbed » Sends an Embed message » <.embed> » {title, desc}\nNick » Change your nickname » <.nick> » {newnick}\nDate » Check the date » <.date> » {None}\nTime » Check the time! » <.time> » {None}\nServer » Get Server Info! » <.server> » {None}\nInvite » Get the server invite! » <.invite> » {None}\nSend Noti » Send a windows noti » <.sendnoti> » {title, message}\nGen Password » Gen a pass » <.genpass> » {length}", color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
@@ -182,7 +184,7 @@ async def misc(ctx):
 #NSFW Commands
 @bot.command()
 async def nsfw(ctx):
-    embed = discord.Embed(title="Aries NSFW Menu", description = "<> Is Usage\nboobs » Shows boobs » <.boobs> » {None}\nhentai » shows hentai » <.hentai> » {None}", color=0x493BB9)
+    embed = discord.Embed(title="Aries NSFW Menu", description = "<> Is Usage\nBoobs » Shows boobs » <.boobs> » {None}\nHentai » shows hentai » <.hentai> » {None}\nPussy » Show pussy » <.pussy> » {None}\nHentaiGif » shows hentai gif » <.hentaigif> » {None}", color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
@@ -281,7 +283,6 @@ async def roll(ctx):
     embed = discord.Embed(title="RaNdOm NuMbEr", description = str(random.randrange(1, 2000)), color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
-    await ctx.message.delete()
     await ctx.send(embed = embed) 
 #Restart Commmand
 @bot.command()
@@ -302,7 +303,7 @@ async def boobs(ctx):
     embed = discord.Embed(title="", description = "", color=0x493BB9)
     boobs = ["https://external-preview.redd.it/_8von5M373BhKDn4sUUtZO0ejyegPnjYcaboJ4LHG18.jpg?width=640&crop=smart&auto=webp&s=08da86e1978676e513b91a2dbc3d88725fb75db1", "https://preview.redd.it/oqwo0gq23vn61.jpg?width=960&crop=smart&auto=webp&s=fd154960c155a57f9659ea1755dd3073d44560b5", "https://external-preview.redd.it/hfW3TZ2jmZVmlQHBs9ag4IPvCbb2KWu5Mb2VCN9JHiw.jpg?width=640&crop=smart&auto=webp&s=457c2174307f125e4af4d219475362e819b415a4", "https://external-preview.redd.it/8pBuABS3Walu8_nePp_0E71lcxQqloq_xCwS7fQ6niA.jpg?width=640&height=491&crop=smart&auto=webp&s=6a3e174509e3349d4c0e7a945e1b77d55d8db946", "https://bootyalbum.com/wp-content/uploads/2021/02/Would-Reddit-appreciate-my-18-yo-DD-boobs-892x1189.jpg", "https://i.redd.it/j6krhwtjlt371.jpg", "https://i.redd.it/jkzx3cedofu61.jpg"]
     embed.set_footer(text = "made with ♡ by bomt and destiny")
-    embed.set_image(url= random.choice(boobs))
+    embed.set_image(url=random.choice(boobs))
     await ctx.send(embed=embed)
 #Status Command
 @bot.command()
@@ -368,10 +369,10 @@ async def sniperstatus(ctx):
     await ctx.send(embed = embed)
 #Avatar Command
 @bot.command()
-async def avatar(ctx):
+async def avatar(ctx, *, user: discord.Member = None):
     await ctx.message.delete()
-    embed = discord.Embed(title= str(bot.user) + "'s Avatar", description = "", color=0x493BB9)
-    embed.set_image(url = str(bot.user.avatar_url))
+    embed = discord.Embed(title= str(user) + "'s Avatar", description = "", color=0x493BB9)
+    embed.set_image(url = str(user.avatar_url))
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed)
 #Sniper Command
@@ -540,10 +541,65 @@ async def invite(ctx):
 @bot.command()
 async def meme(ctx):
     await ctx.message.delete()
-    memes = ["https://i.redd.it/5mstqjaymuf41.jpg", "https://img.buzzfeed.com/buzzfeed-static/static/2021-01/28/19/campaign_images/93697a775252/just-a-bunch-of-good-memes-about-how-reddit-succe-2-1453-1611863916-11_dblbig.jpg?resize=1200:*", "https://preview.redd.it/do5c7wed6r861.png?auto=webp&s=73605a17e8c4d4f3854e5fdd46a8fe4a09a118e9", "https://preview.redd.it/do5c7wed6r861.png?auto=webp&s=73605a17e8c4d4f3854e5fdd46a8fe4a09a118e9", "https://pbs.twimg.com/media/D77OV5DXYAAxbP-.png"]
-    embed = discord.Embed(title= "Aries Meme", description = random.choice(memes), color=0x493BB9)
+    memes = ["https://i.redd.it/5mstqjaymuf41.jpg", "https://img.buzzfeed.com/buzzfeed-static/static/2021-01/28/19/campaign_images/93697a775252/just-a-bunch-of-good-memes-about-how-reddit-succe-2-1453-1611863916-11_dblbig.jpg?resize=1200:*", "https://preview.redd.it/do5c7wed6r861.png?auto=webp&s=73605a17e8c4d4f3854e5fdd46a8fe4a09a118e9", "https://preview.redd.it/do5c7wed6r861.png?auto=webp&s=73605a17e8c4d4f3854e5fdd46a8fe4a09a118e9", "https://pbs.twimg.com/media/D77OV5DXYAAxbP-.png", "https://i.redd.it/jw2ewoutld331.jpg", "https://cdn.vox-cdn.com/thumbor/DgjQ7atpTIT4bCa176C0NdaN7r8=/1400x788/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/13751928/Screen_Shot_2019_02_11_at_11.40.05_AM.png"]
+    embed = discord.Embed(title= "Aries Meme", description = "Take a Meme!", color=0x493BB9)
+    embed.set_image(url = str(random.choice(memes)))
+    embed.set_footer(text = "made with ♡ by bomt and destiny")
+    await ctx.send(embed = embed)
+@bot.command()
+async def genpass(ctx, length):
+    await ctx.message.delete()
+    result_str = ''.join(random.choice(string.ascii_letters + "12345678910/;':[']|") for i in range(int(length)))
+    embed = discord.Embed(title= "Aries Password Generator", description = result_str, color=0x493BB9)
     embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
     embed.set_footer(text = "made with ♡ by bomt and destiny")
+    await ctx.send(embed = embed)
+@bot.command()
+async def sendnoti(ctx, title, message):
+    await ctx.message.delete()
+    notif = ToastNotifier()
+    notif.show_toast(title, message, icon_path="assets/ariesnobg.ico", duration=10)
+    embed = discord.Embed(title= "Aries Notifcation ", description = "Sent Noti!", color=0x493BB9)
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
+    embed.set_footer(text = "made with ♡ by bomt and destiny")
+    await ctx.send(embed = embed)
+@bot.command()
+async def pussy(ctx):
+    await ctx.message.delete()
+    pussy = ["https://i.redd.it/xhwxmqgtnkq51.jpg", "https://i.redd.it/r216hpdlzd171.jpg", "https://preview.redd.it/f62vvitj2og61.jpg?auto=webp&s=a8ab4ae4e4c4bc86b5b21f9967058f09ddddb28c"]
+    embed = discord.Embed(title= "", description = "", color=0x493BB9)
+    embed.set_image(url = str(random.choice(pussy)))
+    embed.set_footer(text = "made with ♡ by bomt and destiny")
+    await ctx.send(embed = embed)
+@bot.command()
+async def hentaigif(ctx):
+    await ctx.message.delete()
+    gifs = ["https://25.media.tumblr.com/tumblr_m1v7mdNnzg1r6wwpso1_400.gif", "https://i.redd.it/h6oi753u0ts41.gif"]
+    embed = discord.Embed(title= "", description = "", color=0x493BB9)
+    embed.set_image(url = str(random.choice(gifs)))
+    embed.set_footer(text = "made with ♡ by bomt and destiny")
+    await ctx.send(embed = embed)
+@bot.command()
+async def uploadimage(ctx):
+    await ctx.message.delete()
+    for attachment in ctx.message.attachments:
+        # Download Image to file location
+        await attachment.save(attachment.filename)
+
+    CLIENT_ID = "26961e77de57def"
+    im = pyimgur.Imgur(CLIENT_ID)
+    attachment_url = ctx.message.attachments[0].filename
+    #Upload image where it downloads it
+    uploaded_image = im.upload_image(str(os.getcwd() + "/" + attachment_url), title="Uploaded with Aries")
+    uploaded = "true"
+    #Print Image
+    embed = discord.Embed(title= "Aries Imgur", description = "Uploaded: " + str(uploaded_image.link), color=0x493BB9)
+    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif")
+    embed.set_footer(text = "made with ♡ by bomt and destiny")
+    if (uploaded == "true"):
+     
+     os.remove((str(os.getcwd() + "/" + attachment_url)))
+     uploaded = "false"
     await ctx.send(embed = embed)
 try:
 #Runs Bot
