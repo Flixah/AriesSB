@@ -30,7 +30,7 @@ import subprocess
 import pypresence
 import webbrowser
 import ctypes.wintypes as wintypes
-
+import platform
 from gtts import gTTS
 from discord import *
 from ctypes import windll
@@ -75,7 +75,22 @@ class aries:
         print(Fore.RED + logo + Fore.RESET)
         if line:
             print(f'_' * os.get_terminal_size().columns)
-
+# ///////////////////////////////////////////////////////////////
+# Security Class & Functions
+class security:
+    def getHWID():
+            s = ""
+            s += os.name
+            s += str(platform.architecture())
+            s += str(platform.version())
+            s += str(os.cpu_count())
+            s += str(os.getenv("PROCESSOR_IDENTIFIER"))
+            s += str(os.getenv("PROCESSOR_ARCHITECTURE"))
+            s += str(os.getenv("PROCESSOR_ARCHITEW6432"))
+            s += str(os.getenv("NUMBER_OF_PROCESSORS"))
+            return hashlib.sha256(s.encode()).hexdigest()
+    def authenticate(license, hwid):
+        print("Do auth here")
 # ///////////////////////////////////////////////////////////////
 # Files Class & Functions
 
