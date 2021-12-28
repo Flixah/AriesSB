@@ -84,6 +84,18 @@ class files:
     def create_config():
         print("do something here")
 
+    def create_folder(path):
+        os.mkdir(path)
+
+    def write_file(path, content, byte=False):
+        """Writes a file"""
+        if byte:
+            with open(path, "wb") as f:
+                f.write(content)
+        else:
+            with open(path, 'w') as f:
+                f.write(content)
+
 # ///////////////////////////////////////////////////////////////
 # Functions
 
