@@ -78,6 +78,13 @@ class aries:
             print(f'_' * os.get_terminal_size().columns)
 
 # ///////////////////////////////////////////////////////////////
+# Files Class & Functions
+
+class files:
+    def create_config():
+        print("do something here")
+
+# ///////////////////////////////////////////////////////////////
 # Functions
 
 def bot_prefix(bot, message):
