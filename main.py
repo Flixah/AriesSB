@@ -44,8 +44,6 @@ def pb(percent=0, width=30):
     hashes = width * percent // 100
     blanks = width - hashes
     print('\r                                          [', hashes*'=', blanks*' ', ']', f' {percent:.0f}%', sep='', end='', flush=True)
-if (skip == True):
-    print("skipping")
 def getHWID():
             s = ""
             s += os.name
