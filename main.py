@@ -97,6 +97,11 @@ class aries:
                 return Fore.CYAN
             elif color == "Reset":
                 return Fore.RESET
+    def printTyping(text, delay):
+        for x in text: 
+            print(x, end="")
+            sys.stdout.flush()
+            time.sleep(delay)
 # ///////////////////////////////////////////////////////////////
 # Security Class & Functions
 
