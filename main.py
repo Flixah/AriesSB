@@ -67,12 +67,56 @@ logo = """
 """
 
 # ///////////////////////////////////////////////////////////////
-# Aries Functions
+# Aries Class & Functions
 
 class aries:
-    def console(clear=False):
+    def console(clear=False, line=False):
         if clear:
             os.system("cls")
         print(Fore.RED + logo + Fore.RESET)
+        if line:
+            print(f'_' * os.get_terminal_size().columns)
 
-aries.console()
+# ///////////////////////////////////////////////////////////////
+# Functions
+
+def bot_prefix(bot, message):
+    """Get the prefix in the config file"""
+    with open("./data/config.json") as f:
+        config = json.load(f)
+    prefix = config.get('prefix')
+    return prefix
+
+bot = commands.Bot(bot_prefix, self_bot=True, case_insensitive=True, guild_subscription_options=GuildSubscriptionOptions.off(), status=Status.online)
+
+# ///////////////////////////////////////////////////////////////
+# Events
+
+@bot.event
+async def on_ready():
+    """Prints a ready log."""
+    aries.console(clear=True, line=True)
+    print(f"{Fore.RED}Logged in as {bot.user}{Fore.RESET}")
+
+
+# ///////////////////////////////////////////////////////////////
+# Commands
+
+
+
+# ///////////////////////////////////////////////////////////////
+# Main Load
+
+def bot_login():
+    """Log in the bot"""
+    try:
+        with open("./data/config.json") as f:
+            config = json.load(f)
+        token = config.get('token')
+        bot.run(token)
+    except Exception as e:
+        print(e)
+
+aries.console(clear=True, line=True)
+print("Loading...")
+bot_login()
