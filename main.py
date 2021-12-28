@@ -135,6 +135,14 @@ class files:
         else:
             with open(path, 'w') as f:
                 f.write(content)
+    def download_assets():
+        """Downloads assets"""
+        url = 'https://cdn.discordapp.com/attachments/811054611116982293/903074932425117696/resizedaries2.png'
+        r = requests.get(url, allow_redirects=True)
+        open('./assets/resizedaries2.png', 'wb').write(r.content)
+        url = 'https://cdn.discordapp.com/attachments/811054611116982293/903074618905096212/ariesnobg.ico'
+        r = requests.get(url, allow_redirects=True)
+        open('./assets/ariesnobg.ico', 'wb').write(r.content)
 
 # ///////////////////////////////////////////////////////////////
 # Functions
