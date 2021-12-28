@@ -57,7 +57,7 @@ beta = False
 version = "2.0.0"
 command_amount = "105 "
 authSkip = False
-
+motd = "Its getting Chilly!"
 logo = """
                                                   ___         _          
                                                  /   |  _____(_)__  _____
