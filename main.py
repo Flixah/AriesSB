@@ -31,7 +31,6 @@ import pypresence
 import webbrowser
 import ctypes.wintypes as wintypes
 
-from CEA256 import *
 from gtts import gTTS
 from discord import *
 from ctypes import windll
@@ -81,8 +80,34 @@ class aries:
 # Files Class & Functions
 
 class files:
-    def create_config():
-        print("do something here")
+    def setup():
+        ISDIR = os.path.isdir("./data")
+        ISDIR2 = os.path.isdir("./data/themes")
+        ISDIR3 = os.path.isdir("./assets")
+        ISDIR4 = os.path.isdir("./data/notes")
+        ISDIR5 = os.path.isdir("./data/beta")
+        ISDIR6 = os.path.isdir("./data/emojis")
+        if (not ISDIR):
+            os.mkdir('./data')
+        else:
+            pass
+        if (not ISDIR2):
+            os.mkdir("./data/themes")
+        else:
+            pass
+        if (not ISDIR3):
+            os.mkdir("./assets")
+        else:
+            pass
+        if (not ISDIR4):
+            os.mkdir("./data/notes")
+        if (not ISDIR5 and beta == True):
+            os.mkdir("./data/beta")
+        if (not ISDIR6):
+            os.mkdir("./data/emojis")
+    def createFolder(path, fileName):
+        os.mkdir(f"{path}/{fileName}")
+        
 
 # ///////////////////////////////////////////////////////////////
 # Functions
