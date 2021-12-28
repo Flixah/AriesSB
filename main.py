@@ -77,6 +77,7 @@ class aries:
             print(f'_' * os.get_terminal_size().columns)
 # ///////////////////////////////////////////////////////////////
 # Security Class & Functions
+
 class security:
     def getHWID():
             s = ""
