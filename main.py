@@ -81,6 +81,7 @@ class aries:
 
 class files:
     def setup():
+        """Creates the necessary folders"""
         ISDIR = os.path.isdir("./data")
         ISDIR2 = os.path.isdir("./data/themes")
         ISDIR3 = os.path.isdir("./assets")
@@ -105,11 +106,9 @@ class files:
             os.mkdir("./data/beta")
         if (not ISDIR6):
             os.mkdir("./data/emojis")
-    def createFolder(path, fileName):
-        os.mkdir(f"{path}/{fileName}")
-        
 
     def create_folder(path):
+        """Creates a folder"""
         os.mkdir(path)
 
     def write_file(path, content, byte=False):
