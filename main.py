@@ -99,14 +99,24 @@ class security:
             return hashlib.sha256(s.encode()).hexdigest()
     def authenticate(license, hwid):
         print("Do auth here")
-    def debuggerCheck():
+    def debuggerCheck(shutdown:bool):
         invalidProc = [ "taskmgr.exe", "httpdebuggersvc.exe", "httpdebuggerui.exe", "burpsuitecommunity.exe", "burpsuite.exe", "java bytecode editor.exe", "classeditor.exe", "fiddler everywhere.exe", "scylla_x64.exe", "megadumper.exe", "cheat engine.exe", "cheatengine.exe", "cheatengine.exe", "javassist.exe","processhacker.exe", "nemesis.exe", "ida.exe", "ida64.exe", "ollydbg.exe", "x64dbg.exe", "x32dbg.exe", "ksdumperdriver.sys.exe","ksdumper.exe", "dumper.exe", "codecracker.exe", "charles.exe", "dnspy.exe", "simpleassembly.exe", "peek.exe", "httpanalyzer.exe","httpdebug.exe", "fiddler.exe", "wireshark.exe", "dbx.exe", "mdbg.exe", "gdb.exe", "windbg.exe", "dbgclr.exe", "kdb.exe", "kgdb.exe", "mdb.exe","scylla_x86.exe", "scylla.exe", "idau64.exe", "http debugger.exe", "idaq.exe", "idaq64.exe", "idaw.exe", "idaw64.exe", "idag.exe", "recaf.exe","idag64.exe", "importrec.exe", "immunitydebugger.exe", "codebrowser.exe", "reshacker.exe", "hxd.exe", "reflector.exe", "process hacker.exe"]
         for proc in psutil.process_iter():
                 processName = proc.name()
                 processID = proc.pid
                 if processName.lower() in invalidProc:
                     print("Error, Debugger Found!")
+                    if (shutdown == True):
+                        exit()
+                    else:
+                        pass
                     time.sleep(60000)
+    def isVM(shutdown):
+        if hasattr(sys, 'real_prefix'):
+             if (shutdown == True):
+                exit()
+             else:
+                pass
 # ///////////////////////////////////////////////////////////////
 # Files Class & Functions
 
