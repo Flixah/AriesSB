@@ -56,6 +56,7 @@ init() # Initialize colorama
 beta = False
 version = "2.0.0"
 command_amount = "105 "
+authSkip = False
 
 logo = """
                                                   ___         _          
@@ -82,6 +83,20 @@ class aries:
         hashes = width * percent // 100
         blanks = width - hashes
         print('\r                                          [', hashes*'=', blanks*' ', ']', f' {percent:.0f}%', sep='', end='', flush=True)
+    def getTerminalColor():
+        with open(f"./data/themes/theme_2.json") as f:
+            config = json.load(f)
+            color = config.get('TColor')
+            if color == "Red":
+                return Fore.RED
+            elif color == "Blue":
+                return Fore.BLUE
+            elif color == "Green":
+                return Fore.GREEN
+            elif color == "Cyan":
+                return Fore.CYAN
+            elif color == "Reset":
+                return Fore.RESET
 # ///////////////////////////////////////////////////////////////
 # Security Class & Functions
 
@@ -111,7 +126,7 @@ class security:
                     else:
                         pass
                     time.sleep(60000)
-    def isVM(shutdown):
+    def isVM(shutdown:bool):
         if hasattr(sys, 'real_prefix'):
              if (shutdown == True):
                 exit()
