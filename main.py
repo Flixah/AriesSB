@@ -227,7 +227,10 @@ async def on_ready():
 
 # ///////////////////////////////////////////////////////////////
 # Main Load
-
+if (os.path.exists("./data/config.json")):
+    pass
+else:
+    files.setup()
 def bot_login():
     """Log in the bot"""
     try:
@@ -238,6 +241,5 @@ def bot_login():
     except Exception as e:
         print(e)
 aries.console(clear=True, line=True)
-files.setup()
 print("Loading...")
 bot_login()
