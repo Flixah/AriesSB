@@ -35,7 +35,6 @@ from gtts import gTTS
 from discord import *
 from ctypes import windll
 from pytube import YouTube
-from notifypy import Notify
 from os import error, name, system
 from datetime import datetime
 from licensing.models import *
@@ -49,7 +48,12 @@ from colorama import init, Fore, Back, Style
 from discord.ext.commands import MissingPermissions, CheckFailure, CommandNotFound, has_permissions
 
 init() # Initialize colorama
-
+#Startup
+if (os.path.exists("./data/config.json")):
+    pass
+else:
+    token = input("Token: ")
+    prefix = input("Prefix: ")
 # ///////////////////////////////////////////////////////////////
 # Aries Variables
 
@@ -66,7 +70,6 @@ logo = """
                                               /_/  |_/_/  /_/\___/____/  
 
 """
-
 # ///////////////////////////////////////////////////////////////
 # Aries Class & Functions
 
@@ -167,6 +170,12 @@ class files:
             os.mkdir("./data/beta")
         if (not ISDIR6):
             os.mkdir("./data/emojis")
+        data = {
+            "token": f"{token}",
+            "prefix": f"{prefix}"
+        }
+        with open("./data/config.json", "w") as f:
+            f.write(json.dumps(data, indent=4))
 
     def create_folder(path):
         """Creates a folder"""
@@ -228,7 +237,7 @@ def bot_login():
         bot.run(token)
     except Exception as e:
         print(e)
-
 aries.console(clear=True, line=True)
+files.setup()
 print("Loading...")
 bot_login()

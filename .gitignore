@@ -12,3 +12,4 @@ test/Nonbeta.txt
 .gitignore
 test/Themes.txt
 test/Nontheme.txt
+mytoken.txt
