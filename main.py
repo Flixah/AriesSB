@@ -105,6 +105,20 @@ class aries:
             print(x, end="")
             sys.stdout.flush()
             time.sleep(delay)
+    async def sendEmbed(ctx, description:string):
+        with open("./data/config.json") as f:
+            config = json.load(f)
+        theme = config.get('theme')
+        with open(f"./data/themes/{theme}.json") as f:
+            #Loads the json to read contents
+            config = json.load(f)
+            color = config.get('color')
+            sixteenIntegerHex = int(color.replace("#", ""), 16)
+            readableHex = int(hex(sixteenIntegerHex), 0)
+            embed = discord.Embed(title=config.get('title'), description = f"{description}", color=readableHex)
+            embed.set_thumbnail(url = config.get('imageurl'))
+            embed.set_footer(text = "made with ♡ by bomt")
+            await ctx.send(embed = embed)
 # ///////////////////////////////////////////////////////////////
 # Security Class & Functions
 
@@ -200,7 +214,11 @@ class files:
 
 # ///////////////////////////////////////////////////////////////
 # Functions
-
+def current_theme():
+    with open("./data/config.json") as f:
+        config = json.load(f)
+    theme = config.get('theme')
+    return theme
 def bot_prefix(bot, message):
     """Get the prefix in the config file"""
     with open("./data/config.json") as f:
@@ -208,7 +226,7 @@ def bot_prefix(bot, message):
     prefix = config.get('prefix')
     return prefix
 
-bot = commands.Bot(bot_prefix, self_bot=True, case_insensitive=True, guild_subscription_options=GuildSubscriptionOptions.off(), status=Status.online)
+bot = commands.Bot(bot_prefix, self_bot=True, case_insensitive=True, guild_subscription_options=GuildSubscriptionOptions.off(), status=Status.dnd)
 
 # ///////////////////////////////////////////////////////////////
 # Events
@@ -217,12 +235,14 @@ bot = commands.Bot(bot_prefix, self_bot=True, case_insensitive=True, guild_subsc
 async def on_ready():
     """Prints a ready log."""
     aries.console(clear=True, line=True)
-    print(f"{Fore.RED}Logged in as {bot.user}{Fore.RESET}")
+    print(f"{Fore.LIGHTRED_EX}Logged in as {bot.user}{Fore.RESET}")
 
 
 # ///////////////////////////////////////////////////////////////
 # Commands
-
+@bot.command()
+async def test(ctx):
+    await aries.sendEmbed(ctx, "big test")
 
 
 # ///////////////////////////////////////////////////////////////
