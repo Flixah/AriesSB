@@ -170,6 +170,20 @@ class aries:
             embed.set_thumbnail(url = config.get('imageurl'))
             embed.set_footer(text = "made with ♡ by bomt & Nshout")
             await ctx.send(embed = embed, delete_after=int(deltimer_config))
+    async def sendEmbedNoDelete(ctx, description:string):
+        with open("./data/config.json") as f:
+            config = json.load(f)
+        theme = config.get('theme')
+        with open(f"./data/themes/{theme_config}.json") as f:
+            #Loads the json to read contents
+            config = json.load(f)
+            color = config.get('color')
+            sixteenIntegerHex = int(color.replace("#", ""), 16)
+            readableHex = int(hex(sixteenIntegerHex), 0)
+            embed = discord.Embed(title=config.get('title'), description = f"{description}", color=readableHex)
+            embed.set_thumbnail(url = config.get('imageurl'))
+            embed.set_footer(text = "made with ♡ by bomt & Nshout")
+            await ctx.send(embed = embed, delete_after=int(deltimer_config))
 # ///////////////////////////////////////////////////////////////
 # Security Class & Functions
 
@@ -362,17 +376,7 @@ async def settings(ctx):
 #Embed Command
 @bot.command()
 async def embed(ctx, titleEdit, descriptionEdit):
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title=titleEdit, description = descriptionEdit, color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.message.delete()
-    await ctx.send(embed = embed) 
+    await aries.sendCustomEmbed(ctx, titleEdit, descriptionEdit)
 @bot.command()
 async def folder(ctx):
     path = f"{str(os.getcwd())}"
@@ -391,14 +395,7 @@ async def googlesearch(ctx, *, question):
     linkElements = soup.select('div#main > div > div > div > a')
     #Check length of linkElements if 0 no results
     if len(linkElements) == 0:
-        with open(f"./data/themes/{theme_config}.json") as f:
-        #Loads the json to read contents
-            config = json.load(f)
-            color = config.get('color')
-            sixteenIntegerHex = int(color.replace("#", ""), 16)
-            readableHex = int(hex(sixteenIntegerHex), 0)
-            embed = discord.Embed(title=config.get('title'), description = "No Results Found!", color=readableHex)    
-            embed.set_thumbnail(url = config.get('imageurl'))
+        await aries.sendEmbed(ctx, "No Results Found!") 
         #Else if found results
     else:
         #Link variable
@@ -412,15 +409,8 @@ async def googlesearch(ctx, *, question):
 
         link = linkElements[i].get("href")
         #Send Results
-        with open(f"./data/themes/{theme_config}.json") as f:
-        #Loads the json to read contents
-            config = json.load(f)
-            color = config.get('color')
-            sixteenIntegerHex = int(color.replace("#", ""), 16)
-            readableHex = int(hex(sixteenIntegerHex), 0)
-            embed = discord.Embed(title=config.get('title'), description = "http://google.com" + link, color=readableHex)    
-            embed.set_thumbnail(url = config.get('imageurl'))
-            await ctx.send(embed = embed)
+        await aries.sendEmbed(ctx, "http://google.com" + link)
+          #  embed = discord.Embed(title=config.get('title'), description = "http://google.com" + link, color=readableHex)    
 @bot.command()
 async def jumpscare(ctx):
     await ctx.message.delete()
@@ -447,100 +437,43 @@ async def backup(ctx):
         pass
 @bot.command()
 async def wyrather(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     wyr = ["Would you rather Eat pizza, or Icecream for your WHOLE life?"]
-    embed = discord.Embed(title= config.get('title'), description = random.choice(wyr), color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
-#Ban Command
+    await aries.sendEmbed(ctx, random.choice(wyr))
 @bot.command()
 async def ban(ctx, member : discord.Member, *, reason = None):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     try:
-        embed = discord.Embed(title=config.get('title'), description = "Banned " + member.mention + " Successfully! ", color=readableHex)    
-        embed.set_thumbnail(url = config.get('imageurl'))
+        await aries.sendEmbed(ctx, "Banned " + member.mention + " Successfully! ")       
         await member.ban(reason = reason)
-        await ctx.send(embed = embed)
-    except:
-        embed = discord.Embed(title=config.get('title'), description = "Error | Insufficient Perms!", color=readableHex)    
-        embed.set_thumbnail(url = config.get('imageurl'))
-        await ctx.send(embed = embed) 
+    except:  
+        await aries.sendEmbed(ctx, "Error | Insufficient Perms!")    
 @bot.command()
-#Kick Commmand
 async def kick(ctx, member : discord.Member, *, reason = None):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    try:
-      embed = discord.Embed(title=config.get('title'), description = "Kicked " + member.mention + " Successfully! ", color=readableHex)    
-      embed.set_thumbnail(url = config.get('imageurl'))
-      await member.kick(reason = reason)
-      await ctx.send(embed = embed) 
+    try:   
+        await aries.sendEmbed(ctx, "Kicked " + member.mention + " Successfully! ")
+        await member.kick(reason = reason)
+        await ctx.send(embed = embed) 
     except commands.MissingPermissions:
-     embed = discord.Embed(title=config.get('title'), description = "Error | Insufficient Perms!", color=readableHex)    
-     embed.set_thumbnail(url = config.get('imageurl'))
-     await ctx.send(embed = embed) 
+        await aries.sendEmbed(ctx, "Error | Insufficient Perms!")    
 @bot.command()
-#Purge Commmand
 async def purge(ctx, limit: int):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
+    #Accounting for the fact it doesn't delete the prefix purge part.
+    limit = limit + 1
     try:
-      await ctx.channel.purge(limit=limit)
-      embed = discord.Embed(title=config.get('title'), description = "Cleared " + "Successfully", color=readableHex)    
-      embed.set_thumbnail(url = config.get('imageurl'))
-      await asyncio.sleep(10)
-      await ctx.send(embed = embed) 
+        await ctx.channel.purge(limit=limit)  
+        await aries.sendEmbedNoDelete(ctx, "Successful Purge!")
     except commands.MissingPermissions:
-     embed = discord.Embed(title=config.get('title'), description = "Error | Insufficient Perms!", color=readableHex)    
-     embed.set_thumbnail(url = config.get('imageurl'))
-     await ctx.send(embed = embed) 
+        await aries.sendEmbed(ctx, "Error | Insufficient Perms!")  
 @bot.command()
-#Create Commmand
 async def create(ctx, name):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     try:
-      guild = ctx.guild
-	  #channel = await guild.create_text_channel(channel_name)
-      await guild.create_text_channel(name)
-      embed = discord.Embed(title=config.get('title'), description = "Created " + "Successfully", color=readableHex)    
-      embed.set_thumbnail(url = config.get('imageurl'))
-      await ctx.send(embed = embed) 
+        guild = ctx.guild
+        #channel = await guild.create_text_channel(channel_name)
+        await guild.create_text_channel(name)
+        await aries.sendEmbed(ctx, "Created " + "Successfully")
     except commands.MissingPermissions:
-     embed = discord.Embed(title=config.get('title'), description = "Error | Insufficient Perms!", color=readableHex)    
-     embed.set_thumbnail(url = config.get('imageurl'))
-     await ctx.send(embed = embed) 
+        await aries.sendEmbed(ctx, "Error | Insufficient Perms!")
 @bot.command()
 async def shortenurl(ctx, link):
-    ctx.message.delete()
     #Bitly Access
     BITLY_ACCESS_TOKEN ="84ad42991d089c4629293f0cf5f2fa1a65c3b1f0" 
     #Connect with the token
@@ -548,66 +481,22 @@ async def shortenurl(ctx, link):
     #Shorten url
     short_url = access.shorten(link)  
     #Send shorter URL
-
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title=config.get('title'), description = f"Shorter Link: {short_url['url']}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed) 
-#Delete command
+    await aries.sendEmbed(ctx, f"Shorter Link: {short_url['url']}")
 @bot.command()
 async def delete(ctx, name):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     try:
-      guild = ctx.guild
-	  #channel = await guild.create_text_channel(channel_name)
-      await guild.delete_text_channel(name)
-      embed = discord.Embed(title=config.get('title'), description = "Deleted " + "Successfully", color=readableHex)    
-      embed.set_thumbnail(url = config.get('imageurl'))
-      await ctx.send(embed = embed) 
+        guild = ctx.guild
+        existing_channel = discord.utils.get(guild.channels, name=name)
+        await existing_channel.delete()
+        await aries.sendEmbed(ctx, f"Deleted {name} Successfully!")    
     except commands.MissingPermissions:
-     embed = discord.Embed(title=config.get('title'), description = "Error | Insufficient Perms!", color=readableHex)    
-     embed.set_thumbnail(url = config.get('imageurl'))
-     await ctx.send(embed = embed) 
-#RollDice command
+        await aries.sendEmbed(ctx, "Error | Insufficient Perms!")   
 @bot.command()
 async def roll(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title=config.get('title'), description = str(random.randrange(1, 2000)), color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed) 
-#Restart Commmand
+    await aries.sendEmbed(ctx, str(random.randrange(1, 2000)))
 @bot.command()
 async def restart(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title=config.get('title'), description = "Restarting in 5 seconds...", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    aries.sendEmbed(ctx, "Restarting in 5 seconds...")
     #Give user time to know we are restarting // Sleep 5 Seconds
     await asyncio.sleep(5)
     #Exit and Run the bot Agian
@@ -617,16 +506,8 @@ async def faketoken(ctx):
    y = ''.join(random.choice(string.ascii_uppercase + string.digits + string.ascii_lowercase) for _ in range(17))
    x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase) for _ in range(3))
    w = ''.join(random.choice(string.ascii_uppercase + string.digits + string.ascii_lowercase) for _ in range(27))
-   with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-    config = json.load(f)
-    color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title="", description = f"ODg4ODI{y}.YUY{x}.{w}\n", color=readableHex)
-    embed.set_footer(text = "made with ♡ by bomt")
-    embed.set_thumbnail(url = config.get('imageurl'))
-    await ctx.send(embed=embed)
+   aries.sendEmbed(ctx, f"ODg4ODI{y}.YUY{x}.{w}\n")
+   # embed = discord.Embed(title="", description = f"ODg4ODI{y}.YUY{x}.{w}\n", color=readableHex)
 #Boobs Command
 @bot.command()
 async def boobs(ctx):
@@ -691,20 +572,8 @@ async def openapp(ctx, app):
     print(app)
 @bot.command()
 async def calculator(ctx):
-    await ctx.message.delete()
-
     call(["calc.exe"])
-
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title=config.get('title'), description = f"Opened!", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    aries.sendEmbed(ctx, f"Opened!")
 #UserInfo Command
 @bot.command()
 async def userinfo(ctx):
