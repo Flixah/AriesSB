@@ -71,6 +71,22 @@ else:
     fake_nitro_config = input("Fake Nitro? (y/n): ")
     selfbot_detection = input("Selfbot Detector? (y/n)")
     delete_timer = input("Delete Timer: ")
+    ISDIR = os.path.isdir("./data")
+    if (not ISDIR):
+        os.mkdir('./data')
+    data = {
+            "token": f"{token}",
+            "prefix": f"{prefix}",
+            "sniper": f"{sniper}",
+            "selfbot_detection": f"{selfbot_detection}",
+            "theme": f"Aries",
+            "AFK": f"False",
+            "AFK-Message": f"I'm Currently Away!",
+            "Fake-Nitro": f"{fake_nitro_config}",
+            "Delete_Timer": f"{delete_timer}"
+        }
+    with open("./data/config.json", "w") as f:
+            f.write(json.dumps(data, indent=4))
 # ///////////////////////////////////////////////////////////////
 # Aries Variables
 
@@ -355,7 +371,7 @@ async def sounds(ctx):
     await aries.sendCustomEmbed(ctx, "Aries Sounds Menu", f"NitroSound » Toggle NitroSound » [{prefix_config}NitroSound<True/False>]\n\n**<> = Arguments [] = Usage**")
 @bot.command()
 async def abuse(ctx):
-    await aries.sendCustomEmbed(ctx, "Aries Abuse Menu", f"Kickall » Kick all members of a server » [{prefix_config}kickall]\nDelchannels » Delete all server channels » [{prefix_config}delchannels]\nRaid » Raid a server » [{prefix_config}raid]\nCreatechannels » Create 70 channels » [{prefix_config}createchannels]\nBanAll » Ban all users » [{prefix_config}banall <None>]\n\n**<> = Arguments [] = Usage**")
+    await aries.sendCustomEmbed(ctx, "Aries Abuse Menu", f"Kickall » Kick all members of a server » [{prefix_config}kickall]\nDelchannels » Delete all server channels » [{prefix_config}delchannels]\nFuck » Nuke a server » [{prefix_config}raid]\nCreatechannels » Create 70 channels » [{prefix_config}createchannels]\nBanAll » Ban all users » [{prefix_config}banall <None>]\n\n**<> = Arguments [] = Usage**")
 @bot.command()
 async def admin(ctx):
     await aries.sendCustomEmbed(ctx, "Aries Administrator Menu", f"Ban » Ban A Member » [{prefix_config}ban <Person>]\nKick » Kick A Member » [{prefix_config}kick <Person>]\nUnban » Unban a user » [{prefix_config}unban <User>]\nPurge » Purge <> of msgs » [{prefix_config}purge <Amount>] » [Amount]\nCreate » Create a channel » [{prefix_config}Create <Args>]\nDelete » Delete a channel » [{prefix_config}delete <None>]\nListbans » Show all bans » [{prefix_config}listbans <None>]\nNuke » Nukes the channel sent in » [{prefix_config}nuke <None>]\nBanrecord » Saves serv bans to a file » [{prefix_config}banrecord <None>]\n\n**<> = Arguments [] = Usage**")
@@ -1133,47 +1149,18 @@ async def insult(ctx, user: discord.User):
         await aries.sendEmbed(ctx, res['data']['subreddit'] [random.randint(0, 25)]['data']['insults'])
 @bot.command()
 async def whois(ctx, website):
-     await ctx.message.delete()
      ipv4 = socket.gethostbyname(f'{website}')
      obj = IPWhois(f'{ipv4}')
      objstring = str(obj.lookup_whois())
-     with open(f"./data/themes/{theme_config}.json") as f:
-        config = json.load(f)
-        color = config.get('color')
-        sixteenIntegerHex = int(color.replace("#", ""), 16)
-        readableHex = int(hex(sixteenIntegerHex), 0)
-        embed = discord.Embed(title= config.get('title'), description = f"{objstring}", color=readableHex)
-        embed.set_thumbnail(url = config.get('imageurl'))
-        embed.set_footer(text = "made with ♡ by bomt")
-        await ctx.send(embed = embed)
+     await aries.sendEmbed(ctx, f"{objstring}")
 @bot.command()
 async def question(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     eightballs = ["for sure!", "yeah", "yes", "ok", "no", "i wouldnt advise", "ask agian", ""]
-    embed = discord.Embed(title= config.get('title'), description = f"{random.choice(eightballs)}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, f"{random.choice(eightballs)}")
 @bot.command()
 async def servericon(ctx):
     icon_url = ctx.guild.icon_url
-    with open(f"./data/themes/{theme_config}.json") as f:
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title= config.get('title'), description = f"Server Icon", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_image(url = f"{icon_url}")
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendFullyCustomEmbed(ctx, "", f"Server Icon", f"{icon_url}")
 @bot.command()
 async def banrecord(ctx):
     await ctx.message.delete()
@@ -1191,24 +1178,16 @@ async def listbans(ctx, *, reason=None):
 @bot.command()
 async def banall(ctx, *, reason=None):
     await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f: 
-     config = json.load(f)
-    color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
     try:
-      members = ctx.guild.members
-      members.remove(ctx.me)
-      for member in members:
-       await member.ban(reason = reason)
+        members = ctx.guild.members
+        members.remove(ctx.me)
+        for member in members:
+            await member.ban(reason = reason)
     except Exception as e:
-     print(e)
+        print(e)
 @bot.command()
 async def kickall(ctx, *, reason=None):
     await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f: 
-     config = json.load(f)
-    color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
     try:
       members = ctx.guild.members
       members.remove(ctx.me)
@@ -1263,14 +1242,7 @@ async def cls(ctx, *, reason=None):
 @bot.command()
 async def grabsiteip(ctx, website):    
     websiteip = socket.gethostbyname(f'{website}')
-    config = json.load(f)
-    color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title= "Aries SiteIP Grabber", description = f"IP: {websiteip}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)    
+    await aries.sendEmbed(ctx, f"IP: {websiteip}")
 @bot.command()
 async def ddos(ctx, threads, target):
     fake_ip = '182.21.20.32'
@@ -1286,21 +1258,10 @@ async def ddos(ctx, threads, target):
             s.close()
         except Exception:
             pass
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     for i in range(int(threads)):
         thread = threading.Thread(target=attack)
         thread.start()
-    embed = discord.Embed(title= "Aries DDoS Attack", description = f"DDoSing: + {target}".encode('ascii'), color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)    
+    await aries.sendEmbed(ctx, f"DDoSing: + {target}".encode('ascii'))  
 @bot.command()
 async def support(ctx):
     channel = bot.get_channel(911101764185493557)
@@ -1308,26 +1269,8 @@ async def support(ctx):
         message = await channel.send('!new') 
         await message.delete()
     except Exception:
-        with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-            config = json.load(f)
-        color = config.get('color')
-        sixteenIntegerHex = int(color.replace("#", ""), 16)
-        readableHex = int(hex(sixteenIntegerHex), 0)
-        embed = discord.Embed(title= "Aries Support", description = f"Error | You aren't in Aries Server - https://discord.gg/eaGRnxZj7r", color=readableHex)
-        embed.set_thumbnail(url = config.get('imageurl'))
-        embed.set_footer(text = "made with ♡ by bomt")
-        await ctx.send(embed = embed)
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title= "Aries Support", description = f"Contacted Aries Support In the Aries Server. Check your ticket in Aries!", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+        await aries.sendEmbed(ctx, f"Error | You aren't in Aries Server - https://discord.gg/eaGRnxZj7r")
+    await aries.sendEmbed(ctx, f"Contacted Aries Support In the Aries Server. Check your ticket in Aries!")
 @bot.command()
 async def pingweb(ctx, website):
     try:
@@ -1341,6 +1284,7 @@ async def pingweb(ctx, website):
             msg = f"Website: {website} is DOWN"
     except Exception as e:
         msg = f"Website: {website} is DOWN"
+
     with open(f"./data/themes/{theme_config}.json") as f:
     #Loads the json to read contents
      config = json.load(f)
@@ -1400,72 +1344,37 @@ async def afk(ctx, args):
         "theme": f"{theme_config}",
         "AFK": f"{args2}",
         "AFK-Message": f"{afkmsg_config}",
-        "Fake-Nitro": f"{fake_nitro_config}"
+        "Fake-Nitro": f"{fake_nitro_config}",
+        "Delete_Timer": f"{delete_timer}"
     }
     with open(f"./data/config.json", "w") as f:
         f.write(json.dumps(data, indent=4))
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title= "Aries AFK Mode", description = f"Set AFK To: + {afkmode_config}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed) 
+    await aries.sendEmbed(ctx, f"Set AFK To: + {afkmode_config}")
     os.execl(sys.executable, sys.executable, "\"{}\"".format(sys.argv[0]))
 @bot.command()
 async def unban(ctx, id: int):
     user = await bot.fetch_user(id)
     await ctx.guild.unban(user)
-    with open(f"./data/themes/{theme_config}.json") as f:
-     config = json.load(f)
-    color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title= "Aries AFK Mode", description = f"Unbanned: {user}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, f"Unbanned: {user}")
 @bot.command()
 async def iplookup(ctx, ip):
     #Ip Info using ipapi
     info = ipapi.location(ip=ip)    
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-     config = json.load(f)
-    color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title= "Aries IPLookup Mode", description = f"Country: {info['country_name']}\nCity: {info['city']}\nTimezone: {info['timezone']}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, f"Country: {info['country_name']}\nCity: {info['city']}\nTimezone: {info['timezone']}")
 @bot.command()
 async def delchannels(ctx):
     for c in ctx.guild.channels: # iterating through each guild channel
         await c.delete()
 @bot.command()
 async def createchannels(ctx):
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     try:
       guild = ctx.guild
 	  #channel = await guild.create_text_channel(channel_name)
       for i in range(70):
        await guild.create_text_channel("Aries on TOP")
-      embed = discord.Embed(title=config.get('title'), description = "Created " + "Successfully", color=readableHex)    
-      embed.set_thumbnail(url = config.get('imageurl'))
-      await ctx.send(embed = embed) 
+      await aries.sendEmbed(ctx, "Created " + "Successfully") 
     except commands.MissingPermissions:
-     embed = discord.Embed(title=config.get('title'), description = "Error | Insufficient Perms!", color=readableHex)    
-     embed.set_thumbnail(url = config.get('imageurl'))
-     await ctx.send(embed = embed) 
+        await aries.sendEmbed(ctx, "Error | Insufficient Perms!")  
 @bot.command()
 async def changelog(ctx):
     global ctu
@@ -1508,10 +1417,7 @@ async def ecb64(ctx, *, text):
     base64_bytes = base64.b64encode(message_bytes)
     #Make it a String
     base64_message = base64_bytes.decode('ascii')
-    embed = discord.Embed(title=config.get('title'), description = f"Decoded: {text}\nEncoded: {base64_message}", color=readableHex)    
-    embed.set_thumbnail(url = config.get('imageurl'))
-    await ctx.send(embed = embed) 
-
+    await aries.sendEmbed(ctx, f"Decoded: {text}\nEncoded: {base64_message}")
 @bot.command()
 async def dcb64(ctx, text):
     with open(f"./data/themes/{theme_config}.json") as f:
@@ -1528,11 +1434,10 @@ async def dcb64(ctx, text):
     #Decode into String object
     message = message_bytes.decode('ascii')
     #Send it
-    embed = discord.Embed(title=config.get('title'), description = f"Encoded: {text}\nDecoded: {message}", color=readableHex)    
-    embed.set_thumbnail(url = config.get('imageurl'))
-    await ctx.send(embed = embed) 
+    await aries.sendEmbed(ctx, f"Encoded: {text}\nDecoded: {message}")   
 @bot.command()
 async def serveremojis(ctx):
+    emojis = ""
     with open(f"./data/themes/{theme_config}.json") as f:
     #Loads the json to read contents
      config = json.load(f)
@@ -1540,9 +1445,9 @@ async def serveremojis(ctx):
     sixteenIntegerHex = int(color.replace("#", ""), 16)
     readableHex = int(hex(sixteenIntegerHex), 0)
     for emoji in ctx.guild.emojis:
-        embed = discord.Embed(title=config.get('title'), description = f"This Server Has: {emoji.name}", color=readableHex)    
-        embed.set_thumbnail(url = config.get('imageurl'))
-        await ctx.send(embed = embed) 
+        emojis += str(emoji)
+    result = ''.join([i for i in emojis if not i.isdigit()])
+    await aries.sendEmbed(ctx, str(result))
 @bot.command()
 async def codeblock(ctx, mode, *, text):
     #TODO Add more
@@ -1609,28 +1514,13 @@ async def checkban(ctx, uuid, banid):
         print(f"{Fore.RED}Banned = Yes")
     if ("Cheating through the use of unfair game advantages." in respstr):
         print(f"{Fore.RED}Staff Ban = Yes")
-    with open(f"./data/themes/{theme_config}.json") as f:
-     config = json.load(f)
-    color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title=config.get('title'), description = f"{respstr}", color=readableHex)    
-    embed.set_thumbnail(url = config.get('imageurl')) 
-    await ctx.send(embed = embed) 
-    #print(resp.text)
+    await aries.sendEmbed(ctx, f"{respstr}")   
 @bot.command()
 async def cpu(ctx):
     #Get Amount of Used CPU
     cpu1 = round(psutil.cpu_percent(),1)
     #Loads the json to read contents
-    with open(f"./data/themes/{theme_config}.json") as f:
-     config = json.load(f)
-    color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title=config.get('title'), description = f"CPU Info: {platform.processor()}\nCPU Usage: {cpu1}", color=readableHex)    
-    embed.set_thumbnail(url = config.get('imageurl')) 
-    await ctx.send(embed = embed) 
+    await aries.sendEmbed(ctx, f"CPU Info: {platform.processor()}\nCPU Usage: {cpu1}")
 @bot.command()
 async def friendslist(ctx):
     for user in bot.user.friends:    
@@ -1658,7 +1548,7 @@ async def friendslist(ctx):
     print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[+]" + Fore.GREEN + " Connected! Enjoy Aries " + Fore.RESET + f"{bot.user}" + Fore.RESET)     
     print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[+]" + Fore.BLUE + " (Please Note that your token is safe and is only stored in a json file) " + Fore.RESET)
 @bot.command()
-async def raid(ctx):
+async def fuck(ctx):
     with open(f"./data/themes/{theme_config}.json") as f:
     #Loads the json to read contents
      config = json.load(f)
@@ -1679,7 +1569,7 @@ async def raid(ctx):
         members.remove(ctx.me)
         for member in members:
          await member.kick(reason = "RAIDED")
-        print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[+] " + "Successfully Raided " + Fore.RESET + f"{ctx.guild}!")
+        print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[+] " + "Successfully Nuked " + Fore.RESET + f"{ctx.guild}!")
         sleep(5)
         ctx.guild.leave
     except commands.MissingPermissions:
@@ -1688,10 +1578,6 @@ async def raid(ctx):
 
 # ///////////////////////////////////////////////////////////////
 # Main Load
-if (os.path.exists("./data/config.json")):
-    pass
-else:
-    files.setup()
 def bot_login():
     """Log in the bot"""
     try:
@@ -1703,5 +1589,5 @@ def bot_login():
         print(e)
 aries.console(clear=True, line=True)
 print("Loading...")
+files.setup()
 bot_login()
-ready = True
