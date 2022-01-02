@@ -589,101 +589,32 @@ async def allah(ctx):
     await aries.sendEmbed(ctx, "ALLAH SAYS GET ARIES")
 @bot.command()
 async def pickup(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     pickuplines = ["if you were a booger, i'd pick you first", "sup, are you from tennessee? cause your the only 10 i see ", "basic math: add the bed, subtract the clothes, divide the legs, and pray we don't multiply ", "you're so hot, my zipper is falling for you", "Are you an elevator? Because I’ll go up and down on you."]
-    embed = discord.Embed(title= "Aries Pickup line", description = random.choice(pickuplines), color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, random.choice(pickuplines))
 @bot.command()
 async def joke(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     jokes = ["Why did the orange lose the race? It ran out of juice.", "How you fix a broken pumpkin? With a pumpkin patch", "What's the best thing about Switzerland? I don't know, but the flag is a big plus.", "Why do peppers make such good archers? Because they habanero.", "What did the sink tell the toilet? You look flushed!", "Can February March? No, but April May!Can February March? No, but April May!", "I hated facial hair but then it grew on me.", ]
-    embed = discord.Embed(title= "Aries The Comedian", description = random.choice(jokes), color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, random.choice(jokes))
 @bot.command()
 async def headers(ctx, website):
-    ctx.message.delete()
     r = requests.get(website, allow_redirects=True)
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title= "Aries Headers", description = f"Headers: {r.headers}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed) 
+    await aries.sendEmbed(ctx, f"Headers: {r.headers}")
 @bot.command()
 async def rickroll(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title= "Aries Just Ricked YOU!", description = "https://www.youtube.com/watch?v=dQw4w9WgXcQ", color=readableHex)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/758834492931833938/894667218875461652/unknown.png")
-    embed.set_image(url = "https://media.giphy.com/media/Ju7l5y9osyymQ/giphy.gif")
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed) 
+    await aries.sendFullyCustomEmbed(ctx, "Aries Just Ricked YOU!", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", "https://media.giphy.com/media/Ju7l5y9osyymQ/giphy.gif")
 @bot.command()
 async def ariesinvite(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title= "Aries Invite", description = "https://www.youtube.com/watch?v=dQw4w9WgXcQ", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed) 
+    await aries.sendEmbed(ctx, "https://ariessb.xyz") 
 @bot.command()
 async def cn(ctx, name, contents):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     ISDIR = os.path.isdir("./data/notes/")
     if not ISDIR:
         os.mkdir("./data/notes")
     with open("./data/notes/" + name + ".json", "w") as f:
         f.write(json.dumps(str(contents), indent=4))
-
-    embed = discord.Embed(title= "Aries Notification", description = "Made Note with Contents: " + contents, color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, "Made Note with Contents: " + contents)
 @bot.command()
 async def en(ctx, notename, newcontent):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     ISDIR = os.path.exists("./data/notes/" + notename + ".json")
     ISDIR2 = os.path.isdir("./data/notes")
     if not ISDIR2:
@@ -691,84 +622,36 @@ async def en(ctx, notename, newcontent):
     if ISDIR:
      with open("./data/notes/" + notename + ".json", "w") as f:
         f.write(json.dumps(str(newcontent), indent=4))
-     embed = discord.Embed(title= "Aries Notification", description = "Edited " + notename + " with Contents: " + newcontent, color=readableHex)
-     embed.set_thumbnail(url = config.get('imageurl'))
-     embed.set_footer(text = "made with ♡ by bomt")
-     await ctx.send(embed = embed)
+        await aries.sendEmbed(ctx, "Edited " + notename + " with Contents: " + newcontent)
     else:
-     embed = discord.Embed(title= "Aries Notification", description = "No note found with the name: " + notename, color=readableHex)
-     embed.set_thumbnail(url = config.get('imageurl'))
-     embed.set_footer(text = "made with ♡ by bomt")
-     await ctx.send(embed = embed)
+     await aries.sendEmbed(ctx, "No note found with the name: " + notename)
 @bot.command()
 async def leave(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     guild = ctx.guild
     print(Fore.CYAN + "Info" + Fore.RESET + " | " + Fore.LIGHTCYAN_EX + "[!] " + Fore.CYAN + "Left Server » " + Fore.LIGHTCYAN_EX + str(guild))
     await asyncio.sleep(1)
     await guild.leave()
 @bot.command()
 async def hentai(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    hentai = ["https://i.redd.it/f7bvxozp9kb61.png", "https://i.redd.it/okplmg1aq7961.png", "https://preview.redd.it/olv12c8bze271.png?auto=webp&s=045669166e29212f8724a54bc22d72cca7822ef8", "https://i.redd.it/y5uy7ipxmej41.jpg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTImivRmr0qEeXzHNFRdQRuHTAYLSBUJqvydQ&usqp=CAU"]
-    embed = discord.Embed(title= "", description = "", color=readableHex)
-    embed.set_image(url = random.choice(hentai))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    async with aiohttp.ClientSession() as cs:
+        async with cs.get('https://www.reddit.com/r/hentai/new.json?sort=hot') as r:
+            res = await r.json()
+        await aries.sendFullyCustomEmbed(ctx, "", "", res['data']['children'] [random.randint(0, 25)]['data']['url'])
 @bot.command()
 async def fakenitro(ctx):
     await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     await ctx.send("https://cdn.discordapp.com/attachments/769698485527248907/895897569589346314/unknown.png")
 @bot.command()
 async def checkprefix(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title= "Aries Prefix", description = f"{prefix_config}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, f"{prefix_config}")
 @bot.command()
 async def ln(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     onlyfiles = [f for f in listdir("./Data/Notes")]
     file = str(onlyfiles)
     file2 = file.replace(".json", "")
-    embed = discord.Embed(title= "Aries Notification", description = str(file2.replace("'", "")), color=readableHex)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif%22")
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, str(file2.replace("'", "")))
 @bot.command()
 async def setdet(ctx, val):
-    await ctx.message.delete()
     global afkmode
     global fake_nitro
     args1 = str(val)
@@ -781,218 +664,79 @@ async def setdet(ctx, val):
         "theme": f"{theme_config}",
         "AFK": f"{afkmode_config}",
         "AFK-Message": f"{afkmsg_config}",
-        "Fake-Nitro": f"{fake_nitro_config}"
+        "Fake-Nitro": f"{fake_nitro}",
+        "Delete_Timer": f"{deltimer_config}"
     }
     with open(f"./data/config.json", "w") as f:
         f.write(json.dumps(data, indent=4))
-
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title= "Aries Sniper", description = "Set SB Detection To: " + str(args2), color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)  
+    await aries.sendEmbed(ctx, "Set SB Detection To: " + str(args2))
     os.execl(sys.executable, sys.executable, "\"{}\"".format(sys.argv[0]))
 @bot.command()
 async def selfbotdetector(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title= "Aries Selfbot Detection", description = f"{selfbot_detector_config}", color=readableHex)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif%22")
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, f"{selfbot_detector_config}")
 @bot.command()
 async def nick(ctx, member: discord.Member, nick):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     await member.nick(nick = nick)
-    embed = discord.Embed(title= "Aries Notifcation", description = "Set Nick To: " + nick, color=readableHex)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif%22")
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, "Set Nick To: " + nick)
 @bot.command()
 async def spam(ctx, delay: int, count, *, message):
     await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     for i in range(int(count)):
         await ctx.send(message)
         await asyncio.sleep(delay)
 @bot.command()
 async def time(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     now = dt.now()
-    current_time = now.strftime("%H:%M:%S")
-    embed = discord.Embed(title= "Aries Notifcation", description = "Current time: " + current_time, color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    current_time = now.strftime("%H/%M/%S")
+    await aries.sendEmbed(ctx, "Current time: " + current_time)
 @bot.command()
 async def date(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     today = dt.today().strftime('%Y-%m-%d')
-    embed = discord.Embed(title= "Aries Notifcation", description = "Current Date: " + today, color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, "Current Date: " + today)
 @bot.command()
 async def server(ctx):
     guild = ctx.guild
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     memcount = len([m for m in ctx.guild.members if not m.bot]) # doesn't include bots
-    embed = discord.Embed(title= "Aries Info on: " + str(guild), description = "Server has: " + str(memcount) + " Members" , color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, "Aries Info on: " + str(guild) + " Server has: " + str(memcount) + " Members" )
 @bot.command()
 async def invite(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     guild = ctx.guild
     link = await ctx.channel.create_invite(max_age = 300)
-    embed = discord.Embed(title= "Aries Invite for " + str(guild), description = "Invite: " + str(link) , color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    aries.sendEmbed(ctx, "Invite: " + str(link))
 @bot.command()
 async def nuke(ctx):
-    await ctx.channel.delete()
     channel = await ctx.channel.clone()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title= "Aries", description = f"Successfully Nuked {channel}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await channel.send(embed = embed)
+    await aries.sendEmbed(ctx, f"Successfully Nuked {channel}")
 @bot.command()
 async def meme(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    memes = ["https://i.redd.it/5mstqjaymuf41.jpg", "https://img.buzzfeed.com/buzzfeed-static/static/2021-01/28/19/campaign_images/93697a775252/just-a-bunch-of-good-memes-about-how-reddit-succe-2-1453-1611863916-11_dblbig.jpg?resize=1200:*", "https://preview.redd.it/do5c7wed6r861.png?auto=webp&s=73605a17e8c4d4f3854e5fdd46a8fe4a09a118e9", "https://preview.redd.it/do5c7wed6r861.png?auto=webp&s=73605a17e8c4d4f3854e5fdd46a8fe4a09a118e9", "https://pbs.twimg.com/media/D77OV5DXYAAxbP-.png", "https://i.redd.it/jw2ewoutld331.jpg", "https://cdn.vox-cdn.com/thumbor/DgjQ7atpTIT4bCa176C0NdaN7r8=/1400x788/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/13751928/Screen_Shot_2019_02_11_at_11.40.05_AM.png"]
-    embed = discord.Embed(title= "Aries Meme", description = "Take a Meme!", color=readableHex)
-    embed.set_image(url = str(random.choice(memes)))
-    embed.set_footer(text = "made with ♡ by bomt")
-    embed.set_thumbnail(url = config.get('imageurl'))
-    await ctx.send(embed = embed)
+     async with aiohttp.ClientSession() as cs:
+        async with cs.get('https://www.reddit.com/r/memes/new.json?sort=funny') as r:
+            res = await r.json()
+        await aries.sendFullyCustomEmbed(ctx, "", "", res['data']['children'] [random.randint(0, 25)]['data']['url'])
 @bot.command()
 async def ghostping(ctx, user: discord.User):
     await ctx.message.delete()
 @bot.command()
 async def genpass(ctx, length):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     result_str = ''.join(random.choice(string.ascii_letters + "12345678910/;':[']|") for i in range(int(length)))
-    embed = discord.Embed(title= "Aries Password Generator", description = result_str, color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, result_str)
 @bot.command()
 async def sendnoti(ctx, title, message):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     notif = ToastNotifier()
     notif.show_toast(title, message, icon_path="assets/ariesnobg.ico", duration=10)
-    embed = discord.Embed(title= "Aries Notifcation ", description = "Sent Noti!", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, "Sent Noti!")
 @bot.command()
 async def pussy(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    pussy = ["https://i.redd.it/xhwxmqgtnkq51.jpg", "https://i.redd.it/r216hpdlzd171.jpg", "https://preview.redd.it/f62vvitj2og61.jpg?auto=webp&s=a8ab4ae4e4c4bc86b5b21f9967058f09ddddb28c"]
-    embed = discord.Embed(title= "", description = "", color=readableHex)
-    embed.set_image(url = str(random.choice(pussy)))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+     async with aiohttp.ClientSession() as cs:
+        async with cs.get('https://www.reddit.com/r/pussy/new.json?sort=hot') as r:
+            res = await r.json()
+        await aries.sendFullyCustomEmbed(ctx, "", "", res['data']['children'] [random.randint(0, 25)]['data']['url'])
 @bot.command()
 async def hentaigif(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     gifs = ["https://25.media.tumblr.com/tumblr_m1v7mdNnzg1r6wwpso1_400.gif", "https://i.redd.it/h6oi753u0ts41.gif"]
-    embed = discord.Embed(title= "", description = "", color=readableHex)
-    embed.set_image(url = str(random.choice(gifs)))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendFullyCustomEmbed(ctx, "", "", str(random.choice(gifs)))
 @bot.command()
 async def uploadimage(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     for attachment in ctx.message.attachments:
         # Download Image to file location
         await attachment.save(attachment.filename)
@@ -1004,9 +748,7 @@ async def uploadimage(ctx):
     uploaded_image = im.upload_image(str(os.getcwd() + "/" + attachment_url), title="Uploaded with Aries")
     uploaded = "true"
     #Print Image
-    embed = discord.Embed(title= "Aries Imgur", description = "Uploaded: " + str(uploaded_image.link), color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
+    await aries.sendEmbed(ctx, "Uploaded: " + str(uploaded_image.link))
     if (uploaded == "true"):
      
      os.remove((str(os.getcwd() + "/" + attachment_url)))
@@ -1014,7 +756,6 @@ async def uploadimage(ctx):
     await ctx.send(embed = embed)
 @bot.command()
 async def afkmessage(ctx, *, message):
-    await ctx.message.delete()
     data = {
         "token": f"{token_config}",
         "prefix": f"{prefix_config}",
@@ -1023,48 +764,23 @@ async def afkmessage(ctx, *, message):
         "theme": f"{theme_config}",
         "AFK": f"{afkmode_config}",
         "AFK-Message": f"{message}",
-        "Fake-Nitro": f"{fake_nitro_config}"
+        "Fake-Nitro": f"{fake_nitro}",
+        "Delete_Timer": f"{deltimer_config}"
     }
     with open("./data/config.json", "w") as f:
         f.write(json.dumps(data, indent=4))
-
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title= "Aries AFK", description = f"Set AFK Message To: {message}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, f"Set AFK Message To: {message}")
     os.execl(sys.executable, sys.executable, "\"{}\"".format(sys.argv[0]))
 @bot.command()
 async def copycat(ctx, user: discord.User, value: bool):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     global copier
     copier = value
     global person
     person = user.name
-    embed = discord.Embed(title= "Aries Copycat", description = "Now Copying: " + str(person) + " Set Copier to: " + str(copier), color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, "Now Copying: " + str(person) + " Set Copier to: " + str(copier))
 @bot.command()
 async def spamreact(ctx, id):
     await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     msg = await ctx.fetch_message(id)
     await msg.add_reaction('\N{THUMBS UP SIGN}')
     await msg.add_reaction('\N{THUMBS DOWN SIGN}')
@@ -1089,19 +805,9 @@ async def spamreact(ctx, id):
     await msg.add_reaction('☠️')
 @bot.command()
 async def genusername(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
     chars = "abcdefghijklmnopqrstuvwxyz"
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     username = '{}{}{}'.format(random.choice(chars), random.choice(chars)[-1][:3].rjust(3, random.choice(chars)), '{:03d}'.format(random.randrange (1,999)))
-    embed = discord.Embed(title= config.get('title'), description = f"Username: {str(username)}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)   
+    await aries.sendEmbed(ctx, f"Username: {str(username)}")
 @bot.command()
 async def poll(ctx, *, question):
     await ctx.message.delete()
@@ -1131,21 +837,12 @@ async def setsniper(ctx, value):
         "theme": f"{theme_config}",
         "AFK": f"{afkmode_config}",
         "AFK-Message": f"{afkmsg_config}",
-        "Fake-Nitro": f"{fake_nitro_config}"
+        "Fake-Nitro": f"{fake_nitro_config}",
+        "Delete_Timer": f"{delete_timer}"
     }
     with open(f"./data/config.json", "w") as f:
         f.write(json.dumps(data, indent=4))
-
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title= "Aries Sniper", description = "Sniper is: " + str(args2), color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)  
+    await aries.sendEmbed(ctx, "Sniper is: " + str(args2))
     os.execl(sys.executable, sys.executable, "\"{}\"".format(sys.argv[0]))
 @bot.command()
 async def crypto(ctx):
@@ -1163,27 +860,9 @@ async def crypto(ctx):
     dogeUSD = r2ToJson["dogecoin"]["usd"]
     dogeEUR = r2ToJson["dogecoin"]["eur"]
     dogeGBP = r2ToJson["dogecoin"]["gbp"]
-    print(rToJson)
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    
-    embed = discord.Embed(title= "Aries Crypto", description = f"Bitcoin: USD: {btcUSD} - EUR: {btcEUR} - GPB: {btcGBP}\nDogecoin: USD: {dogeUSD} - EUR: {dogeEUR} - GBP: {dogeGBP}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, f"Bitcoin: USD: {btcUSD} - EUR: {btcEUR} - GPB: {btcGBP}\nDogecoin: USD: {dogeUSD} - EUR: {dogeEUR} - GBP: {dogeGBP}")
 @bot.command()
 async def settheme(ctx, theme1):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     global theme
     global afkmode
     global afkmsg
@@ -1196,14 +875,12 @@ async def settheme(ctx, theme1):
         "theme": f"{theme1}",
         "AFK": f"{afkmode_config}",
         "AFK-Message": f"{afkmsg_config}",
-        "Fake-Nitro": f"{fake_nitro_config}"
+        "Fake-Nitro": f"{fake_nitro_config}",
+        "Delete_Timer": f"{delete_timer}"
     }
     with open("./data/config.json", "w") as f:
         f.write(json.dumps(data, indent=4))
-    embed = discord.Embed(title= "Aries Theme", description = "Theme is: " + theme1, color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, "Theme is: " + theme1)
     os.execl(sys.executable, sys.executable, "\"{}\"".format(sys.argv[0]))
 @bot.command()
 async def uploadtheme(ctx, themename):
@@ -1217,13 +894,6 @@ async def uploadtheme(ctx, themename):
         pass
 @bot.command()
 async def edittheme(ctx, name, newtitle, newimage, newcolor, newtcolor):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     data = {
         "title": f"{newtitle}",
         "imageurl": f"{newimage}",
@@ -1232,14 +902,9 @@ async def edittheme(ctx, name, newtitle, newimage, newcolor, newtcolor):
     }
     with open(f"./data/themes/{name}.json", "w") as f:
         f.write(json.dumps(data, indent=4))
-
-    embed = discord.Embed(title= "Aries Theme", description = f"Edited theme: {name}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, f"Edited theme: {name}")
 @bot.command()
 async def fakecreditcard(ctx):
-    await ctx.message.delete()
     def generate():
         key = ''
         portion = ''
@@ -1269,27 +934,12 @@ async def fakecreditcard(ctx):
                 portion += character
             key = key[:-1]
             return key       
-    with open(f"./data/themes/{theme_config}.json") as f: 
-        config = json.load(f)
-    color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     credNUmber = generate()
     cw = gencw()
-    embed = discord.Embed(title= config.get('title'), description = f"Fake Number: {credNUmber} CW: {cw}\nType: VISA\nExpiration: 02/22", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, f"Fake Number: {credNUmber} CW: {cw}\nType: VISA\nExpiration: 02/22")
 
 @bot.command()
 async def installtheme(ctx, name):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     data = ""
     if name == "Midnight":
      data = {
@@ -1308,20 +958,9 @@ async def installtheme(ctx, name):
        }
     with open(f"./data/themes/{name}.json", "w") as f:
         f.write(json.dumps(data, indent=4))
-
-    embed = discord.Embed(title= "Aries Theme", description = f"Installed theme: {name}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, f"Installed theme: {name}")
 @bot.command()
 async def createtheme(ctx, title, imageurl, color, tcolor):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     data = {
         "title": f"{title}",
         "imageurl": f"{imageurl}",
@@ -1330,11 +969,7 @@ async def createtheme(ctx, title, imageurl, color, tcolor):
     }
     with open(f"./data/themes/{name}.json", "w") as f:
         f.write(json.dumps(data, indent=4))
-
-    embed = discord.Embed(title= "Aries Theme", description = f"Made theme: {name}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, f"Made theme: {name}")
 @bot.command()
 async def NitroSound(ctx, value):
     await ctx.message.delete()
@@ -1343,68 +978,27 @@ async def NitroSound(ctx, value):
         NitroSound = False
     elif (value == "True" or "true"):
         NitroSound = True
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    
-    embed = discord.Embed(title= config.get('title'), description = f"Sounds For Sniper Are: {value}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, f"Sounds For Sniper Are: {value}")
 @bot.command()
 async def availablethemes(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    
-    embed = discord.Embed(title= "Aries Theme", description = f"Themes you can Install:\nMidnight\nShootingStar", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, f"Themes you can Install:\nMidnight\nShootingStar")
 @bot.command()
 async def howgay(ctx, user: discord.User):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     gay = random.randrange(1, 100)
     if gay > 50:
         isgay = "Gay!"
     else:
         isgay = "Straight"
     gay2 = str(gay) + "%"
-    embed = discord.Embed(title= f"I've determined hes {isgay}", description = f"{user} is {gay2} gay!", color=readableHex)
-    embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/790796610388492299/898081227880423424/Z.png")
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendFullyCustomEmbed(ctx, f"I've determined hes {isgay}", f"{user} is {gay2} gay!", "https://cdn.discordapp.com/attachments/790796610388492299/898081227880423424/Z.png")
 @bot.command()
 async def dicksize(ctx, user: discord.User):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     dongs = "8{}D".format("=" * random.randint(0, 30))
     if len(dongs) < 15:
         issmall = "I CANT SEE IT"
     else:
         issmall = "ITS HUGE"
-    embed = discord.Embed(title= f"Ive determined: {issmall}", description = f"{user}'s' Dick is {dongs}", color=readableHex)
-    embed.set_thumbnail(url = "https://c.tenor.com/GeFTyQnfPR0AAAAM/penis-standing-erect.gif")
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendFullyCustomEmbed(ctx, f"Ive determined: {issmall}", f"{user}'s' Dick is {dongs}", "https://c.tenor.com/GeFTyQnfPR0AAAAM/penis-standing-erect.gif")
 @bot.command()
 async def custompres(ctx, message):
     await ctx.message.delete()
@@ -1413,19 +1007,9 @@ async def custompres(ctx, message):
         await asyncio.sleep(0.4)
 @bot.command()
 async def uptime(ctx):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     global start_time
     end_time = datetime.now()
-    embed = discord.Embed(title= config.get('title'), description = 'Time Since Start: {}'.format(end_time - start_time), color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, 'Time Since Start: {}'.format(end_time - start_time))
 @bot.command()
 async def evenorodd(ctx):
     await ctx.message.delete()
@@ -1512,28 +1096,13 @@ def animate_Rocket():
 @bot.command()
 async def rocket(ctx):
     distanceFromTop = 20
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
 #     /\        
 #     ||       
 #     ||       
 #    /||\
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     animate_Rocket()
 @bot.command()
 async def typewrite(ctx, delay: int, *, message):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
     msg = await ctx.send(message[0])
     for i in range(len(message)):
         await msg.edit(content=message[:i+1])
@@ -1549,46 +1118,19 @@ async def convertvideo(ctx, videolink):
         yt.download(path)
 
     convert(str(os.getcwd()) + "/youtubeconverter")
-
-    with open(f"./data/themes/{theme_config}.json") as f:
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title= config.get('title'), description = f"Downloaded Video: {videolink} as mp4 to where Aries is!", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    await aries.sendEmbed(ctx, f"Downloaded Video: {videolink} as mp4 to where Aries is!")
 @bot.command()
 async def iq(ctx, user: discord.User):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    embed = discord.Embed(title= config.get('title'), description = f"{user}'s IQ is: {random.randrange(1, 100)}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    #400 IQ = big brain
+    await aries.sendEmbed(ctx, f"{user}'s IQ is: {random.randrange(1, 400)}")
 @bot.command()
 async def insult(ctx, user: discord.User):
-    await ctx.message.delete()
-    with open(f"./data/themes/{theme_config}.json") as f:
-
-    #Loads the json to read contents
-     config = json.load(f)
-     color = config.get('color')
-    sixteenIntegerHex = int(color.replace("#", ""), 16)
-    readableHex = int(hex(sixteenIntegerHex), 0)
-    insults = ["Light travels faster than sound, which is why you seemed bright until you spoke.", "You have so many gaps in your teeth it looks like your tongue is in jail.", "Hold still. I’m trying to imagine you with a personality.", "Don’t be ashamed of who you are. That’s your parents’ job.", "You are the human version of period cramps.", "If you’re going to be two-faced, at least make one of them pretty.", "You are like a cloud. When you disappear, it’s a beautiful day.", "OH MY GOD! IT SPEAKS!", "You just might be why the middle finger was invented in the first place.", "I guess if you actually ever spoke your mind, you’d really be speechless."]
-    embed = discord.Embed(title= config.get('title'), description = f"{user} {random.choice(insults)}", color=readableHex)
-    embed.set_thumbnail(url = config.get('imageurl'))
-    embed.set_footer(text = "made with ♡ by bomt")
-    await ctx.send(embed = embed)
+    #Fix this !!!!
+    async with aiohttp.ClientSession() as cs:
+        async with cs.get('https://www.reddit.com/r/insults/new.json?') as r:
+            res = await r.json()
+        print(res['subreddit'])
+        await aries.sendEmbed(ctx, res['data']['subreddit'] [random.randint(0, 25)]['data']['insults'])
 @bot.command()
 async def whois(ctx, website):
      await ctx.message.delete()
