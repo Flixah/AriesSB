@@ -72,6 +72,13 @@ else:
     selfbot_detection = input("Selfbot Detector? (y/n)")
     delete_timer = input("Delete Timer: ")
     ISDIR = os.path.isdir("./data")
+    if sniper == "y":
+        sniper = "true"
+    if fake_nitro_config == "y":
+        fake_nitro_config == "True"
+    if selfbot_detection == "y":
+        selfbot_detection = "true"
+    
     if (not ISDIR):
         os.mkdir('./data')
     data = {
@@ -87,6 +94,40 @@ else:
         }
     with open("./data/config.json", "w") as f:
             f.write(json.dumps(data, indent=4))
+    ISDIR = os.path.isdir("./data")
+    ISDIR2 = os.path.isdir("./data/themes")
+    ISDIR3 = os.path.isdir("./assets")
+    ISDIR4 = os.path.isdir("./data/notes")
+    ISDIR5 = os.path.isdir("./data/beta")
+    ISDIR6 = os.path.isdir("./data/emojis")
+    if (not ISDIR):
+        os.mkdir('./data')
+    else:
+        pass
+    if (not ISDIR2):
+        os.mkdir("./data/themes")
+    else:
+        pass
+    if (not ISDIR3):
+        os.mkdir("./assets")
+    else:
+        pass
+    if (not ISDIR4):
+        os.mkdir("./data/notes")
+    if (not ISDIR6):
+        os.mkdir("./data/emojis")
+    ISTHEME = os.path.isfile("/data/themes/Aries.json")
+    themedata = {
+        "title": "Aries",
+        "imageurl":"https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif",
+        "color": "#FF0000",
+        "TColor": "Red"
+        }   
+    if not ISTHEME:
+        with open("./data/themes/Aries.json", "w") as f:
+            f.write(json.dumps(themedata, indent=4))
+    else:
+        pass 
 # ///////////////////////////////////////////////////////////////
 # Aries Variables
 
@@ -110,6 +151,7 @@ afkmsg_config = config.get("AFK-Message")
 deltimer_config = config.get("Delete_Timer")
 afklogging = False
 copier = False
+person = ""
 NitroSound = False
 fake_nitro = config.get("Fake-Nitro")
 logo = """
@@ -255,6 +297,44 @@ class security:
 # Files Class & Functions
 
 class files:
+    def fileSetup():
+        ISDIR = os.path.isdir("./data")
+        ISDIR2 = os.path.isdir("./data/themes")
+        ISDIR3 = os.path.isdir("./assets")
+        ISDIR4 = os.path.isdir("./data/notes")
+        ISDIR5 = os.path.isdir("./data/beta")
+        ISDIR6 = os.path.isdir("./data/emojis")
+        if (not ISDIR):
+            os.mkdir('./data')
+        else:
+            pass
+        if (not ISDIR2):
+            os.mkdir("./data/themes")
+        else:
+            pass
+        if (not ISDIR3):
+            os.mkdir("./assets")
+        else:
+            pass
+        if (not ISDIR4):
+            os.mkdir("./data/notes")
+        if (not ISDIR5 and beta == True):
+            os.mkdir("./data/beta")
+        if (not ISDIR6):
+            os.mkdir("./data/emojis")
+        ISTHEME = os.path.isfile("/data/themes/Aries.json")
+        themedata = {
+        "title": "Aries",
+        "imageurl":"https://cdn.discordapp.com/attachments/895179941740699668/896247994796634133/standard_2.gif",
+        "color": "#FF0000",
+        "TColor": "Red"
+          }   
+        if not ISTHEME:
+            with open("./data/themes/Aries.json", "w") as f:
+                f.write(json.dumps(themedata, indent=4))
+        else:
+            pass
+
     def setup():
         """Creates the necessary folders"""
         ISDIR = os.path.isdir("./data")
@@ -351,7 +431,85 @@ async def on_ready():
     """Prints a ready log."""
     aries.console(clear=True, line=True)
     print(f"{Fore.LIGHTRED_EX}Logged in as {bot.user}{Fore.RESET}")
+@bot.event
+async def on_message(message):
+    if (fake_nitro == "True"):
+        if (message.author == bot.user and ":kekw:" in message.content):
+            await message.delete()
+            await message.channel.send(f"https://cdn.discordapp.com/emojis/905936038080446514.png?size=44")
 
+        if (message.author == bot.user and ":pepeheart:" in message.content):
+            await message.delete()
+            await message.channel.send(f"https://cdn.discordapp.com/emojis/836195152103604254.png?size=44")
+
+        if (message.author == bot.user and ":pepecry:" in message.content):
+            await message.delete()
+            await message.channel.send(f"https://cdn.discordapp.com/emojis/888517711309721691.png?size=44")
+            
+        if (message.author == bot.user and ":exactly:" in message.content):
+            await message.delete()
+            await message.channel.send(f"https://cdn.discordapp.com/emojis/922883421636800572.gif?size=44")
+
+        if (message.author == bot.user and ":peperave:" in message.content):
+            await message.delete()
+            await message.channel.send(f"https://cdn.discordapp.com/emojis/694036644998807592.gif?size=44")
+
+        if (message.author == bot.user and ":picardo:" in message.content):
+            await message.delete()
+            await message.channel.send(f"https://cdn.discordapp.com/emojis/891675815832584262.png?size=44")
+
+        if (message.author == bot.user and ":yeetusdeletus:" in message.content):
+            await message.delete()
+            await message.channel.send(f"https://cdn.discordapp.com/emojis/886018572453822554.png?size=44")
+
+        if (message.author == bot.user and ":klas:" in message.content):
+            await message.delete()
+            await message.channel.send(f"https://cdn.discordapp.com/emojis/901635160871690310.png?size=44")
+        
+        if (message.author == bot.user and ":sadklas:" in message.content):
+            await message.delete()
+            await message.channel.send(f"https://cdn.discordapp.com/emojis/901635219101208647.png?size=44")
+
+    #AFK Mode
+    if isinstance(message.channel, discord.channel.DMChannel) and message.author != bot.user and afkmode_config == 'True':
+       await message.channel.send(f"{afkmsg_config}")
+    mention = f'<@!{bot.user.id}>'
+    if (mention in message.content and afkmode_config == 'True'):
+        await message.channel.send(f"{afkmsg_config}")
+    #Copycat
+    if message.author.name == person and copier:
+         await message.channel.send(message.content)
+    
+    embeds = message.embeds
+    if selfbot_detector_config == 'true':
+     for embed in embeds:
+        #Gets Embed contents
+        getEmbed = embed.to_dict()
+        #Converts embed to a string
+        convertedEmbed = str(getEmbed)
+        #Searches for Luna in contents TODO: Add more checks to improve
+        if "Luna" in convertedEmbed:
+            #If found print 
+         print(Fore.CYAN + "Info" + Fore.RESET + " |" + Fore.RED + " [!]" + Fore.CYAN + " Selfbot Found! On » " + Fore.LIGHTCYAN_EX + str(message.author) + Fore.CYAN + " » Server » " + Fore.LIGHTCYAN_EX + str(message.guild) + Fore.CYAN + " » Selfbot » " + Fore.LIGHTCYAN_EX + "Luna")  
+
+    if nitro_sniper_config == 'true' and 'discord.gift/' in message.content:
+        code = re.search("discord.gift/(.*)", message.content).group(1)
+        if len(code) >= 16:
+            code = re.search("discord.gift/(.*)", message.content).group(1)
+            r = requests.post(f'https://discordapp.com/api/v6/entitlements/gift-codes/{code}/redeem', json={'channel_id': message.channel.id}, headers={'authorization': token_config, 'user-agent': 'Mozilla/5.0'})
+            r = r.text
+            if 'This gift has been redeemed already' in r:
+                print(Fore.CYAN + " Info |" + Fore.RED + "[Nitro]" + Fore.CYAN + " Sadly this code has been redeemed already. | " + Fore.RESET + f" Code: {code} | " + Fore.RED + "Error")
+            elif 'nitro' in r:
+                print(Fore.CYAN + "Info |" + Fore.GREEN + "[Nitro] " + Fore.CYAN + " Nitro Sniped Successfully! | " + Fore.RESET +  f"Code: {code}'")
+            elif 'Unknown Gift Code' in r:
+                print(Fore.CYAN + "Info | " + Fore.YELLOW + "[Nitro] " + Fore.CYAN + f"An invalid code was posted | Code: {code} | " + Fore.RED + "Error")
+            else:
+                pass
+        else:
+          #Checks length for fakes
+          print(Fore.YELLOW + f"[!] Detected a fake code: {code}")
+    await bot.process_commands(message)    
 
 # ///////////////////////////////////////////////////////////////
 # Commands
@@ -794,6 +952,7 @@ async def copycat(ctx, user: discord.User, value: bool):
     global person
     person = user.name
     await aries.sendEmbed(ctx, "Now Copying: " + str(person) + " Set Copier to: " + str(copier))
+
 @bot.command()
 async def spamreact(ctx, id):
     await ctx.message.delete()
@@ -1332,7 +1491,6 @@ async def pingip(ctx, ip):
     await msg1.edit(embed = embed1)
 @bot.command()
 async def afk(ctx, args):
-    await ctx.message.delete()
     global afkmode
     args1 = str(args)
     args2 = args1.replace("t", "T")
@@ -1344,12 +1502,12 @@ async def afk(ctx, args):
         "theme": f"{theme_config}",
         "AFK": f"{args2}",
         "AFK-Message": f"{afkmsg_config}",
-        "Fake-Nitro": f"{fake_nitro_config}",
-        "Delete_Timer": f"{delete_timer}"
+        "Fake-Nitro": f"{fake_nitro}",
+        "Delete_Timer": f"{deltimer_config}"
     }
     with open(f"./data/config.json", "w") as f:
         f.write(json.dumps(data, indent=4))
-    await aries.sendEmbed(ctx, f"Set AFK To: + {afkmode_config}")
+    await aries.sendEmbed(ctx, f"Set AFK To: + {args2}")
     os.execl(sys.executable, sys.executable, "\"{}\"".format(sys.argv[0]))
 @bot.command()
 async def unban(ctx, id: int):
@@ -1589,5 +1747,4 @@ def bot_login():
         print(e)
 aries.console(clear=True, line=True)
 print("Loading...")
-files.setup()
 bot_login()
