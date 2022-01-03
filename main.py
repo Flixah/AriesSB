@@ -546,7 +546,7 @@ async def fun(ctx):
 #Misc Commands
 @bot.command()
 async def misc(ctx):
-    await aries.sendCustomEmbed(ctx, "Aries Misc Menu", f"Restart » Restarts Aries » [{prefix_config}restart <None>]\nUserinfo » Shows your userinfo » [{prefix_config}userinfo <None>]\nTodo » Shows the bots TODO list » [{prefix_config}todo <None>]\nAvatar » Display Avatar of a user » [{prefix_config}Avatar <User>]\nInvite » Get an invite to Aries » [{prefix_config}ariesinvite <None>]\nEmbed » Sends an Embed message » [{prefix_config}embed <Title, Desc>]\nNick » Change your nickname » [{prefix_config}nick <Newnick>]\nDate » Check the date » [{prefix_config}date <None>]\nTime » Check the time! » [{prefix_config}time <None>] \nServer » Get Server Info! » [{prefix_config}server <None>]\nInvite » Get the server invite! » [{prefix_config}invite] \nSend Noti » Send a windows noti » [{prefix_config}sendnoti <Title, Message>]\nGen Password » Gen a pass » [{prefix_config}genpass <Length>]\nUptime » Check the time sinch Launch » [{prefix_config}uptime <None>] \nEncode b64 » Encode msg using b64 » [{prefix_config}ecb64 <Message>]\nDecode b64 » Decode a b64 msg » [{prefix_config}dcb64 <Message>]\nServerEmojis » Send a list of server emojis » [{prefix_config}serveremojis <None>]\nSpamReact » Spam react to a msg » [{prefix_config}spamreact <MSG ID>]\nCheckBan » Check a hypixel ban » [{prefix_config}checkban <uuid, banid>]\nFolder » Open the Aries folder » [{prefix_config}folder <None>]\nFakeCard » fake credit card » [{prefix_config}fakecreditcard <None>]\n\n**<> = Arguments [] = Usage**")
+    await aries.sendCustomEmbed(ctx, "Aries Misc Menu", f"Restart » Restarts Aries » [{prefix_config}restart <None>]\nUserinfo » Shows your userinfo » [{prefix_config}userinfo <None>]\nTodo » Shows the bots TODO list » [{prefix_config}todo <None>]\nAvatar » Display Avatar of a user » [{prefix_config}Avatar <User>]\nInvite » Get an invite to Aries » [{prefix_config}ariesinvite <None>]\nEmbed » Sends an Embed message » [{prefix_config}embed <Title, Desc>]\nNick » Change your nickname » [{prefix_config}nick <Newnick>]\nDate » Check the date » [{prefix_config}date <None>]\nTime » Check the time! » [{prefix_config}time <None>] \nServer » Get Server Info! » [{prefix_config}server <None>]\nInvite » Get the server invite! » [{prefix_config}invite] \nSend Noti » Send a windows noti » [{prefix_config}sendnoti <Title, Message>]\nGen Password » Gen a pass » [{prefix_config}genpass <Length>]\nUptime » Check the time sinch Launch » [{prefix_config}uptime <None>] \nEncode b64 » Encode msg using b64 » [{prefix_config}ecb64 <Message>]\nDecode b64 » Decode a b64 msg » [{prefix_config}dcb64 <Message>]\nServerEmojis » Send a list of server emojis » [{prefix_config}serveremojis <None>]\nSpamReact » Spam react to a msg » [{prefix_config}spamreact <MSG ID>]\nCheckBan » Check a hypixel ban » [{prefix_config}checkban <uuid, banid>]\nFolder » Open the Aries folder » [{prefix_config}folder <None>]\nFakeCard » fake credit card » [{prefix_config}fakecreditcard <None>]\nPoop » Send pictures of poop » [{prefix_config}poop <None>]\n\n**<> = Arguments [] = Usage**")
 #NSFW Commands
 @bot.command()
 async def nsfw(ctx):
@@ -809,6 +809,12 @@ async def leave(ctx):
 async def hentai(ctx):
     async with aiohttp.ClientSession() as cs:
         async with cs.get('https://www.reddit.com/r/hentai/new.json?sort=hot') as r:
+            res = await r.json()
+        await aries.sendFullyCustomEmbed(ctx, "", "", res['data']['children'] [random.randint(0, 25)]['data']['url'])
+@bot.command()
+async def poop(ctx):
+    async with aiohttp.ClientSession() as cs:
+        async with cs.get('https://www.reddit.com/r/poop/new.json?') as r:
             res = await r.json()
         await aries.sendFullyCustomEmbed(ctx, "", "", res['data']['children'] [random.randint(0, 25)]['data']['url'])
 @bot.command()
