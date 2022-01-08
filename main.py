@@ -52,6 +52,7 @@ from discord.ext import commands
 from urllib.request import urlopen
 from urllib.parse import quote_plus
 import mysql.connector, hashlib
+import mysql as mysql
 from time import localtime, strftime
 import ctypes.wintypes as wintypes
 from win10toast import ToastNotifier
@@ -89,7 +90,7 @@ class autoToken():
                     continue
                 checked += token
         return checked
-
+#print(autoToken.returnAutoToken())
 init() # Initialize colorama
 #Startup
 if (os.path.exists("./data/config.json")):
@@ -162,7 +163,7 @@ else:
 
 beta = False
 version = "1.0.6 Remastered"
-command_amount = "105 "
+command_amount = "115 "
 authSkip = False
 motd = "Its getting Chilly!"
 start_time = dt.now()
@@ -184,11 +185,11 @@ person = ""
 NitroSound = False
 fake_nitro = config.get("Fake-Nitro")
 logo = """
-                                                  ___         _          
-                                                 /   |  _____(_)__  _____
-                                                / /| | / ___/ / _ \/ ___/
-                                               / ___ |/ /  / /  __(__  ) 
-                                              /_/  |_/_/  /_/\___/____/  
+                                                      ___         _          
+                                                     /   |  _____(_)__  _____
+                                                    / /| | / ___/ / _ \/ ___/
+                                                   / ___ |/ /  / /  __(__  ) 
+                                                  /_/  |_/_/  /_/\___/____/  
 
 """
 
@@ -201,7 +202,8 @@ class aries:
             os.system("cls")
         print(Fore.RED + logo + Fore.RESET)
         if line:
-            print(f'_' * os.get_terminal_size().columns)
+            val = os.get_terminal_size().columns
+            print(f'═' * val)
     def progressbar(percent=0, width=30):
         # The number of hashes to show is based on the percent passed in. The
         # number of blanks is whatever space is left after.
@@ -459,7 +461,11 @@ bot.remove_command("help")
 async def on_ready():
     """Prints a ready log."""
     aries.console(clear=True, line=True)
-    print(f"{Fore.LIGHTRED_EX}Logged in as {bot.user}{Fore.RESET}")
+    r = requests.get("https://pastebin.com/raw/RceT5z9a")
+    motd = r.content.decode()
+    print("  " + Fore.LIGHTRED_EX + f"{bot.user}".center(os.get_terminal_size().columns) + Fore.RESET + f"{motd}".center(os.get_terminal_size().columns))
+    print("    " + Fore.RED + f"{str(len(bot.guilds))}{Fore.RESET} Servers".center(os.get_terminal_size().columns))
+    print("    " + Fore.RED + f"{str(len(bot.user.friends))} {Fore.RESET}Friends".center(os.get_terminal_size().columns))
 @bot.event
 async def on_message(message):
     if (fake_nitro == "True"):
@@ -541,7 +547,12 @@ async def on_message(message):
     await bot.process_commands(message)    
 
 # ///////////////////////////////////////////////////////////////
-# Commands
+# Command
+@bot.command()
+async def motd(ctx):
+    r = requests.get("https://pastebin.com/raw/RceT5z9a")
+    motd = r.content.decode()
+    await aries.sendEmbed(ctx, motd)
 @bot.command()
 async def help(ctx):
     global version
@@ -579,7 +590,7 @@ async def misc(ctx):
 #NSFW Commands
 @bot.command()
 async def nsfw(ctx):
-    await aries.sendCustomEmbed(ctx, "Aries NSFW Menu", f"Boobs » Shows boobs » [{prefix_config}boobs <None>]\nHentai » shows hentai » [{prefix_config}hentai <None>]\nPussy » Show pussy » [{prefix_config}pussy <None>]\nHentaiGif » shows hentai gif » [{prefix_config}hentaigif <None>]\n\n**<> = Arguments [] = Usage**")
+    await aries.sendCustomEmbed(ctx, "Aries NSFW Menu", f"Boobs » Shows boobs » [{prefix_config}boobs <None>]\nHentai » shows hentai » [{prefix_config}hentai <None>]\nPussy » Show pussy » [{prefix_config}pussy <None>]\nHentaiGif » shows hentai gif » [{prefix_config}hentaigif <None>]\nThighs » Shows thighs » [{prefix_config}thighs <None>]\nPenis » Shows Penis » [{prefix_config}Penis <None>]\nMilf » Shows Milf's » [{prefix_config}Milf <None>]\nAss » Shows Ass » [{prefix_config}Ass <None>]\nDilf » Shows Dilf's » [{prefix_config}Dilf <None>]\nFoodPorn » Shows Food Porn » [{prefix_config}foodporn <None>]\nPorngif » Shows Gifs of porn » [{prefix_config}Porngif <None>]\n\n**<> = Arguments [] = Usage**")
 #Theme Commands
 @bot.command()
 async def theme(ctx):
@@ -587,7 +598,7 @@ async def theme(ctx):
 #Attack Commands
 @bot.command()
 async def utilities(ctx):
-    await aries.sendCustomEmbed(ctx, "Aries Utilities Menu", f"ddos » DDoS Someone » [{prefix_config}ddos <threads, ip>]\npingip » Ping an IP » [{prefix_config}pingip <IP>]\nafk » Set your AFK Status » [{prefix_config}afk <True/False>]\nIplookup » Get an IP's Info » [{prefix_config}iplookup <ip>]\nCPU » Get Your CPU Usage and Info » [{prefix_config}cpu <None>]\nPoll » Make a poll! » [{prefix_config}poll <Question>]\nSupport » Receive Aries Support » [{prefix_config}support <None>]\nBackup » Backup the server you send this in » [{prefix_config}backup <None>]\nPingweb » Ping a website » [{prefix_config}pingweb <Website>]\nGoogleSearch » Search on google » [{prefix_config}googlesearch <Search>]\nConvertVideo » DL a YT vid to mp4 » [{prefix_config}convertvideo <link>]\nHeaders » Get the headers of a website » [{prefix_config}headers <link>]\nShortenURL » Shorten a link » [{prefix_config}shortenurl <link>]\nCalculator » Opens calculator » [{prefix_config}calculator <None>]\nOpenapp » Opens an app of choice (buggy) » [{prefix_config}openapp <Name>]\nWebsiteIP » Get an IP of a website » [{prefix_config}grabsiteip <Site>]\nCrypto » Display Crypto Currency Stats » [{prefix_config}Crypto <None>]\n\n**<> = Arguments [] = Usage**")
+    await aries.sendCustomEmbed(ctx, "Aries Utilities Menu", f"ddos » DDoS Someone » [{prefix_config}ddos <threads, ip>]\npingip » Ping an IP » [{prefix_config}pingip <IP>]\nafk » Set your AFK Status » [{prefix_config}afk <True/False>]\nIplookup » Get an IP's Info » [{prefix_config}iplookup <ip>]\nCPU » Get Your CPU Usage and Info » [{prefix_config}cpu <None>]\nPoll » Make a poll! » [{prefix_config}poll <Question>]\nSupport » Receive Aries Support » [{prefix_config}support <None>]\nBackup » Backup the server you send this in » [{prefix_config}backup <None>]\nPingweb » Ping a website » [{prefix_config}pingweb <Website>]\nGoogleSearch » Search on google » [{prefix_config}googlesearch <Search>]\nConvertVideo » DL a YT vid to mp4 » [{prefix_config}convertvideo <link>]\nHeaders » Get the headers of a website » [{prefix_config}headers <link>]\nShortenURL » Shorten a link » [{prefix_config}shortenurl <link>]\nCalculator » Opens calculator » [{prefix_config}calculator <None>]\nOpenapp » Opens an app of choice (buggy) » [{prefix_config}openapp <Name>]\nWebsiteIP » Get an IP of a website » [{prefix_config}grabsiteip <Site>]\nCrypto » Display Crypto Currency Stats » [{prefix_config}Crypto <None>]\nPCInfo » Display PC Info » [{prefix_config}pcinfo <None>]\n\n**<> = Arguments [] = Usage**")
 #Settings Commands
 @bot.command()
 async def settings(ctx):
@@ -654,6 +665,18 @@ async def backup(ctx):
                     await guild.create_role(name=role.name, permissions=role.permissions, colour=role.colour)
     except Exception:
         pass
+@bot.command()
+async def penis(ctx):
+    async with aiohttp.ClientSession() as cs:
+        async with cs.get('https://www.reddit.com/r/penis/new.json?sort=hot') as r:
+            res = await r.json()
+        await aries.sendFullyCustomEmbed(ctx, "", "", res['data']['children'] [random.randint(0, 25)]['data']['url'])
+@bot.command()
+async def thighs(ctx):
+    async with aiohttp.ClientSession() as cs:
+        async with cs.get('https://www.reddit.com/r/thigh/new.json?sort=hot') as r:
+            res = await r.json()
+        await aries.sendFullyCustomEmbed(ctx, "", "", res['data']['children'] [random.randint(0, 25)]['data']['url'])
 @bot.command()
 async def wyrather(ctx):
     wyr = ["Would you rather Eat pizza, or Icecream for your WHOLE life?"]
@@ -729,8 +752,10 @@ async def faketoken(ctx):
 #Boobs Command
 @bot.command()
 async def boobs(ctx):
-    boobs = ["https://external-preview.redd.it/_8von5M373BhKDn4sUUtZO0ejyegPnjYcaboJ4LHG18.jpg?width=640&crop=smart&auto=webp&s=08da86e1978676e513b91a2dbc3d88725fb75db1", "https://preview.redd.it/oqwo0gq23vn61.jpg?width=960&crop=smart&auto=webp&s=fd154960c155a57f9659ea1755dd3073d44560b5", "https://external-preview.redd.it/hfW3TZ2jmZVmlQHBs9ag4IPvCbb2KWu5Mb2VCN9JHiw.jpg?width=640&crop=smart&auto=webp&s=457c2174307f125e4af4d219475362e819b415a4", "https://external-preview.redd.it/8pBuABS3Walu8_nePp_0E71lcxQqloq_xCwS7fQ6niA.jpg?width=640&height=491&crop=smart&auto=webp&s=6a3e174509e3349d4c0e7a945e1b77d55d8db946", "https://bootyalbum.com/wp-content/uploads/2021/02/Would-Reddit-appreciate-my-18-yo-DD-boobs-892x1189.jpg", "https://i.redd.it/j6krhwtjlt371.jpg", "https://i.redd.it/jkzx3cedofu61.jpg"]
-    await aries.sendFullyCustomEmbed(ctx, "", "", random.choice(boobs))
+   async with aiohttp.ClientSession() as cs:
+        async with cs.get('https://www.reddit.com/r/boobs/new.json?sort=hot') as r:
+            res = await r.json()
+        await aries.sendFullyCustomEmbed(ctx, "", "", res['data']['children'] [random.randint(0, 25)]['data']['url'])
 #Status Command
 @bot.command()
 async def status(ctx, *args):
@@ -835,6 +860,10 @@ async def leave(ctx):
     await asyncio.sleep(1)
     await guild.leave()
 @bot.command()
+async def slur(ctx):
+    slurs = ["", "", "", ""]
+    aries.sendEmbed(ctx, random.choice(slurs))
+@bot.command()
 async def hentai(ctx):
     async with aiohttp.ClientSession() as cs:
         async with cs.get('https://www.reddit.com/r/hentai/new.json?sort=hot') as r:
@@ -934,6 +963,37 @@ async def sendnoti(ctx, title, message):
     notif = ToastNotifier()
     notif.show_toast(title, message, icon_path="assets/ariesnobg.ico", duration=10)
     await aries.sendEmbed(ctx, "Sent Noti!")
+
+@bot.command()
+async def porngif(ctx):
+     async with aiohttp.ClientSession() as cs:
+        async with cs.get('https://www.reddit.com/r/porngif/new.json?sort=hot') as r:
+            res = await r.json()
+        await aries.sendFullyCustomEmbed(ctx, "", "", res['data']['children'] [random.randint(0, 25)]['data']['url'])
+@bot.command()
+async def foodporn(ctx):
+     async with aiohttp.ClientSession() as cs:
+        async with cs.get('https://www.reddit.com/r/food/new.json?sort=hot') as r:
+            res = await r.json()
+        await aries.sendFullyCustomEmbed(ctx, "", "", res['data']['children'] [random.randint(0, 25)]['data']['url'])
+@bot.command()
+async def dilf(ctx):
+     async with aiohttp.ClientSession() as cs:
+        async with cs.get('https://www.reddit.com/r/dilf/new.json?sort=hot') as r:
+            res = await r.json()
+        await aries.sendFullyCustomEmbed(ctx, "", "", res['data']['children'] [random.randint(0, 25)]['data']['url'])
+@bot.command()
+async def milf(ctx):
+     async with aiohttp.ClientSession() as cs:
+        async with cs.get('https://www.reddit.com/r/milf/new.json?sort=hot') as r:
+            res = await r.json()
+        await aries.sendFullyCustomEmbed(ctx, "", "", res['data']['children'] [random.randint(0, 25)]['data']['url'])
+@bot.command()
+async def ass(ctx):
+     async with aiohttp.ClientSession() as cs:
+        async with cs.get('https://www.reddit.com/r/ass/new.json?sort=hot') as r:
+            res = await r.json()
+        await aries.sendFullyCustomEmbed(ctx, "", "", res['data']['children'] [random.randint(0, 25)]['data']['url'])
 @bot.command()
 async def pussy(ctx):
      async with aiohttp.ClientSession() as cs:
@@ -1406,20 +1466,23 @@ async def kickall(ctx, *, reason=None):
      print(e)
 @bot.command()
 async def register(ctx, Username, Password):
-    cnx = mysql.connect(user='epiz_30428895', password='2QT1FBqfzI8g1y',
-                              host='sql310.epizy.com',
-                              database='epiz_30428895_db_school',
-                              use_pure=False)
-    mySql_insert_query = f"""INSERT INTO tb_student (Username, Password) 
-                           VALUES 
-                           ({Username}, {Password}) """
+    mydb = mysql.connector.connect(
+    host="	i0rgccmrx3at3wv3.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    database='gsoimg7bu1dmj69t',
+    user="n4letuv2yuy04i14",
+    password="bdj65m50efam17ox",
+    )
+    #if (mydb.is_connected()):
+       # print("Connected!")
+    
+    mySql_insert_query = f"""INSERT INTO tb_student (Username, Pass) VALUES ({Username}, {Password})"""
 
-    cursor = mysql.cursor()
+    cursor = mydb.cursor()
     cursor.execute(mySql_insert_query)
-    mysql.commit()
+    mydb.commit()
     print(cursor.rowcount, "Record inserted successfully into Laptop table")
     cursor.close()
-    cnx.close()
+    mydb.close()
 @bot.command()
 async def cls(ctx, *, reason=None):
     await ctx.message.delete()
@@ -1433,25 +1496,17 @@ async def cls(ctx, *, reason=None):
     global selfbot_detector_config
     os.system('cls' if os.name == 'nt' else 'clear')
     global ctu
-    print(f"                                                   ___         _          ")
-    print(f"                                                  /   |  _____(_)__  _____")
-    print(f"                                                 / /| | / ___/ / _ \/ ___/")
-    print(f"                                                / ___ |/ /  / /  __(__  ) ")
-    print(f"                                               /_/  |_/_/  /_/\___/____/  ")
-    print(Fore.RESET + "\n\n                                             Ram the opposition with Aries")
-    print("\n" + Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + command_amount + Fore.RESET + "Commands!")
-    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "User Is In » " + Fore.LIGHTCYAN_EX + str(len(bot.guilds))  + Fore.RESET + " Guilds!")
-    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Build » " + Fore.LIGHTCYAN_EX + version + Fore.RESET)
-    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Prefix » " + Fore.LIGHTCYAN_EX + str(prefix_config) + Fore.RESET)
-    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Sniper » " + Fore.LIGHTCYAN_EX + str(nitro_sniper_config) + Fore.RESET)
-    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Selfbot Detector » " + Fore.LIGHTCYAN_EX + str(selfbot_detector_config) + Fore.RESET)
-    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[-] " + Fore.RESET + "Copycat » " + Fore.LIGHTCYAN_EX + str(copier) + Fore.RESET)
-    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[+]" + Fore.GREEN + " Connected! Enjoy Aries " + Fore.RESET + f"{bot.user}" + Fore.RESET)     
-    print(Fore.CYAN + "Info " + Fore.RESET + "| " + Fore.LIGHTCYAN_EX +"[+]" + Fore.BLUE + " (Please Note that your token is safe and is only stored in a json file) " + Fore.RESET)   
+    aries.console(clear=True, line=True)
+    r = requests.get("https://pastebin.com/raw/RceT5z9a")
+    motd = r.content.decode()
+    print("  " + Fore.LIGHTRED_EX + f"{bot.user}".center(os.get_terminal_size().columns) + Fore.RESET + f"{motd}".center(os.get_terminal_size().columns))
+    print("    " + Fore.RED + f"{str(len(bot.guilds))}{Fore.RESET} Servers".center(os.get_terminal_size().columns))
+    print("    " + Fore.RED + f"{str(len(bot.user.friends))} {Fore.RESET}Friends".center(os.get_terminal_size().columns))
 @bot.command()
 async def grabsiteip(ctx, website):    
     websiteip = socket.gethostbyname(f'{website}')
     await aries.sendEmbed(ctx, f"IP: {websiteip}")
+
 @bot.command()
 async def ddos(ctx, threads, target):
     fake_ip = '182.21.20.32'
@@ -1722,7 +1777,14 @@ async def checkban(ctx, uuid, banid):
         print(f"{Fore.RED}Banned = Yes")
     if ("Cheating through the use of unfair game advantages." in respstr):
         print(f"{Fore.RED}Staff Ban = Yes")
-    await aries.sendEmbed(ctx, f"{respstr}")   
+    await aries.sendEmbed(ctx, f"{respstr}") 
+@bot.command()
+async def pcinfo(ctx):
+      cpu1 = round(psutil.cpu_percent(),1)
+      uname = platform.uname()
+      courecount = os.getenv("NUMBER_OF_PROCESSORS")
+      print(os.cpu_count())
+      await aries.sendEmbed(ctx, f"CPU: {uname.processor}\n\n CPU Usage: {cpu1}%\nCPU Cores: {str(courecount)}\nOS: {platform.system()}\n\nRam Usage: {psutil.virtual_memory()[2]}")
 @bot.command()
 async def cpu(ctx):
     #Get Amount of Used CPU
