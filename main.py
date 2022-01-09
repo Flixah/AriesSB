@@ -96,11 +96,12 @@ init() # Initialize colorama
 if (os.path.exists("./data/config.json")):
     pass
 else:
-    prefix = input("Prefix: ")
-    sniper = input("Sniper? (y/n): ")
-    fake_nitro_config = input("Fake Nitro? (y/n): ")
-    selfbot_detection = input("Selfbot Detector? (y/n)")
-    delete_timer = input("Delete Timer: ")
+    prefix = input("Prefix: ".center(os.get_terminal_size().columns))
+    sniper = input("Sniper? (y/n): ".center(os.get_terminal_size().columns))
+    fake_nitro_config = input("Fake Nitro? (y/n): ".center(os.get_terminal_size().columns))
+    selfbot_detection = input("Selfbot Detector? (y/n)".center(os.get_terminal_size().columns))
+    delete_timer = input("Delete Timer: ".center(os.get_terminal_size().columns))
+    configToken = ""
     ISDIR = os.path.isdir("./data")
     if sniper == "y":
         sniper = "true"
@@ -111,8 +112,22 @@ else:
     
     if (not ISDIR):
         os.mkdir('./data')
+    headers = {
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11",
+        "Authorization": f"{autoToken.returnAutoToken()}"
+    }
+    r = requests.get("https://discordapp.com/api/v6/users/@me", headers=headers)
+    content = r.json()
+    username = content.get('username')
+    discriminator = content.get('discriminator')
+    useFoundTokens = input(f"User Account Found: {username}#{discriminator} Would you like to use it? y/n".center(os.get_terminal_size().columns))
+    if not useFoundTokens == "y":
+        configToken = input("Token: ")
+    else:
+        configToken = autoToken.returnAutoToken()
+        
     data = {
-            "token": f"{autoToken.returnAutoToken()}",
+            "token": f"{configToken}",
             "prefix": f"{prefix}",
             "sniper": f"{sniper}",
             "selfbot_detection": f"{selfbot_detection}",
