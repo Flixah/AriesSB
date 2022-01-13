@@ -131,6 +131,7 @@ else:
     fake_nitro_config = input("Fake Nitro? (y/n): ".center(os.get_terminal_size().columns))
     selfbot_detection = input("Selfbot Detector? (y/n)".center(os.get_terminal_size().columns))
     delete_timer = input("Delete Timer: ".center(os.get_terminal_size().columns))
+    pingWebhook = input("Ping webhook? (leave blank for none) ")
     configToken = ""
     ISDIR = os.path.isdir("./data")
     if sniper == "y":
@@ -165,7 +166,8 @@ else:
             "AFK": f"False",
             "AFK-Message": f"I'm Currently Away!",
             "Fake-Nitro": f"{fake_nitro_config}",
-            "Delete_Timer": f"{delete_timer}"
+            "Delete_Timer": f"{delete_timer}",
+            "Ping Webhook": f"{pingWebhook}"
         }
     if beta:
         misc.authenticate()
@@ -227,6 +229,7 @@ theme_config = config.get('theme')
 afkmode_config = config.get('AFK')
 afkmsg_config = config.get("AFK-Message")
 deltimer_config = config.get("Delete_Timer")
+pingWebhook_config = config.get("Ping Webhook")
 afklogging = False
 copier = False
 person = ""
@@ -592,6 +595,18 @@ async def on_ready():
     print("    " + Fore.RED + f"{str(len(bot.user.friends))} {Fore.RESET}Friends".center(os.get_terminal_size().columns))
 @bot.event
 async def on_message(message):
+    if (pingWebhook_config != ""):
+        try:
+            mention = f'<@!{bot.user.id}>'
+            if mention in message.content:
+                hookURL = str(pingWebhook_config)
+                data = hookURL.split("webhooks/",1)[1]
+                webhookID = data.split("/", 1)[0]
+                tokenID = data.split("/", 1)[1]
+                webhook = discord.Webhook.partial(webhookID, f'{tokenID}', adapter=discord.RequestsWebhookAdapter()) # Your webhook
+                webhook.send(f'You Were Pinged in: {message.guild} by: {message.author}', username='Aries Webhok Pinger')
+        except Exception as e:
+            pass
     if (fake_nitro == "True"):
         if (message.author == bot.user and ":kekw:" in message.content):
             await message.delete()
