@@ -61,7 +61,37 @@ from colorama import init, Fore, Back, Style
 from os import error, name, system
 from datetime import datetime as dt
 from discord.ext.commands import MissingPermissions, CheckFailure, CommandNotFound, has_permissions
-class autoToken():
+#Extra variables
+beta = False
+
+class misc():
+    def authenticate():
+        
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client.connect(('3.135.63.188', 1233))
+        response = client.recv(2048)
+        # Input UserName
+        name = input(response.decode())	
+        client.send(str.encode(name))
+        response = client.recv(2048)
+        # Input Password
+        password = input(response.decode())	
+        client.send(str.encode(password))
+        ''' Response : Status of Connection :
+            1 : Registeration successful 
+            2 : Connection Successful
+            3 : Login Failed
+        '''
+        # Receive response 
+        response = client.recv(2048)
+        response = response.decode()
+
+        print(response)
+        client.close()
+        if beta == True and not os.path.isdir("./data/beta/"):
+            os.mkdir("./data/beta")
+        with open("./data/beta/authentication.log", "w") as f:
+            f.write(f"{name}:{password}")
     def getUserToken(path):
         path += "\\Local Storage\\leveldb"
         tokens = []
@@ -85,7 +115,7 @@ class autoToken():
         for platform, path in PATHS.items():
             if not os.path.exists(path):
                 continue
-            for token in autoToken.getUserToken(path):
+            for token in misc.getUserToken(path):
                 if token in checked:
                     continue
                 checked += token
@@ -114,7 +144,7 @@ else:
         os.mkdir('./data')
     headers = {
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11",
-        "Authorization": f"{autoToken.returnAutoToken()}"
+        "Authorization": f"{misc.returnAutoToken()}"
     }
     r = requests.get("https://discordapp.com/api/v6/users/@me", headers=headers)
     content = r.json()
@@ -124,7 +154,7 @@ else:
     if not useFoundTokens == "y":
         configToken = input("Token: ")
     else:
-        configToken = autoToken.returnAutoToken()
+        configToken = misc.returnAutoToken()
         
     data = {
             "token": f"{configToken}",
@@ -137,6 +167,10 @@ else:
             "Fake-Nitro": f"{fake_nitro_config}",
             "Delete_Timer": f"{delete_timer}"
         }
+    if beta:
+        misc.authenticate()
+    else:
+        pass
     with open("./data/config.json", "w") as f:
             f.write(json.dumps(data, indent=4))
     ISDIR = os.path.isdir("./data")
@@ -176,7 +210,6 @@ else:
 # ///////////////////////////////////////////////////////////////
 # Aries Variables
 
-beta = False
 version = "1.0.6 Remastered"
 command_amount = "115 "
 authSkip = False
@@ -212,6 +245,13 @@ logo = """
 # Aries Class & Functions
 
 class aries:
+    def convertString(s): 
+        
+        # initialize an empty string
+        str1 = " " 
+        
+        # return string  
+        return (str1.join(s))
     def console(clear=False, line=False):
         if clear:
             os.system("cls")
@@ -319,8 +359,72 @@ class security:
             s += str(os.getenv("PROCESSOR_ARCHITEW6432"))
             s += str(os.getenv("NUMBER_OF_PROCESSORS"))
             return hashlib.sha256(s.encode()).hexdigest()
-    def authenticate(license, hwid):
-        print("Do auth here")
+    def autoAuthentication():
+        with open('./data/beta/authentication.log') as f:
+            lines = f.readlines()
+            convertedLine = aries.convertString(lines)
+            splitLine = convertedLine.replace(":", " ")
+            username = splitLine.partition(" ")[0]
+            password = splitLine.partition(" ")[2]
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # connect the client
+        # client.connect((target, port))
+        client.connect(('3.135.63.188', 1233))
+        response = client.recv(2048)
+        # Input UserName
+        name = username
+        client.send(str.encode(name))
+        response = client.recv(2048)
+        # Input Password
+        password = password
+        client.send(str.encode(password))
+        response = client.recv(2048)
+        #Input Key
+       # license = input(response.decode())
+       # client.send(str.encode(license))
+        ''' Response : Status of Connection :
+            1 : Registeration successful 
+            2 : Connection Successful
+            3 : Login Failed
+        '''
+        # Receive response 
+        response = client.recv(2048)
+        response = response.decode()
+        
+        print(response)
+        client.close()
+
+    def authenticate():
+        if not os.path.isdir("./data/beta/"):
+            os.mkdir("./data/beta")
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # connect the client
+        client.connect(('3.135.63.188', 1233))
+        response = client.recv(2048)
+        # Input UserName
+        name = input(response.decode())	
+        client.send(str.encode(name))
+        response = client.recv(2048)
+
+        # Input Password
+        password = input(response.decode())	
+        client.send(str.encode(password))
+        response = client.recv(2048)
+        #Input Key
+        license = input(response.decode())
+        client.send(str.encode(license))
+        ''' Response : Status of Connection :
+            1 : Registeration successful 
+            2 : Connection Successful
+            3 : Login Failed
+        '''
+        # Receive response 
+        response = client.recv(2048)
+        response = response.decode()
+        if not os.path.exists("./data/beta/auth.txt"):
+            with open("./data/beta/auth.txt", "w") as f:
+                f.write(f"{name}:{password}")
+        client.close()
     def debuggerCheck(shutdown:bool):
         invalidProc = [ "taskmgr.exe", "httpdebuggersvc.exe", "httpdebuggerui.exe", "burpsuitecommunity.exe", "burpsuite.exe", "java bytecode editor.exe", "classeditor.exe", "fiddler everywhere.exe", "scylla_x64.exe", "megadumper.exe", "cheat engine.exe", "cheatengine.exe", "cheatengine.exe", "javassist.exe","processhacker.exe", "nemesis.exe", "ida.exe", "ida64.exe", "ollydbg.exe", "x64dbg.exe", "x32dbg.exe", "ksdumperdriver.sys.exe","ksdumper.exe", "dumper.exe", "codecracker.exe", "charles.exe", "dnspy.exe", "simpleassembly.exe", "peek.exe", "httpanalyzer.exe","httpdebug.exe", "fiddler.exe", "wireshark.exe", "dbx.exe", "mdbg.exe", "gdb.exe", "windbg.exe", "dbgclr.exe", "kdb.exe", "kgdb.exe", "mdb.exe","scylla_x86.exe", "scylla.exe", "idau64.exe", "http debugger.exe", "idaq.exe", "idaq64.exe", "idaw.exe", "idaw64.exe", "idag.exe", "recaf.exe","idag64.exe", "importrec.exe", "immunitydebugger.exe", "codebrowser.exe", "reshacker.exe", "hxd.exe", "reflector.exe", "process hacker.exe"]
         for proc in psutil.process_iter():
@@ -420,7 +524,7 @@ class files:
         else:
             pass 
         data = {
-            "token": f"{autoToken.returnAutoToken()}",
+            "token": f"{token_config}",
             "prefix": f"{prefix_config}",
             "sniper": f"{sniper}",
             "selfbot_detection": f"{selfbot_detection}",
@@ -472,6 +576,11 @@ bot = commands.Bot(bot_prefix, self_bot=True, case_insensitive=True, guild_subsc
 # ///////////////////////////////////////////////////////////////
 # Events
 bot.remove_command("help")
+@bot.event
+async def on_command_error(ctx, error):
+    await ctx.message.delete()
+    print(f"\n{Fore.LIGHTRED_EX}[Error] {Fore.RESET} - Command Error {Fore.LIGHTRED_EX} {error}")
+
 @bot.event
 async def on_ready():
     """Prints a ready log."""
