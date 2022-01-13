@@ -151,7 +151,7 @@ else:
     content = r.json()
     username = content.get('username')
     discriminator = content.get('discriminator')
-    useFoundTokens = input(f"                             User Account Found: {username}#{discriminator} Would you like to use it? y/n")
+    useFoundTokens = input(f"                             User Account Found: {username}#{discriminator} Would you like to use it? (y/n): ")
     if not useFoundTokens == "y":
         configToken = input("Token: ")
     else:
@@ -235,12 +235,14 @@ copier = False
 person = ""
 NitroSound = False
 fake_nitro = config.get("Fake-Nitro")
-logo = """
-                                                      ___         _          
-                                                     /   |  _____(_)__  _____
-                                                    / /| | / ___/ / _ \/ ___/
-                                                   / ___ |/ /  / /  __(__  ) 
-                                                  /_/  |_/_/  /_/\___/____/  
+logo = f"""
+                                                   █████╗ ██████╗ ██╗███████╗███████╗
+                                                   ██╔══██╗██╔══██╗██║██╔════╝██╔════╝
+                                                   ███████║██████╔╝██║█████╗  ███████╗
+                                                   ██╔══██║██╔══██╗██║██╔══╝  ╚════██║
+                                                   ██║  ██║██║  ██║██║███████╗███████║
+                                                   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝
+
 
 """
 
@@ -258,7 +260,7 @@ class aries:
     def console(clear=False, line=False):
         if clear:
             os.system("cls")
-        print(Fore.RED + logo + Fore.RESET)
+        print(logo)
         if line:
             val = os.get_terminal_size().columns
             print(f'═' * val)
@@ -610,38 +612,74 @@ async def on_message(message):
     if (fake_nitro == "True"):
         if (message.author == bot.user and ":kekw:" in message.content):
             await message.delete()
-            await message.channel.send(f"https://cdn.discordapp.com/emojis/905936038080446514.png?size=44")
+            data = str(message.content)
+            stringToSend = data.replace(":kekw:", "")
+            if message.content != ":kekw:":
+                await message.channel.send(stringToSend)
+            await message.channel.send("https://cdn.discordapp.com/emojis/905936038080446514.png?size=44")
 
         if (message.author == bot.user and ":pepeheart:" in message.content):
             await message.delete()
+            data = str(message.content)
+            stringToSend = data.replace(":pepeheart:", "")
+            if message.content != ":pepeheart:":
+                await message.channel.send(stringToSend)
             await message.channel.send(f"https://cdn.discordapp.com/emojis/836195152103604254.png?size=44")
 
         if (message.author == bot.user and ":pepecry:" in message.content):
             await message.delete()
+            data = str(message.content)
+            stringToSend = data.replace(":pepecry:", "")
+            if message.content != ":pepecry:":
+                await message.channel.send(stringToSend)
             await message.channel.send(f"https://cdn.discordapp.com/emojis/888517711309721691.png?size=44")
             
         if (message.author == bot.user and ":exactly:" in message.content):
             await message.delete()
+            data = str(message.content)
+            stringToSend = data.replace(":exactly:", "")
+            if message.content != ":exactly:":
+                await message.channel.send(stringToSend)
             await message.channel.send(f"https://cdn.discordapp.com/emojis/922883421636800572.gif?size=44")
 
         if (message.author == bot.user and ":peperave:" in message.content):
             await message.delete()
+            data = str(message.content)
+            stringToSend = data.replace(":peperave:", "")
+            if message.content != ":peperave:":
+                await message.channel.send(stringToSend)
             await message.channel.send(f"https://cdn.discordapp.com/emojis/694036644998807592.gif?size=44")
 
         if (message.author == bot.user and ":picardo:" in message.content):
             await message.delete()
+            data = str(message.content)
+            stringToSend = data.replace(":picardo:", "")
+            if message.content != ":picardo:":
+                await message.channel.send(stringToSend)
             await message.channel.send(f"https://cdn.discordapp.com/emojis/891675815832584262.png?size=44")
 
         if (message.author == bot.user and ":yeetusdeletus:" in message.content):
             await message.delete()
+            data = str(message.content)
+            stringToSend = data.replace(":yeetusdeletus:", "")
+            if message.content != ":yeetusdeletus:":
+                await message.channel.send(stringToSend)
             await message.channel.send(f"https://cdn.discordapp.com/emojis/886018572453822554.png?size=44")
 
         if (message.author == bot.user and ":klas:" in message.content):
             await message.delete()
+            data = str(message.content)
+            stringToSend = data.replace(":klas:", "")
+            if message.content != ":klas:":
+                await message.channel.send(stringToSend)
             await message.channel.send(f"https://cdn.discordapp.com/emojis/901635160871690310.png?size=44")
         
         if (message.author == bot.user and ":sadklas:" in message.content):
             await message.delete()
+            data = str(message.content)
+            stringToSend = data.replace(":sadklas:", "")
+            if message.content != ":sadklas:":
+                await message.channel.send(stringToSend)
             await message.channel.send(f"https://cdn.discordapp.com/emojis/901635219101208647.png?size=44")
 
     #AFK Mode
