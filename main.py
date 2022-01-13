@@ -126,12 +126,12 @@ init() # Initialize colorama
 if (os.path.exists("./data/config.json")):
     pass
 else:
-    prefix = input("Prefix: ".center(os.get_terminal_size().columns))
-    sniper = input("Sniper? (y/n): ".center(os.get_terminal_size().columns))
-    fake_nitro_config = input("Fake Nitro? (y/n): ".center(os.get_terminal_size().columns))
-    selfbot_detection = input("Selfbot Detector? (y/n)".center(os.get_terminal_size().columns))
-    delete_timer = input("Delete Timer: ".center(os.get_terminal_size().columns))
-    pingWebhook = input("Ping webhook? (leave blank for none) ")
+    prefix = input("                                                        Prefix: ")
+    sniper = input("                                                    Sniper? (y/n): ")
+    fake_nitro_config = input("                                                  Fake Nitro? (y/n): ")
+    selfbot_detection = input("                                                Selfbot Detector? (y/n): ")
+    delete_timer = input("                                                     Delete Timer: ")
+    pingWebhook = input("                                         Ping webhook? (leave blank for none) ")
     configToken = ""
     ISDIR = os.path.isdir("./data")
     if sniper == "y":
@@ -151,7 +151,7 @@ else:
     content = r.json()
     username = content.get('username')
     discriminator = content.get('discriminator')
-    useFoundTokens = input(f"User Account Found: {username}#{discriminator} Would you like to use it? y/n".center(os.get_terminal_size().columns))
+    useFoundTokens = input(f"                             User Account Found: {username}#{discriminator} Would you like to use it? y/n")
     if not useFoundTokens == "y":
         configToken = input("Token: ")
     else:
