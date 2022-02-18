@@ -65,7 +65,8 @@ from datetime import datetime as dt
 from discord.ext.commands import MissingPermissions, CheckFailure, CommandNotFound, has_permissions
 #Extra variables
 beta = False
-
+username = ""
+discriminator = ""
 class misc():
     def authenticate():
         
@@ -121,6 +122,26 @@ class misc():
                     continue
                 tkns.append(token)
         return tkns[0]
+    def validateToken():
+        global username
+        global discriminator
+        headers = {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11",
+            "Authorization": f"{misc.returnAutoToken()}"
+        }
+        r = requests.get("https://discordapp.com/api/v6/users/@me", headers=headers)
+        content = r.json()
+        username = content.get('username')
+        discriminator = content.get('discriminator')
+        if (username + discriminator == "None#None"):
+            headers = {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11",
+            "Authorization": f"{misc.returnAutoToken()[1]}"
+            }
+            r2 = requests.get("https://discordapp.com/api/v6/users/@me", headers=headers)
+            content2 = r.json()
+            username = content2.get('username')
+            discriminator = content2.get('discriminator')
 #print(autoToken.returnAutoToken())
 init() # Initialize colorama
 #Startup
@@ -145,15 +166,8 @@ else:
     
     if (not ISDIR):
         os.mkdir('./data')
-    headers = {
-        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11",
-        "Authorization": f"{misc.returnAutoToken()}"
-    }
-    r = requests.get("https://discordapp.com/api/v6/users/@me", headers=headers)
-    content = r.json()
-    username = content.get('username')
-    discriminator = content.get('discriminator')
  #   print(misc.returnAutoToken())
+    misc.validateToken()
     useFoundTokens = input(f"                             User Account Found: {username}#{discriminator} Would you like to use it? (y/n): ")
     if not useFoundTokens == "y":
         configToken = input("Token: ")
@@ -216,7 +230,7 @@ else:
 # ///////////////////////////////////////////////////////////////
 # Aries Variables
 
-version = "1.0.6 Remastered"
+version = "1.0.8 Remastered"
 command_amount = "115 "
 authSkip = False
 motd = "Its getting Chilly!"
@@ -235,7 +249,7 @@ afkmsg_config = config.get("AFK-Message")
 deltimer_config = config.get("Delete_Timer")
 pingWebhook_config = config.get("Ping Webhook")
 mode_config = config.get("Mode")
-latestVers = "1.0.7"
+latestVers = "1.0.8"
 afklogging = False
 copier = False
 person = ""
@@ -572,7 +586,9 @@ class files:
             "AFK": f"False",
             "AFK-Message": f"I'm Currently Away!",
             "Fake-Nitro": f"{fake_nitro_config}",
-            "Delete_Timer": f"{delete_timer}"
+            "Delete_Timer": f"{delete_timer}",
+            "Ping Webhook": f"{pingWebhook_config}",
+            "Mode": f"{mode_config}"
         }
         with open("./data/config.json", "w") as f:
             f.write(json.dumps(data, indent=4))
@@ -1116,7 +1132,9 @@ async def setdet(ctx, val):
         "AFK": f"{afkmode_config}",
         "AFK-Message": f"{afkmsg_config}",
         "Fake-Nitro": f"{fake_nitro}",
-        "Delete_Timer": f"{deltimer_config}"
+        "Delete_Timer": f"{deltimer_config}",
+        "Ping Webhook": f"{pingWebhook_config}",
+        "Mode": f"{mode_config}"
     }
     with open(f"./data/config.json", "w") as f:
         f.write(json.dumps(data, indent=4))
@@ -1247,7 +1265,9 @@ async def afkmessage(ctx, *, message):
         "AFK": f"{afkmode_config}",
         "AFK-Message": f"{message}",
         "Fake-Nitro": f"{fake_nitro}",
-        "Delete_Timer": f"{deltimer_config}"
+        "Delete_Timer": f"{deltimer_config}",
+        "Ping Webhook": f"{pingWebhook_config}",
+        "Mode": f"{mode_config}"
     }
     with open("./data/config.json", "w") as f:
         f.write(json.dumps(data, indent=4))
@@ -1321,7 +1341,9 @@ async def setsniper(ctx, value):
         "AFK": f"{afkmode_config}",
         "AFK-Message": f"{afkmsg_config}",
         "Fake-Nitro": f"{fake_nitro_config}",
-        "Delete_Timer": f"{delete_timer}"
+        "Delete_Timer": f"{delete_timer}",
+        "Ping Webhook": f"{pingWebhook_config}",
+        "Mode": f"{mode_config}"
     }
     with open(f"./data/config.json", "w") as f:
         f.write(json.dumps(data, indent=4))
@@ -1347,19 +1369,28 @@ async def crypto(ctx):
 @bot.command()
 async def settheme(ctx, theme1):
     global theme
-    global afkmode
-    global afkmsg
+    global token_config
+    global prefix_config
+    global nitro_sniper_config
+    global selfbot_detection
+    global afkmode_config
+    global fake_nitro_config
+    global delete_timer
+    global pingWebhook_config
+    global mode_config
     theme = theme1
     data = {
-        "token": f"{token}",
+        "token": f"{token_config}",
         "prefix": f"{prefix_config}",
         "sniper": f"{nitro_sniper_config}",
         "detector": f"{selfbot_detector_config}",
         "theme": f"{theme1}",
         "AFK": f"{afkmode_config}",
         "AFK-Message": f"{afkmsg_config}",
-        "Fake-Nitro": f"{fake_nitro_config}",
-        "Delete_Timer": f"{delete_timer}"
+        "Fake-Nitro": f"{fake_nitro}",
+        "Delete_Timer": f"{deltimer_config}",
+        "Ping Webhook": f"{pingWebhook_config}",
+        "Mode": f"{mode_config}"
     }
     with open("./data/config.json", "w") as f:
         f.write(json.dumps(data, indent=4))
@@ -1821,7 +1852,9 @@ async def afk(ctx, args):
         "AFK": f"{args2}",
         "AFK-Message": f"{afkmsg_config}",
         "Fake-Nitro": f"{fake_nitro}",
-        "Delete_Timer": f"{deltimer_config}"
+        "Delete_Timer": f"{deltimer_config}",
+        "Ping Webhook": f"{pingWebhook_config}",
+        "Mode": f"{mode_config}"
     }
     with open(f"./data/config.json", "w") as f:
         f.write(json.dumps(data, indent=4))
