@@ -19,4 +19,5 @@
 - **Decent GUI**
 - **Backup Servers & Friends to a txt file**
 - **& More.**
+<BR>![Screenshot](https://cdn.discordapp.com/attachments/1021505080584851577/1021505135911899257/Screenshot_2022-09-19_213552.png?size=4096)
 
