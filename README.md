@@ -1,7 +1,7 @@
 <h1 align="center">Aries</h1>
 
 <p align="center">
-  <img width="40" height="40" src="https://cdn.discordapp.com/attachments/715671505211490315/1023738054227263638/logo.png">
+  <img width="40" height="40" src="https://cdn.discordapp.com/attachments/715671505211490315/1023738310713159772/ariesnobg.png">
 </p>
 
 <h4 align="center">An upcoming, modern, open source Discord selfbot written in Python.</h4>
