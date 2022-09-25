@@ -1,7 +1,7 @@
-<h1 align="center">Primrose</h1>
+<h1 align="center">Aries</h1>
 
 <p align="center">
-  <img width="100" height="100" src="https://avatars.githubusercontent.com/u/113864858?s=200&v=4">
+  <img width="40" height="40" src="https://cdn.discordapp.com/attachments/715671505211490315/1023738054227263638/logo.png">
 </p>
 
 <h4 align="center">An upcoming, modern, open source Discord selfbot written in Python.</h4>
