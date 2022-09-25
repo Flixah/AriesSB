@@ -19,5 +19,6 @@
 - **Decent GUI**
 - **Backup Servers & Friends to a txt file**
 - **& More.**
+# Gui
 <BR>![Screenshot](https://cdn.discordapp.com/attachments/715671505211490315/1023739438909636608/ariescon.png?size=4096)
 
