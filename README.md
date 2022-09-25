@@ -9,6 +9,7 @@
 <p align="center">
   <a href="#features">Features</a> •
   <a href="#Aries SB">Info</a> •
+  <a href="#Gui">GUI</a> •
 </p>
 
 # Aries SB
