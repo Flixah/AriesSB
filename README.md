@@ -4,7 +4,7 @@
   <img width="100" height="100" src="https://cdn.discordapp.com/attachments/715671505211490315/1023738310713159772/ariesnobg.png">
 </p>
 
-<h4 align="center">An old selfbot, made and opensrced.</h4>
+<h4 align="center">An old selfbot, opensourced</h4>
 
 <p align="center">
   <a href="#features">Features</a> •
